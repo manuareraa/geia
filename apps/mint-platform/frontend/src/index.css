@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/* Width and Height */
+::-webkit-scrollbar {
+  width: 15px; /* width of the vertical scrollbar */
+  height: 10px; /* height of the horizontal scrollbar */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #000; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #fff; /* color of the scroll thumb */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #667a9c; /* color of the scroll thumb on hover */
+}

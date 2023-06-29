@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@unique-nft/solidity-interfaces": "^0.55.1",
+    "@unique-nft/utils": "^0.3.14",
+    "dotenv": "^16.3.1",
+    "hardhat": "^2.16.0"
+  }
+}
