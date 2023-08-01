@@ -11,7 +11,7 @@ function Navbar(props) {
   const { setLoading, loading } = useContext(AppContext);
   return (
     // outer container
-    <div className="fixed flex flex-row items-center justify-between w-full p-4 bg-black/30">
+    <div className="fixed z-20 flex flex-row items-center justify-between w-full p-4 bg-black/30">
       {/* first half */}
       {/* logo container */}
       <div>
