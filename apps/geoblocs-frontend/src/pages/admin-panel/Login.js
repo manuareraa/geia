@@ -1,0 +1,49 @@
+import React from "react";
+
+import AdminLogo from "../../assets/svg/admin-logo.svg";
+import rightArrow from "../../assets/svg/right-arrow.svg";
+
+function Login(props) {
+  return (
+    <div className="flex flex-col justify-center w-full">
+      {/* title container */}
+      <div className="flex flex-row items-center justify-between px-32 space-x-8 pt-44">
+        {/* left - title sub-container */}
+        <div className="flex flex-col items-start space-y-4">
+          {/* sub title */}
+          <p className="font-light text-center">
+            Empowering Communities, Restoring Ecosystems
+          </p>
+          {/* main title */}
+          <p className="font- text-[80px] leading-[95px]">Admin Login</p>
+        </div>
+
+        {/* right - logo container */}
+        <img src={AdminLogo} alt="Admin Logo" className="w-[150px]"></img>
+      </div>
+
+      {/* buttons container */}
+      <div className="flex flex-col items-center justify-center w-full mt-16 space-y-10">
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <input
+            type="text"
+            placeholder="Enter your email"
+            className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+          ></input>
+          <input
+            type="text"
+            placeholder="Enter your password"
+            className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+          ></input>
+        </div>
+
+        <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+          <p>Login</p>
+          <img src={rightArrow} className="w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default Login;

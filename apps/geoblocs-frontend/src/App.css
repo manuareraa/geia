@@ -1,0 +1,108 @@
+.bg-home-image {
+  /* get image from assets folder */
+  background-image: url(./assets/img/home-bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.custom-bg-blockchain-image {
+  /* get image from assets folder */
+  background-image: url(./assets/img/blockchain-bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: fit-content;
+}
+
+/* ==== */
+/* Slide-in and Slide-out animation */
+.page-transition {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.slide-in {
+  animation: slide-in 0.5s forwards;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.slide-out {
+  animation: slide-out 0.5s forwards;
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+/* Fade-in and Fade-out animation */
+.page-transition {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.fade-in {
+  animation: fade-in 1.5s forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-out {
+  animation: fade-out 1.5s forwards;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.toggle-custom-color {
+  border-color: #65a500;
+  background-color: #65a500;
+}
+
+.toggle-custom-color:checked::after {
+  border-color: #65a500;
+  background-color: #65a500;
+}
+
+.toggle-custom-color:checked {
+  border-color: #65a500;
+  background-color: #65a500;
+}
+
+.progress::-webkit-progress-value {
+  background-color: var(
+    --progress-color,
+    #65a500
+  ); /* Default to green if not provided */
+}
