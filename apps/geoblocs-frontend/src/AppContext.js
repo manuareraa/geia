@@ -12,6 +12,10 @@ export const AppProvider = ({ children }) => {
     message: "",
   });
 
+  const [appData, setAppData] = useState({});
+
+  const backendUrl = "http://localhost:8000";
+
   return (
     <AppContext.Provider
       value={{
@@ -22,7 +26,9 @@ export const AppProvider = ({ children }) => {
       <Toaster />
       <Navbar />
       <div className="">
-        {loading.status === "true"? <Loading message={loading.message} /> : null}
+        {loading.status === "true" ? (
+          <Loading message={loading.message} />
+        ) : null}
         {children}
       </div>
     </AppContext.Provider>
