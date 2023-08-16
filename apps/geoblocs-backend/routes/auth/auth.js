@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const { signAndSendToken } = require("../../middlewares/auth");
 require("dotenv").config();
 
 const { mongoose } = require("../../utils/db/db");
@@ -34,9 +35,11 @@ router.post("/signup", async (req, res) => {
       role: role,
     });
 
-    res.status(201).json({ message: "User created successfully" });
+    res
+      .status(201)
+      .json({ status: "success", message: "User created successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ status: "fail", message: error.message });
   }
 });
 
@@ -57,16 +60,14 @@ router.post("/signin", async (req, res) => {
     }
 
     // Create a JWT token
-    const token = jwt.sign({ userId: user.userUUID }, process.env.JWT_SECRET);
+    const token = signAndSendToken(user);
 
-    res
-      .status(200)
-      .json({
-        token: token,
-        role: user.role,
-        uuid: user.uuid,
-        status: "success",
-      });
+    res.status(200).json({
+      token: token,
+      role: user.role,
+      uuid: user.uuid,
+      status: "success",
+    });
   } catch (error) {
     res.status(500).json({ message: error.message, status: "fail" });
   }

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import geiaLogo from "../../assets/img/geia-high-res.png";
 import rightArrow from "../../assets/svg/right-arrow.svg";
@@ -18,6 +19,7 @@ import rightArrowG from "../../assets/svg/right-arrow-g.svg";
 import Footer from "../../components/Footer";
 
 function Home(props) {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* hero outer container */}
@@ -49,7 +51,9 @@ function Home(props) {
           </div>
           {/* hero button container */}
           <div className="flex flex-col">
-            <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+            <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+              onClick={() => navigate("/platform/projects")}>
+            >
               <p>Explore Projects</p>
               <img src={rightArrow} className="w-4" />
             </button>
@@ -136,7 +140,10 @@ function Home(props) {
               Send us information on your regeneration project to see if it
               meets our criteria.
             </p>
-            <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+            <button
+              className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+              onClick={() => navigate("/new-application")}
+            >
               <p>Apply</p>
               <img src={rightArrow} className="w-4" />
             </button>
@@ -150,7 +157,10 @@ function Home(props) {
               Seamlessly purchase, retire, and monitor via the project
               dashboard.
             </p>
-            <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+            <button
+              className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+              onClick={() => navigate("/platform/projects")}
+            >
               <p>Purchase</p>
               <img src={rightArrow} className="w-4" />
             </button>

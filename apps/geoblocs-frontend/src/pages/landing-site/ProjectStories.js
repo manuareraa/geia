@@ -1,11 +1,14 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import sampleOne from "../../assets/test/sample-one.png";
 import Footer from "../../components/Footer";
 
 function ProjectStories(props) {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
@@ -192,7 +195,10 @@ function ProjectStories(props) {
             Profit from Restoration: Earn while Healing the Land!
           </p>
           <div className="flex flex-col items-center justify-center">
-            <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+            <button
+              className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+              onClick={() => navigate("/new-application")}
+            >
               <p>Register Your Project</p>
               <img src={rightArrow} className="w-4" />
             </button>

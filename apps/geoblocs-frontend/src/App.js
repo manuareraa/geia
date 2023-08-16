@@ -20,15 +20,11 @@ import ProjectView from "./pages/admin-panel/ProjectView";
 import ExploreProjects from "./pages/platform/ExploreProjects";
 import UserProjectView from "./pages/platform/ProjectView";
 import NewApplication from "./pages/platform/NewApplication";
+import UserLogin from "./pages/platform/UserLogin";
 
 function App() {
   const location = useLocation();
   const [isExiting, setIsExiting] = useState(false);
-
-  // const isExiting = (pathname) => {
-  //   // Add any conditions based on which you want to determine if a page is exiting
-  //   return pathname === "/";
-  // };
 
   useEffect(() => {
     setIsExiting(true);
@@ -204,6 +200,17 @@ function App() {
               isExiting={isExiting}
             >
               <NewApplication />
+            </Transition>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Transition
+              trigger={location.pathname.startsWith("/login")}
+              isExiting={isExiting}
+            >
+              <UserLogin />
             </Transition>
           }
         />

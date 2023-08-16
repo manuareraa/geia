@@ -1,6 +1,14 @@
 const jwt = require("jsonwebtoken");
 const { HTTP_UNAUTHORIZED } = require("http-status-codes");
 
+const signAndSendToken = (user) => {
+  const token = jwt.sign(
+    { userUUID: user.uuid, userRole: user.role },
+    process.env.JWT_SECRET
+  );
+  return token;
+};
+
 const authenticate = (req, res, next) => {
   const authHeader = req.header("Authorization");
 
@@ -18,7 +26,8 @@ const authenticate = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.userId;
+    req.userUUID = decoded.userUUID;
+    req.role = decoded.userRole;
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {
@@ -30,4 +39,4 @@ const authenticate = (req, res, next) => {
   }
 };
 
-module.exports = authenticate;
+module.exports = { authenticate, signAndSendToken };

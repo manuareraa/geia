@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import rightArrow from "../../assets/svg/right-arrow.svg";
 
 function Contact(props) {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
@@ -21,7 +23,10 @@ function Contact(props) {
         </p>
 
         {/* title button */}
-        <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+        <button
+          className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+          onClick={() => navigate("/platform/projects")}
+        >
           <p>Explore Projects</p>
           <img src={rightArrow} className="w-4" />
         </button>

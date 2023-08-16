@@ -24,6 +24,10 @@ export const AppProvider = ({ children }) => {
     applicationCount: 0,
   });
 
+  const [adminData, setAdminData] = useState({
+    applications: [],
+  });
+
   const backendUrl = "http://localhost:3010";
 
   const getApplicationCount = async () => {
@@ -64,9 +68,14 @@ export const AppProvider = ({ children }) => {
           status: "fail",
         };
       } else {
+        localStorage.setItem("token", user.token);
         if (user.role === "admin") {
           setAppData((prevState) => {
             return { ...prevState, loginMode: "admin" };
+          });
+        } else {
+          setAppData((prevState) => {
+            return { ...prevState, loginMode: "user" };
           });
         }
         await getUserDataByUUID(user.uuid, user.token);
@@ -83,16 +92,19 @@ export const AppProvider = ({ children }) => {
 
   const getUserDataByUUID = async (uuid, token) => {
     try {
-      const response = await axios.get(backendUrl + "/api/user/user-data-id", {
-        params: {
-          userUUID: uuid,
-          token: token,
-        },
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      });
-      const user = response.data;
+      const response = await axios.get(
+        backendUrl + "/api/user/user-data-by-id",
+        {
+          params: {
+            userUUID: uuid,
+            token: token,
+          },
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const user = response.data.user;
       toast.success("Logged in successfully");
 
       setAppData((prevState) => {
@@ -103,6 +115,11 @@ export const AppProvider = ({ children }) => {
       });
       if (user.role === "admin") {
         navigate("/admin/dashboard");
+      } else if (user.role === "user") {
+        navigate("/dashboard");
+      } else {
+        toast.error("Error [AC101]: Role not found");
+        navigate("/");
       }
       console.log("User data: ", user);
       return user;
@@ -110,6 +127,134 @@ export const AppProvider = ({ children }) => {
       console.log("Error occurred while getting user data: ", error);
       return false;
     }
+  };
+
+  const getUserDataByToken = async () => {
+    const token = getTokenFromLocalStorage();
+    try {
+      const response = await axios.get(
+        backendUrl + "/api/user/user-data-by-token",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const user = response.data.user;
+      setAppData((prevState) => {
+        return {
+          ...prevState,
+          userProfile: user,
+        };
+      });
+      if (user.role === "admin") {
+        setAppData((prevState) => {
+          return {
+            ...prevState,
+            loginMode: "admin",
+          };
+        });
+      } else if (user.role === "user") {
+        setAppData((prevState) => {
+          return {
+            ...prevState,
+            loginMode: "user",
+          };
+        });
+      } else {
+        toast.error("Error [AC104]: Couldn't get data with token");
+        navigate("/");
+      }
+      console.log("User data: ", user);
+      return user;
+    } catch (error) {
+      console.log("Error occurred while getting user data: ", error);
+      return false;
+    }
+  };
+
+  const getTokenFromLocalStorage = () => {
+    if (localStorage.getItem("token") === null) return false;
+    return localStorage.getItem("token");
+  };
+
+  const getAllApplications = async () => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.get(
+          backendUrl + "/api/admin/get-all-applications"
+        );
+        if (response.data.status === "success") {
+          setAdminData((prevState) => {
+            return {
+              ...prevState,
+              applications: response.data.applications,
+            };
+          });
+        } else {
+          toast.error("Error [AC103]: Applications fetching error");
+        }
+      } else {
+        toast.error("Error [AC102]: Token not found");
+      }
+    } catch (error) {
+      console.log("Error occurred while getting all applications: ", error);
+      return false;
+    }
+  };
+
+  const checkForAuthentication = async (role) => {
+    console.log("checking for existing login...");
+    if (appData.loginMode !== role) {
+      console.log("no existing login, checking for token...");
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        console.log("token found, checking for role...");
+        const userData = await getUserDataByToken();
+        console.log("user data received", userData);
+        if (userData.role !== role) {
+          console.log("not expected role, redirecting to login page...");
+          if (role === "admin") {
+            navigate("/admin/login");
+          } else if (role === "user") {
+            navigate("/login");
+          } else {
+            navigate("/");
+          }
+          toast.error(
+            "You are not authorized/authenticated to access this page"
+          );
+        }
+      } else {
+        console.log("token not found, redirecting to login page...");
+        if (role === "admin") {
+          navigate("/admin/login");
+        } else if (role === "user") {
+          navigate("/login");
+        } else {
+          navigate("/");
+        }
+        toast.error("You are not authorized/authenticated to access this page");
+      }
+    }
+  };
+
+  const logoutUser = () => {
+    if (appData.loginMode === "admin") {
+      navigate("/admin/login");
+    } else if (appData.loginMode === "user") {
+      navigate("/login");
+    } else {
+      navigate("/");
+    }
+    localStorage.removeItem("token");
+    setAppData((prevState) => {
+      return {
+        ...prevState,
+        loginMode: null,
+      };
+    });
   };
 
   return (
@@ -123,6 +268,11 @@ export const AppProvider = ({ children }) => {
         setAppData,
         userLogin,
         getUserDataByUUID,
+        getAllApplications,
+        getUserDataByToken,
+        getTokenFromLocalStorage,
+        checkForAuthentication,
+        logoutUser
       }}
     >
       <Toaster />

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import buyers from "../../assets/svg/buyers.svg";
@@ -11,6 +12,7 @@ import LandStewards from "../../components/stakeholders/LandStewards";
 import Scientists from "../../components/stakeholders/Scientists";
 
 function Stakeholders(props) {
+  const navigate = useNavigate();
   const [section, setSection] = useState(0);
 
   return (
@@ -21,7 +23,10 @@ function Stakeholders(props) {
         {/* title */}
         <p className="font- text-[80px]">The Stakeholders</p>
         {/* title button */}
-        <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+        <button
+          className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+          onClick={() => navigate("/platform/projects")}
+        >
           <p>Explore Projects</p>
           <img src={rightArrow} className="w-4" />
         </button>

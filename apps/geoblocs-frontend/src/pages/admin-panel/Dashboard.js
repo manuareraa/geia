@@ -11,14 +11,16 @@ import ButtonsContainer from "../../components/admin/ButtonsContainer";
 import { toast } from "react-hot-toast";
 
 function Dashboard(props) {
-  const { appData } = useContext(AppContext);
+  const {
+    appData,
+    getUserDataByToken,
+    getTokenFromLocalStorage,
+    checkForAuthentication,
+  } = useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (appData.loginMode !== "admin") {
-      navigate("/admin/login");
-      toast.error("You are not authorized to access this page");
-    }
+    checkForAuthentication("admin");
   }, []);
 
   return (

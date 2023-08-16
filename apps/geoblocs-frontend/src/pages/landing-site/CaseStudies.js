@@ -1,11 +1,13 @@
 import React from "react";
 import { motion, stagger, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import sampleOne from "../../assets/test/sample-one.png";
 import Footer from "../../components/Footer";
 
 function CaseStudies(props) {
+  const navigate = useNavigate();
   return (
     // outer container
     <div className="flex flex-col justify-center w-full">
@@ -26,7 +28,9 @@ function CaseStudies(props) {
         </p>
 
         {/* title button */}
-        <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+        <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+          onClick={() => navigate("/platform/projects")}
+        >
           <p>Explore Projects</p>
           <img src={rightArrow} className="w-4" />
         </button>

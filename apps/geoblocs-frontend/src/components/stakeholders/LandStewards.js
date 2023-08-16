@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import paidRestore from "../../assets/svg/paid-restore.svg";
@@ -13,6 +14,7 @@ import monitor from "../../assets/svg/monitor.svg";
 import logo from "../../assets/img/full-logo.png";
 
 function LandStewards(props) {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center justify-center w-full p-20 bg-gGreen/20">
       {/* title */}
@@ -217,7 +219,10 @@ function LandStewards(props) {
           Profit from Restoration: Earn while Healing the Land!
         </p>
         <div className="flex flex-col items-center justify-center">
-          <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+          <button
+            className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+            onClick={() => navigate("/new-application")}
+          >
             <p>Register Your Project</p>
             <img src={rightArrow} className="w-4" />
           </button>
