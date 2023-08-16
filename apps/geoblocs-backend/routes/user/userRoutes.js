@@ -1,20 +1,28 @@
-// userRoutes.js
 const express = require("express");
 const router = express.Router();
 const CustomError = require("../../utils/error-handling/customError");
+const jwt = require("jsonwebtoken");
+const authenticate = require("../../middlewares/auth");
+const { mongoose } = require("../../utils/db/db");
 
-// Define user-related routes here
-router.get("/", (req, res, next) => {
+const db = mongoose.connection;
+const collectionName = "users";
+
+router.get("/user-data-id", authenticate, async (req, res, next) => {
   try {
-    // Example: Retrieve user data
-    // const users = await db.collection('users').find().toArray();
+    const userUUID = req.query.userUUID;
 
-    // If an error occurs, throw a custom error
-    throw new CustomError("Error retrieving user data", 500);
+    const user = await db
+      .collection(collectionName)
+      .findOne({ uuid: userUUID });
 
-    res.send("User routes");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
   } catch (error) {
-    next(error); // Pass the error to the next middleware (error handler)
+    res.status(500).json({ message: error.message });
   }
 });
 

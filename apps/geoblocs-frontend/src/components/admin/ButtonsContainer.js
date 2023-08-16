@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../AppContext";
 
 function ButtonsContainer(props) {
+  const { setAppData } = useContext(AppContext);
   const navigate = useNavigate();
   return (
     <div className="flex flex-row items-center justify-center w-full mt-16 space-x-10">
@@ -22,6 +24,17 @@ function ButtonsContainer(props) {
         onClick={() => navigate("/admin/dashboard/projects")}
       >
         View All Projects
+      </button>
+      <button
+        className="px-10 py-4 text-xl text-white capitalize rounded-lg bg-gGreen hover:bg-gGreen/70"
+        onClick={() => {
+          setAppData((prevState) => {
+            return { ...prevState, loginMode: null };
+          });
+          navigate("/admin/login");
+        }}
+      >
+        Logout
       </button>
     </div>
   );

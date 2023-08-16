@@ -1,46 +1,74 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+require("dotenv").config();
+
+const { mongoose } = require("../../utils/db/db");
+
+const db = mongoose.connection;
+const collectionName = "users";
 
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password, role } = req.body;
 
-    // const userExists = await User.findOne({ username });
+    // Check if the email already exists
+    const existingUser = await db.collection(collectionName).findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already exists" });
+    }
 
-    // if (userExists) {
-    //   return res.status(409).json({ message: "Username already exists" });
-    // }
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // const newUser = new User({
-    //   username,
-    //   password,
-    // });
+    const userUUID = crypto.randomUUID();
 
-    // await newUser.save();
+    // Insert the new user into the database
+    await db.collection("users").insertOne({
+      email: email,
+      password: hashedPassword,
+      uuid: userUUID,
+      role: role,
+    });
 
-    // res.status(201).json({ message: "User created successfully" });
+    res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    // res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 });
 
 router.post("/signin", async (req, res) => {
   try {
-    // const { username, password } = req.body;
-    // const user = await User.findOne({ username });
-    // if (!user) {
-    //   return res.status(401).json({ message: "Invalid username or password" });
-    // }
-    // const isPasswordValid = await user.comparePassword(password);
-    // if (!isPasswordValid) {
-    //   return res.status(401).json({ message: "Invalid username or password" });
-    // }
-    // const token = jwt.sign({ userId: user._id }, "secret_key");
-    // res.json({ token });
+    const { email, password } = req.body;
+
+    // Find the user by email
+    const user = await db.collection(collectionName).findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // Create a JWT token
+    const token = jwt.sign({ userId: user.userUUID }, process.env.JWT_SECRET);
+
+    res
+      .status(200)
+      .json({
+        token: token,
+        role: user.role,
+        uuid: user.uuid,
+        status: "success",
+      });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message, status: "fail" });
   }
 });
 

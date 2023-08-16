@@ -5,9 +5,7 @@ const authenticate = (req, res, next) => {
   const authHeader = req.header("Authorization");
 
   if (!authHeader) {
-    return res
-      .status(HTTP_UNAUTHORIZED)
-      .json({ message: "Authorization required" });
+    return res.status(403).json({ message: "Authorization required" });
   }
 
   const [bearer, token] = authHeader.split(" ");
@@ -19,7 +17,7 @@ const authenticate = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = decoded.userId;
     next();
   } catch (error) {

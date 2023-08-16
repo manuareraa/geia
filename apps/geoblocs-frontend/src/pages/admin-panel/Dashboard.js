@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "../../components/Footer";
+import { AppContext } from "../../AppContext";
 
+import Footer from "../../components/Footer";
 import AdminLogo from "../../assets/svg/admin-logo.svg";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import sampleOne from "../../assets/test/sample-one.png";
 import location from "../../assets/svg/location.svg";
 import ButtonsContainer from "../../components/admin/ButtonsContainer";
+import { toast } from "react-hot-toast";
 
 function Dashboard(props) {
+  const { appData } = useContext(AppContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (appData.loginMode !== "admin") {
+      navigate("/admin/login");
+      toast.error("You are not authorized to access this page");
+    }
+  }, []);
+
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
@@ -28,7 +39,7 @@ function Dashboard(props) {
         <img src={AdminLogo} alt="Admin Logo" className="w-[150px]"></img>
       </div>
 
-     <ButtonsContainer />
+      <ButtonsContainer />
     </div>
   );
 }

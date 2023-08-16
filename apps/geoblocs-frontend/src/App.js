@@ -19,6 +19,7 @@ import ApplicationView from "./pages/admin-panel/ApplicationView";
 import ProjectView from "./pages/admin-panel/ProjectView";
 import ExploreProjects from "./pages/platform/ExploreProjects";
 import UserProjectView from "./pages/platform/ProjectView";
+import NewApplication from "./pages/platform/NewApplication";
 
 function App() {
   const location = useLocation();
@@ -192,6 +193,17 @@ function App() {
               isExiting={isExiting}
             >
               <UserProjectView />
+            </Transition>
+          }
+        />
+        <Route
+          path="/new-application"
+          element={
+            <Transition
+              trigger={location.pathname.startsWith("/new-application")}
+              isExiting={isExiting}
+            >
+              <NewApplication />
             </Transition>
           }
         />

@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { toast } from "react-hot-toast";
+import { AppContext } from "../../AppContext";
 
 import AdminLogo from "../../assets/svg/admin-logo.svg";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 
 function Login(props) {
+  const { userLogin } = useContext(AppContext);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
@@ -29,15 +36,31 @@ function Login(props) {
             type="text"
             placeholder="Enter your email"
             className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
           ></input>
           <input
             type="text"
             placeholder="Enter your password"
             className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
           ></input>
         </div>
 
-        <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+        <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+          onClick={async () => {
+            if(formData.email === "" || formData.password === "") {
+              toast.error("Please fill all the fields")
+            } else {
+              const result = userLogin(formData.email, formData.password)
+            }
+          }}
+        >
           <p>Login</p>
           <img src={rightArrow} className="w-4" />
         </button>
