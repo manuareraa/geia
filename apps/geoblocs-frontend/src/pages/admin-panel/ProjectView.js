@@ -19,16 +19,20 @@ import ProjectSeasons from "../../components/admin/project-view/ProjectSeasons";
 import ManageGeoblocs from "../../components/admin/project-view/ManageGeoblocs";
 
 function ProjectView(props) {
-  const { appData, setAppData, checkForAuthentication } =
-    useContext(AppContext);
+  const {
+    appData,
+    setAppData,
+    checkForAuthentication,
+    changeProjectLiveStatus,
+  } = useContext(AppContext);
   const navigate = useNavigate();
   const { projectId } = useParams();
   const [liveStatus, setLiveStatus] = useState(false);
   const [subWindow, setSubWindow] = useState("");
 
-  useEffect(() => {
-    console.log(projectId);
-  }, [appData.projectInView]);
+  // useEffect(() => {
+  //   console.log(projectId);
+  // }, [appData.projectInView]);
 
   useEffect(() => {
     checkForAuthentication("admin");
@@ -95,7 +99,13 @@ function ProjectView(props) {
                     checked={
                       appData.projectInView.status === "live" ? true : false
                     }
-                    onChange={() => {
+                    onChange={async () => {
+                      await changeProjectLiveStatus(
+                        appData.projectInView.status === "live"
+                          ? "not live"
+                          : "live",
+                        projectId
+                      );
                       setAppData((prevState) => {
                         return {
                           ...prevState,
@@ -181,15 +191,22 @@ function ProjectView(props) {
               <div className="flex flex-row items-center justify-center space-x-28">
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <p className="text-xl font-bold">Geoblocs Purchased</p>
-                  <p className="text-4xl">1265</p>
+                  <p className="text-4xl">
+                    {appData.projectInView.geoblocsData.purchased}
+                  </p>
                 </div>
                 <div className="flex flex-col items-center justify-center space-y-4 text-xl">
                   <p className="font-bold">Geoblocs Remaining</p>
-                  <p className="text-4xl">149,835</p>
+                  <p className="text-4xl">
+                    {appData.projectInView.geoblocsData.totalSupply -
+                      appData.projectInView.geoblocsData.purchased}
+                  </p>
                 </div>
                 <div className="flex flex-col items-center justify-center space-y-4 text-xl">
                   <p className="font-bold">Total Supply</p>
-                  <p className="text-4xl">150,000</p>
+                  <p className="text-4xl">
+                    {appData.projectInView.geoblocsData.totalSupply}
+                  </p>
                 </div>
               </div>
 
@@ -200,7 +217,12 @@ function ProjectView(props) {
                   <p className="text-2xl font-bold text-center">
                     Project Status
                   </p>
-                  <StatusChart />
+                  <StatusChart
+                    completed={appData.projectInView.metadata.projectStatus}
+                    inProgress={
+                      100 - appData.projectInView.metadata.projectStatus
+                    }
+                  />
                 </div>
 
                 {/* geoblocs distribution chart */}
@@ -208,7 +230,10 @@ function ProjectView(props) {
                   <p className="text-2xl font-bold text-center">
                     Geoblocs Distribution
                   </p>
-                  <GeoblocsChart />
+                  <GeoblocsChart
+                    totalSupply={appData.projectInView.geoblocsData.totalSupply}
+                    purchased={appData.projectInView.geoblocsData.purchased}
+                  />
                 </div>
               </div>
               <div className="divider"></div>

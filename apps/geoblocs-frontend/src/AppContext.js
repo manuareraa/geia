@@ -372,7 +372,11 @@ export const AppProvider = ({ children }) => {
               name: appData.applicationInView.body.name,
               email: appData.applicationInView.body.email,
             },
-            geoblocsData: {},
+            geoblocsData: {
+              purchased: 0,
+              totalSupply: 0,
+              pricePerGeobloc: 0,
+            },
             sponsors: {},
             seasons: {},
             monitoring: {},
@@ -440,6 +444,39 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const changeProjectLiveStatus = async (status, projectId) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/change-live-status",
+          {
+            projectId: projectId,
+            status: status,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          toast.success("Project status changed successfully");
+          return true;
+        } else {
+          toast.error("Error [AC110]: Project status change error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC111]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while changing project status: ", error);
+      return false;
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -458,6 +495,7 @@ export const AppProvider = ({ children }) => {
         logoutUser,
         sendResponseToApplicant,
         getAllProjects,
+        changeProjectLiveStatus,
       }}
     >
       <Toaster />

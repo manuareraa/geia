@@ -119,4 +119,27 @@ router.get("/get-all-projects", authenticate, async (req, res) => {
   }
 });
 
+router.post("/change-live-status", authenticate, async (req, res) => {
+  console.log("POST /api/admin/change-live-status");
+  try {
+    if (req.role === "admin") {
+      const { projectId, status } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            status: status,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+})
+
 module.exports = router;
