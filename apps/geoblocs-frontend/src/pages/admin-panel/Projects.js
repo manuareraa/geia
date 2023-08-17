@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../AppContext";
 
 import AdminLogo from "../../assets/svg/admin-logo.svg";
 import rightArrow from "../../assets/svg/right-arrow.svg";
@@ -9,7 +10,88 @@ import location from "../../assets/svg/location.svg";
 import ButtonsContainer from "../../components/admin/ButtonsContainer";
 
 function AllProjects(props) {
+  const { appData, checkForAuthentication, getAllProjects, setAppData } =
+    useContext(AppContext);
   const navigate = useNavigate();
+
+  const [tableData, setTableData] = useState([]);
+
+  const renderTableData = () => {
+    let tableRowElements = [];
+    setTableData([]);
+    appData.projects.forEach((project) => {
+      if (project.status === "live" || project.status === "not live") {
+        let tableRowElement = (
+          <tr className="hover" key={project.projectId}>
+            <th>#{project.projectId}</th>
+            <td>
+              {project.metadata.projectName === ""
+                ? "(pending initialisation)"
+                : project.metadata.projectName}
+            </td>
+            <td>
+              {new Date(project.createdOn).toLocaleDateString(
+                "en-US",
+                {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                }
+              )}
+            </td>
+            <td>
+              {project.metadata.startedFrom === ""
+                ? "--"
+                : new Date(project.metadata.startedFrom).toLocaleDateString(
+                    "en-US",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    }
+                  )}
+            </td>
+            <td>{project.metadata.location}</td>
+            <td>
+              <button
+                className="text-white capitalize btn btn-sm bg-gGreen hover:bg-gGreen/80"
+                onClick={() => {
+                  setAppData((prevState) => {
+                    return {
+                      ...prevState,
+                      projectInView: project,
+                    };
+                  });
+                  navigate(
+                    "/admin/dashboard/projects/view/" + project.projectId
+                  );
+                }}
+              >
+                View
+              </button>
+            </td>
+          </tr>
+        );
+        tableRowElements.push(tableRowElement);
+        setTableData(tableRowElements);
+      }
+    });
+  };
+
+  const authenticateAndGetData = async () => {
+    await checkForAuthentication("admin");
+    await getAllProjects();
+  };
+
+  useEffect(() => {
+    if (appData.projects.length > 0) {
+      renderTableData();
+    }
+  }, [appData.projects]);
+
+  useEffect(() => {
+    authenticateAndGetData();
+  }, []);
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
@@ -40,36 +122,27 @@ function AllProjects(props) {
         <div className="mb-2 divider"></div>
         {/* table */}
         <div className="w-full overflow-x-auto">
-          <table className="table">
-            {/* head */}
-            <thead>
-              <tr>
-                <th>Project ID</th>
-                <th>Project Name</th>
-                <th>Created Date</th>
-                <th>Location</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="hover">
-                <th>#CDU-156-885</th>
-                <td>Cy Ganderton</td>
-                <td>12th June 2023</td>
-                <td>Ireland</td>
-                <td>
-                  <button
-                    className="text-white capitalize btn btn-sm bg-gGreen hover:bg-gGreen/80"
-                    onClick={() => {
-                      navigate("/admin/dashboard/projects/view/CDU-156-885");
-                    }}
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          {tableData.length > 0 ? (
+            // projects table
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th>Project ID</th>
+                  <th>Project Name</th>
+                  <th>Created Date</th>
+                  <th>Started Date</th>
+                  <th>Location</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>{tableData}</tbody>
+            </table>
+          ) : (
+            <p className="flex flex-col items-center self-center w-full mt-16 text-2xl font-bold">
+              No Projects
+            </p>
+          )}
         </div>
       </div>
     </div>

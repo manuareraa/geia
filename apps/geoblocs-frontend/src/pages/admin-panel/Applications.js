@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../AppContext";
 
 import AdminLogo from "../../assets/svg/admin-logo.svg";
 import rightArrow from "../../assets/svg/right-arrow.svg";
@@ -9,7 +10,71 @@ import location from "../../assets/svg/location.svg";
 import ButtonsContainer from "../../components/admin/ButtonsContainer";
 
 function Applications(props) {
+  const { appData, checkForAuthentication, getAllApplications, setAppData } =
+    useContext(AppContext);
   const navigate = useNavigate();
+
+  const [tableData, setTableData] = useState([]);
+
+  const renderTableData = () => {
+    let tableRowElements = [];
+    setTableData([]);
+    appData.applications.forEach((application) => {
+      if (application.status === "submitted") {
+        let tableRowElement = (
+          <tr className="hover" key={application.applicationID}>
+            <th>#{application.applicationID}</th>
+            <td>{application.body.name}</td>
+            <td>
+              {new Date(application.createdOn).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </td>
+            <td>{application.body.location}</td>
+            <td>
+              <button
+                className="text-white capitalize btn btn-sm bg-gGreen hover:bg-gGreen/80"
+                onClick={() => {
+                  setAppData((prevState) => {
+                    return {
+                      ...prevState,
+                      applicationInView: application,
+                    };
+                  });
+                  navigate(
+                    "/admin/dashboard/applications/view/" +
+                      application.applicationID
+                  );
+                }}
+              >
+                View
+              </button>
+            </td>
+          </tr>
+        );
+        tableRowElements.push(tableRowElement);
+        setTableData(tableRowElements);
+      }
+    });
+  };
+
+  const authenticateAndGetData = async () => {
+    await checkForAuthentication("admin");
+    await getAllApplications();
+  };
+
+  useEffect(() => {
+    if (appData.applications.length > 0) {
+      renderTableData();
+    }
+  }, [appData.applications]);
+
+  useEffect(() => {
+    authenticateAndGetData();
+  }, []);
+
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
@@ -41,101 +106,26 @@ function Applications(props) {
 
         {/* table */}
         <div className="w-full overflow-x-auto">
-          <table className="table">
-            {/* head */}
-            <thead>
-              <tr>
-                <th>Application ID</th>
-                <th>Project Name</th>
-                <th>Applied Date</th>
-                <th>Location</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="hover">
-                <th>#CDU-156-885</th>
-                <td>Cy Ganderton</td>
-                <td>12th June 2023</td>
-                <td>Ireland</td>
-                <td>
-                  <button
-                    className="text-white capitalize btn btn-sm bg-gGreen hover:bg-gGreen/80"
-                    onClick={() => {
-                      navigate("/admin/dashboard/applications/view/CDU-156-885");
-                    }}
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover">
-                <th>#CDU-156-885</th>
-                <td>Cy Ganderton</td>
-                <td>12th June 2023</td>
-                <td>Ireland</td>
-                <td>
-                  <button
-                    className="text-white capitalize btn btn-sm bg-gGreen hover:bg-gGreen/80"
-                    onClick={() => {
-                      navigate("/admin/dashboard/applications/view/CDU-156-886");
-                    }}
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover">
-                <th>#CDU-156-885</th>
-                <td>Cy Ganderton</td>
-                <td>12th June 2023</td>
-                <td>Ireland</td>
-                <td>
-                  <button
-                    className="text-white capitalize btn btn-sm bg-gGreen hover:bg-gGreen/80"
-                    onClick={() => {
-                      navigate("/admin/dashboard/applications/view/CDU-156-887");
-                    }}
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover">
-                <th>#CDU-156-885</th>
-                <td>Cy Ganderton</td>
-                <td>12th June 2023</td>
-                <td>Ireland</td>
-                <td>
-                  <button className="text-white capitalize btn btn-sm bg-gGreen hover:bg-gGreen/80">
-                    View
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover">
-                <th>#CDU-156-885</th>
-                <td>Cy Ganderton</td>
-                <td>12th June 2023</td>
-                <td>Ireland</td>
-                <td>
-                  <button className="text-white capitalize btn btn-sm bg-gGreen hover:bg-gGreen/80">
-                    View
-                  </button>
-                </td>
-              </tr>
-              <tr className="hover">
-                <th>#CDU-156-885</th>
-                <td>Cy Ganderton</td>
-                <td>12th June 2023</td>
-                <td>Ireland</td>
-                <td>
-                  <button className="text-white capitalize btn btn-sm bg-gGreen hover:bg-gGreen/80">
-                    View
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          {tableData.length > 0 ? (
+            // applications table
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th>Application ID</th>
+                  <th>Applicant Name</th>
+                  <th>Applied Date</th>
+                  <th>Location</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>{tableData}</tbody>
+            </table>
+          ) : (
+            <p className="flex flex-col items-center self-center w-full mt-16 text-2xl font-bold">
+              No Applications
+            </p>
+          )}
         </div>
       </div>
     </div>

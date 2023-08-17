@@ -111,10 +111,10 @@ function NewApplication(props) {
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
             <div className="flex flex-col space-y-">
-              <p className="text-xs font-light">GPS Coordinates</p>
+              <p className="text-xs font-light">GPS Coordinates (Lat/Lon)</p>
               <input
                 type="text"
-                placeholder="GPS Coordinates"
+                placeholder="13.0933 / 80.2842"
                 className="py-2 border-b-2 border-black/50 focus:outline-none"
                 value={formData.gps}
                 onChange={(e) =>
@@ -131,7 +131,7 @@ function NewApplication(props) {
               <p className="text-xs font-light">Ownership Status</p>
               <input
                 type="text"
-                placeholder="Ownership Status"
+                placeholder="Private / Community"
                 className="py-2 border-b-2 border-black/50 focus:outline-none"
                 value={formData.ownership}
                 onChange={(e) =>
@@ -207,7 +207,6 @@ function NewApplication(props) {
               ) {
                 toast.error("Please fill all the required fields");
               } else {
-                toast.success("Application Submitted Successfully");
                 const applicationCount = await getApplicationCount();
                 const applicationID = generateRandomID(applicationCount);
                 console.log(
@@ -219,6 +218,7 @@ function NewApplication(props) {
                 temporaryFormData.body = formData;
                 temporaryFormData.createdOn = Date.now();
                 temporaryFormData.applicationID = applicationID;
+                temporaryFormData.status = "submitted";
                 const newApplicationResult = await createNewApplication(
                   temporaryFormData
                 );

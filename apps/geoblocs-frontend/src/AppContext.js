@@ -18,14 +18,12 @@ export const AppProvider = ({ children }) => {
   const [appData, setAppData] = useState({
     loginMode: null,
     userProfile: null,
-  });
-
-  const [miscData, setMiscData] = useState({
     applicationCount: 0,
-  });
-
-  const [adminData, setAdminData] = useState({
+    projectCount: 0,
+    applicationInView: {},
     applications: [],
+    projects: [],
+    projectInView: {},
   });
 
   const backendUrl = "http://localhost:3010";
@@ -34,10 +32,34 @@ export const AppProvider = ({ children }) => {
     try {
       const response = await axios.get(backendUrl + "/api/applications/count");
       const count = response.data.count;
-      setMiscData({ ...miscData, applicationCount: count });
+      setAppData((prevState) => {
+        return {
+          ...prevState,
+          applicationCount: count,
+        };
+      });
       return count;
     } catch (err) {
       console.log("Error occurred while getting application count: ", err);
+    }
+  };
+
+  const getProjectCount = async () => {
+    try {
+      const response = await axios.get(
+        backendUrl + "/api/admin/projects/count"
+      );
+      const count = response.data.count;
+      setAppData((prevState) => {
+        return {
+          ...prevState,
+          projectCount: count,
+        };
+      });
+      return count;
+    } catch (err) {
+      console.log("Error occurred while getting project count: ", err);
+      return null;
     }
   };
 
@@ -165,7 +187,7 @@ export const AppProvider = ({ children }) => {
         toast.error("Error [AC104]: Couldn't get data with token");
         navigate("/");
       }
-      console.log("User data: ", user);
+      // console.log("User data: ", user);
       return user;
     } catch (error) {
       console.log("Error occurred while getting user data: ", error);
@@ -183,10 +205,15 @@ export const AppProvider = ({ children }) => {
       const token = getTokenFromLocalStorage();
       if (token !== false) {
         const response = await axios.get(
-          backendUrl + "/api/admin/get-all-applications"
+          backendUrl + "/api/admin/get-all-applications",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
         );
         if (response.data.status === "success") {
-          setAdminData((prevState) => {
+          setAppData((prevState) => {
             return {
               ...prevState,
               applications: response.data.applications,
@@ -205,16 +232,16 @@ export const AppProvider = ({ children }) => {
   };
 
   const checkForAuthentication = async (role) => {
-    console.log("checking for existing login...");
+    // console.log("checking for existing login...");
     if (appData.loginMode !== role) {
-      console.log("no existing login, checking for token...");
+      // console.log("no existing login, checking for token...");
       const token = getTokenFromLocalStorage();
       if (token !== false) {
-        console.log("token found, checking for role...");
+        // console.log("token found, checking for role...");
         const userData = await getUserDataByToken();
-        console.log("user data received", userData);
+        // console.log("user data received", userData);
         if (userData.role !== role) {
-          console.log("not expected role, redirecting to login page...");
+          // console.log("not expected role, redirecting to login page...");
           if (role === "admin") {
             navigate("/admin/login");
           } else if (role === "user") {
@@ -227,7 +254,7 @@ export const AppProvider = ({ children }) => {
           );
         }
       } else {
-        console.log("token not found, redirecting to login page...");
+        // console.log("token not found, redirecting to login page...");
         if (role === "admin") {
           navigate("/admin/login");
         } else if (role === "user") {
@@ -257,6 +284,162 @@ export const AppProvider = ({ children }) => {
     });
   };
 
+  const sendResponseToApplicant = async (
+    message,
+    applicationID,
+    applicantEmail,
+    status
+  ) => {
+    try {
+      getProjectCount();
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/send-response-to-applicant",
+          {
+            message,
+            applicationID,
+            applicantEmail,
+            status,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          toast.success("Response sent successfully");
+          if (status === "accepted") {
+            toast.success("Creating Project. Please wait...");
+            createNewProject();
+          } else {
+            navigate("/admin/dashboard/applications");
+          }
+        } else {
+          toast.error(
+            "Error [AC105]: Error occured while sending response to applicant"
+          );
+          navigate("/admin/dashboard/applications");
+        }
+      } else {
+        toast.error("Error [AC106]: Token not found");
+      }
+    } catch (error) {
+      console.log(
+        "Error occurred while sending response to applicant: ",
+        error
+      );
+    }
+  };
+
+  const generateRandomProjectId = (projectCount) => {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let prefix = "";
+    for (let i = 0; i < 3; i++) {
+      const randomIndex = Math.floor(Math.random() * letters.length);
+      prefix += letters[randomIndex];
+    }
+
+    const timestamp = Math.floor(Date.now() / 1000);
+    const randomID = `${prefix}-${parseInt(projectCount) + 1}-${timestamp}`;
+
+    return randomID;
+  };
+
+  const createNewProject = async () => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/create-new-project",
+          {
+            projectId: generateRandomProjectId(appData.projectCount),
+            createdOn: Date.now(),
+            status: "not live",
+            metadata: {
+              gps: appData.applicationInView.body.gps,
+              size: appData.applicationInView.body.size,
+              ownership: appData.applicationInView.body.ownership,
+              projectName: "",
+              startedFrom: "",
+              location: appData.applicationInView.body.location,
+              locationAddress: "",
+              projectStatus: 0,
+            },
+            applicationDetails: {
+              applicationId: appData.applicationInView.applicationID,
+              name: appData.applicationInView.body.name,
+              email: appData.applicationInView.body.email,
+            },
+            geoblocsData: {},
+            sponsors: {},
+            seasons: {},
+            monitoring: {},
+            environment: {},
+            story: {
+              heading: "",
+              body: [],
+            },
+            links: {},
+            documents: {},
+            conditions: {},
+            gallery: {},
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          toast.success("Project created successfully");
+          navigate("/admin/dashboard/applications");
+        } else {
+          toast.error(
+            "Error [AC107]: Error occured while creating new project"
+          );
+          navigate("/admin/dashboard/applications");
+        }
+      } else {
+        toast.error("Error [AC108]: Token not found");
+      }
+    } catch (error) {
+      console.log("Error occurred while creating new project: ", error);
+    }
+  };
+
+  const getAllProjects = async () => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.get(
+          backendUrl + "/api/admin/get-all-projects",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          setAppData((prevState) => {
+            return {
+              ...prevState,
+              projects: response.data.projects,
+            };
+          });
+        } else {
+          toast.error("Error [AC109]: Projects fetching error");
+        }
+      } else {
+        toast.error("Error [AC110]: Token not found");
+      }
+    } catch (error) {
+      console.log("Error occurred while getting all projects: ", error);
+      return false;
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -272,7 +455,9 @@ export const AppProvider = ({ children }) => {
         getUserDataByToken,
         getTokenFromLocalStorage,
         checkForAuthentication,
-        logoutUser
+        logoutUser,
+        sendResponseToApplicant,
+        getAllProjects,
       }}
     >
       <Toaster />

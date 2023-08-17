@@ -51,8 +51,9 @@ function Home(props) {
           </div>
           {/* hero button container */}
           <div className="flex flex-col">
-            <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
-              onClick={() => navigate("/platform/projects")}>
+            <button
+              className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+              onClick={() => navigate("/platform/projects")}
             >
               <p>Explore Projects</p>
               <img src={rightArrow} className="w-4" />
