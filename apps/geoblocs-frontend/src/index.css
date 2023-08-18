@@ -8,8 +8,6 @@ body {
   font-family: 'JetBrains Mono', monospace;
 }
 
-
-
 /* Width and Height */
 ::-webkit-scrollbar {
   width: 15px; /* width of the vertical scrollbar */

@@ -140,6 +140,190 @@ router.post("/change-live-status", authenticate, async (req, res) => {
     console.log(error);
     res.status(500).json({ status: "fail", message: error.message });
   }
-})
+});
+
+router.post("/update-gallery", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-gallery");
+  try {
+    if (req.role === "admin") {
+      const { projectId, gallery } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            gallery: gallery,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-story", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-story");
+  try {
+    if (req.role === "admin") {
+      const { projectId, story } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            story: story,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-metadata", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-metadata");
+  try {
+    if (req.role === "admin") {
+      const { projectId, metadata } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            metadata: metadata,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-links", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-links");
+  try {
+    if (req.role === "admin") {
+      const { projectId, links } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            links: links,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while updating links: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-documents", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-documents");
+  try {
+    if (req.role === "admin") {
+      const { projectId, documents } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            documents: documents,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while updating documents: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-sponsors", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-sponsors");
+  try {
+    if (req.role === "admin") {
+      const { projectId, sponsors } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            sponsors: sponsors,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while updating sponsors: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-seasons", authenticate, async (req, res) => {
+  console.log("POST /api/admin/delete-seasons");
+  try {
+    if (req.role === "admin") {
+      const { projectId, seasons } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            seasons: seasons,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while deleting seasons: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-conditions", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-conditions");
+  try {
+    if (req.role === "admin") {
+      const { projectId, conditions } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            conditions: conditions,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while updating conditions: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
 
 module.exports = router;

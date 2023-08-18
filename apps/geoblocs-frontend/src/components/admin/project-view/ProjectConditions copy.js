@@ -1,42 +1,52 @@
-import React, { useState, useEffect, useContext } from "react";
-import { AppContext } from "../../../AppContext";
-import { toast } from "react-hot-toast";
+import React, { useState, useEffect } from "react";
 import editIcon from "../../../assets/svg/edit.svg";
 
 function ProjectConditions(props) {
-  const { updateProjectConditions } = useContext(AppContext);
   const [projectId, setProjectId] = useState(null);
-  const [conditions, setConditions] = useState([]);
+  const [conditions, setConditions] = useState({});
 
   useEffect(() => {
     setProjectId(props.projectId);
-    setConditions(props.projectConditions || []);
-    console.log("ProjectConditions props", props);
   }, [props]);
 
-  const updateCondition = (index, param, value) => {
-    const updatedConditions = [...conditions];
-    updatedConditions[index] = {
-      ...updatedConditions[index],
-      [param]: value,
-    };
-    setConditions(updatedConditions);
+  const updateCondition = (id, param, e) => {
+    setConditions((prevConditions) => ({
+      ...prevConditions,
+      [id]: {
+        ...prevConditions[id],
+        [param]: e.target.value,
+      },
+    }));
   };
 
   const addNewCondition = () => {
-    setConditions([...conditions, { label: "", value: "" }]);
+    let nextId =
+      Object.keys(conditions).length === 0
+        ? 1
+        : Math.max(...Object.keys(conditions)) + 1;
+    setConditions((prevConditions) => ({
+      ...prevConditions,
+      [nextId]: {
+        id: nextId,
+        label: "",
+        value: "",
+      },
+    }));
   };
 
-  const removeCondition = (index) => {
-    const updatedConditions = conditions.filter((_, i) => i !== index);
-    setConditions(updatedConditions);
+  const removeCondition = (id) => {
+    setConditions((prevConditions) => {
+      const updateConditions = { ...prevConditions };
+      delete updateConditions[id];
+      return updateConditions;
+    });
   };
 
   return (
     <div className="flex flex-col w-full space-y-4 overflow-auto">
       {/* title container */}
       <div className="flex flex-row items-center justify-between w-full">
-        {/* title */}
+        {/* title  */}
         <p className="text-4xl font-bold text-center">
           Project Land Conditions
         </p>
@@ -54,14 +64,14 @@ function ProjectConditions(props) {
       <div className="divider"></div>
       {/* body */}
       <div className="flex flex-col pb-6 space-y-4">
-        {conditions.length === 0 ? (
+        {Object.values(conditions).length === 0 ? (
           <p className="text-2xl font-bold text-black/50">No Data</p>
         ) : (
           <div className="grid items-center grid-cols-1 gap-y-8 w-fit">
-            {conditions.map((conditionElement, index) => {
+            {Object.values(conditions).map((conditionElement) => {
               return (
                 <div
-                  key={index}
+                  key={conditionElement.id}
                   className="flex flex-row items-center space-x-12"
                 >
                   {/* link label */}
@@ -75,13 +85,13 @@ function ProjectConditions(props) {
                         className="py-2 border-b-2 border-black/50 focus:outline-none"
                         value={conditionElement.label}
                         onChange={(e) =>
-                          updateCondition(index, "label", e.target.value)
+                          updateCondition(conditionElement.id, "label", e)
                         }
                       />
                     </div>
                   </div>
 
-                  {/* value */}
+                  {/* link url */}
                   <div className="flex flex-row items-end space-x-2">
                     <img src={editIcon} alt="" className="w-6 h-6"></img>
                     <div className="flex flex-col space-y-">
@@ -90,9 +100,9 @@ function ProjectConditions(props) {
                         type="text"
                         placeholder="Value"
                         className="py-2 border-b-2 border-black/50 focus:outline-none"
-                        value={conditionElement.value}
+                        value={conditionElement.url}
                         onChange={(e) =>
-                          updateCondition(index, "value", e.target.value)
+                          updateCondition(conditionElement.id, "url", e)
                         }
                       />
                     </div>
@@ -101,7 +111,7 @@ function ProjectConditions(props) {
                   {/* remove button */}
                   <button
                     className="text-white capitalize border-0 w-fit btn bg-red focus:outline-none"
-                    onClick={() => removeCondition(index)}
+                    onClick={() => removeCondition(conditionElement.id)}
                   >
                     Remove
                   </button>
@@ -110,26 +120,6 @@ function ProjectConditions(props) {
             })}
           </div>
         )}
-      </div>
-      {/* save button */}
-      <div className="flex flex-col w-full pt-10">
-        <button
-          className="self-center text-lg text-white capitalize border-2 w-fit btn bg-gGreen border-gGreen"
-          onClick={async () => {
-            console.log(conditions);
-            const updateResult = await updateProjectConditions(
-              projectId,
-              conditions
-            );
-            if (updateResult === true) {
-              toast.success("Project Conditions updated successfully.");
-            } else {
-              toast.error("Failed to update conditions. Try again.");
-            }
-          }}
-        >
-          Save
-        </button>
       </div>
     </div>
   );

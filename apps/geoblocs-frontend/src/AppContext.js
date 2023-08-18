@@ -2,6 +2,8 @@ import React, { useState, useEffect, createContext } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AWS from "aws-sdk";
+import { v4 as uuidv4 } from "uuid";
 
 import Loading from "./components/Loading";
 import Navbar from "./components/Navbar";
@@ -477,6 +479,370 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const uploadFilesToS3 = async (files, projectId, subfolder) => {
+    const S3_BUCKET = process.env.REACT_APP_BUCKET;
+    const REGION = process.env.REACT_APP_REGION;
+    console.log("S3_BUCKET", S3_BUCKET);
+    console.log("REGION", REGION);
+
+    AWS.config.update({
+      accessKeyId: process.env.REACT_APP_S3_ACCESS_KEY,
+      secretAccessKey: process.env.REACT_APP_S3_ACCESS_KEY_SECRET,
+    });
+    const s3 = new AWS.S3({
+      params: { Bucket: S3_BUCKET },
+      region: REGION,
+    });
+
+    let fileUrls = [];
+
+    if (files.length === 0) {
+      toast.error("No files found. Please upload a file.");
+      return fileUrls;
+    }
+
+    for (const file of files) {
+      const fileExtension = file.name.split(".").pop();
+      const newFileName = `${uuidv4()}.${fileExtension}`;
+
+      const folderPath = `${projectId}/${subfolder}`;
+      const fileUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${folderPath}/${newFileName}`;
+      const params = {
+        Bucket: S3_BUCKET,
+        Key: `${folderPath}/${newFileName}`,
+        Body: file,
+      };
+
+      const upload = s3
+        .putObject(params)
+        .on("httpUploadProgress", (evt) => {
+          console.log(
+            "Uploading " + parseInt((evt.loaded * 100) / evt.total) + "%"
+          );
+        })
+        .promise();
+
+      try {
+        await upload;
+        console.log(
+          "File uploaded successfully:",
+          file.name,
+          "as",
+          newFileName,
+          "to",
+          fileUrl
+        );
+        fileUrls.push(fileUrl);
+      } catch (error) {
+        console.error("Error uploading file:", file.name, error);
+      }
+    }
+
+    return fileUrls;
+  };
+
+  const getFileKeyFromUrl = (fileUrl) => {
+    const bucketUrl = `https://${process.env.REACT_APP_BUCKET}.s3.${process.env.REACT_APP_REGION}.amazonaws.com/`;
+    const fileKey = fileUrl.replace(bucketUrl, "");
+    return fileKey;
+  };
+
+  const deleteFileFromS3 = async (fileUrl) => {
+    const fileKey = getFileKeyFromUrl(fileUrl);
+
+    const S3_BUCKET = process.env.REACT_APP_BUCKET;
+    const REGION = process.env.REACT_APP_REGION;
+
+    AWS.config.update({
+      accessKeyId: process.env.REACT_APP_S3_ACCESS_KEY,
+      secretAccessKey: process.env.REACT_APP_S3_ACCESS_KEY_SECRET,
+    });
+    const s3 = new AWS.S3({
+      params: { Bucket: S3_BUCKET },
+      region: REGION,
+    });
+
+    const params = {
+      Bucket: S3_BUCKET,
+      Key: fileKey,
+    };
+
+    try {
+      const deletion = s3.deleteObject(params).promise();
+      await deletion;
+      console.log("File deleted successfully:", fileKey);
+      return true;
+    } catch (error) {
+      console.error("Error deleting file:", fileKey, error);
+      return false;
+    }
+  };
+
+  const updateProjectGallery = async (projectId, gallery) => {
+    // gallery is an array of image urls
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-gallery",
+          {
+            projectId: projectId,
+            gallery: gallery,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("Gallery updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC112]: Gallery update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC113]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating gallery: ", error);
+      return false;
+    }
+  };
+
+  const updateProjectStory = async (projectId, story) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-story",
+          {
+            projectId: projectId,
+            story: story,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("Story updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC114]: Story update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC115]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating story: ", error);
+      return false;
+    }
+  };
+
+  const updateProjectMetadata = async (projectId, metadata) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-metadata",
+          {
+            projectId: projectId,
+            metadata: metadata,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("Metadata updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC116]: Metadata update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC117]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating metadata: ", error);
+      return false;
+    }
+  };
+
+  const updateProjectLinks = async (projectId, links) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-links",
+          {
+            projectId: projectId,
+            links: links,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("Links updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC118]: Links update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC119]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating links: ", error);
+      return false;
+    }
+  };
+
+  const updateProjectDocuments = async (projectId, documents) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-documents",
+          {
+            projectId: projectId,
+            documents: documents,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("Documents updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC120]: Documents update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC121]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating documents: ", error);
+      return false;
+    }
+  };
+
+  const updateProjectSponsors = async (projectId, sponsors) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-sponsors",
+          {
+            projectId: projectId,
+            sponsors: sponsors,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("Sponsors updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC122]: Sponsors update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC123]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating sponsors: ", error);
+      return false;
+    }
+  };
+
+  const updateProjectSeasons = async (projectId, seasons) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-seasons",
+          {
+            projectId: projectId,
+            seasons: seasons,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("Seasons updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC122]: Seasons update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC123]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating seasons: ", error);
+      return false;
+    }
+  };
+
+  const updateProjectConditions = async (projectId, conditions) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-conditions",
+          {
+            projectId: projectId,
+            conditions: conditions,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("conditions updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC118]: conditions update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC119]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating conditions: ", error);
+      return false;
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -496,9 +862,29 @@ export const AppProvider = ({ children }) => {
         sendResponseToApplicant,
         getAllProjects,
         changeProjectLiveStatus,
+        uploadFilesToS3,
+        deleteFileFromS3,
+        updateProjectGallery,
+        updateProjectStory,
+        updateProjectMetadata,
+        updateProjectLinks,
+        updateProjectDocuments,
+        updateProjectSponsors,
+        updateProjectSeasons,
+        updateProjectConditions,
       }}
     >
-      <Toaster />
+      <Toaster
+      // containerStyle={{
+      //   zIndex: 9999, // For the container
+      // }}
+      // toastOptions={{
+      //   style: {
+      //     zIndex: 9999, // For toasts
+      //   },
+      // }}
+      // className="alert"
+      />
       <Navbar />
       <div className="">
         {loading.status === "true" ? (

@@ -17,6 +17,7 @@ import ProjectConditions from "../../components/admin/project-view/ProjectCondit
 import ProjectEnvironment from "../../components/admin/project-view/ProjectEnvironment";
 import ProjectSeasons from "../../components/admin/project-view/ProjectSeasons";
 import ManageGeoblocs from "../../components/admin/project-view/ManageGeoblocs";
+import { toast } from "react-hot-toast";
 
 function ProjectView(props) {
   const {
@@ -62,6 +63,7 @@ function ProjectView(props) {
       <div className="flex flex-col items-center justify-center w-full my-24 mt-20 px-52">
         {Object.keys(appData.projectInView).length > 0 ? (
           <>
+            {/* title bar */}
             <div className="flex flex-col items-start w-full my-">
               <div className="flex flex-row items-center justify-between w-full">
                 <p className="text-3xl font-bold text-center">
@@ -343,32 +345,32 @@ function ProjectView(props) {
                   <ProjectStory
                     projectId={projectId}
                     storyHeading={"storyHeading"}
-                    storyBody={"storyBody"}
+                    storyBody={appData.projectInView.story}
                   />
                 ) : subWindow === "gallery" ? (
                   <ProjectGallery
                     projectId={projectId}
-                    projectGallery={"projectGallery"}
+                    projectGallery={appData.projectInView.gallery}
                   />
                 ) : subWindow === "metadata" ? (
                   <ProjectMetadata
                     projectId={projectId}
-                    projectMetadata={"projectMetadata"}
+                    projectMetadata={appData.projectInView.metadata}
                   />
                 ) : subWindow === "links" ? (
                   <ProjectLinks
                     projectId={projectId}
-                    projectLinks={"ProjectLinks"}
+                    projectLinks={appData.projectInView.links}
                   />
                 ) : subWindow === "documents" ? (
                   <ProjectDocuments
                     projectId={projectId}
-                    projectMetadata={"projectMetadata"}
+                    projectDocuments={appData.projectInView.documents}
                   />
                 ) : subWindow === "sponsors" ? (
                   <ProjectSponsors
                     projectId={projectId}
-                    projectMetadata={"projectMetadata"}
+                    projectSponsors={appData.projectInView.sponsors}
                   />
                 ) : subWindow === "environment" ? (
                   <ProjectEnvironment
@@ -378,12 +380,12 @@ function ProjectView(props) {
                 ) : subWindow === "conditions" ? (
                   <ProjectConditions
                     projectId={projectId}
-                    projectMetadata={"projectMetadata"}
+                    projectConditions={appData.projectInView.conditions}
                   />
                 ) : subWindow === "season" ? (
                   <ProjectSeasons
                     projectId={projectId}
-                    projectMetadata={"projectMetadata"}
+                    projectSeasons={appData.projectInView.seasons}
                   />
                 ) : subWindow === "geoblocs" ? (
                   <ManageGeoblocs
@@ -401,9 +403,11 @@ function ProjectView(props) {
                     </button>
                   </form>
 
-                  <button className="text-lg text-white capitalize border-2 btn bg-gGreen border-gGreen">
-                    Save
-                  </button>
+                  {/* {subWindow === "gallery" ? null : (
+                    <button className="text-lg text-white capitalize border-2 btn bg-gGreen border-gGreen">
+                      Save
+                    </button>
+                  )} */}
                 </div>
               </div>
             </dialog>

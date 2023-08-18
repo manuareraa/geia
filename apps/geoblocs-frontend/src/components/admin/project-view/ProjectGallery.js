@@ -1,24 +1,82 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AppContext } from "../../../AppContext";
 
 import editIcon from "../../../assets/svg/edit.svg";
 import fileUpload from "../../../assets/svg/file-upload.svg";
 import sampleOne from "../../../assets/test/sample-one.png";
+import { toast } from "react-hot-toast";
 
 function ProjectGallery(props) {
+  const { deleteFileFromS3, uploadFilesToS3, updateProjectGallery } =
+    useContext(AppContext);
   const [projectId, setProjectId] = useState(null);
   const [gallery, setGallery] = useState([]);
+  const [imageCards, setImageCards] = useState([]);
+
+  const renderImages = () => {
+    let tempImageCards = [];
+    setImageCards([]);
+    gallery.forEach((image, index) => {
+      let imageCard = (
+        <div
+          className="flex flex-col items-center justify-center p-3 space-y-2 rounded-xl bg-glGreen w-fit"
+          key={index}
+        >
+          <img
+            src={image}
+            alt=""
+            className="object-cover h-40 rounded-lg w-60"
+          ></img>
+          <button
+            className="text-white capitalize border-0 btn btn-sm bg-red hover:bg-red"
+            onClick={async () => {
+              // console.log("deleting image", image);
+              const deletResponse = await deleteFileFromS3(image);
+              // console.log("deletResponse", deletResponse);
+              if (deletResponse === true) {
+                // console.log("deleting image from gallery", image);
+                let tempGallery = gallery.filter((img) => img !== image);
+                // console.log("tempGallery", tempGallery);
+                setGallery(tempGallery);
+                updateProjectGallery(projectId, tempGallery);
+              } else {
+                toast.error("Failed to delete image. Try again later.");
+              }
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      );
+      tempImageCards.push(imageCard);
+      setImageCards(tempImageCards);
+    });
+  };
 
   useEffect(() => {
     setProjectId(props.projectId);
-    // setGallery(props.gallery);
+    setGallery(props.projectGallery);
   }, [props]);
+
+  useEffect(() => {
+    if (props.projectGallery.length > 0) {
+      renderImages();
+    }
+    // console.log("gallery", gallery);
+  }, [gallery]);
+
+  useEffect(() => {
+    // console.log("imageCards", imageCards);
+  }, [imageCards]);
 
   return (
     <div className="flex flex-col w-full space-y-4 overflow-auto">
       {/* title container */}
       <div className="flex flex-row items-center justify-between w-full">
         {/* title  */}
-        <p className="text-4xl font-bold text-center">Project Gallery ({gallery.length})</p>
+        <p className="text-4xl font-bold text-center">
+          Project Gallery ({gallery.length})
+        </p>
 
         {/* title button containers */}
         <div className="flex flex-row space-x-4">
@@ -27,10 +85,26 @@ function ProjectGallery(props) {
             <input
               type="file"
               className="hidden"
+              multiple
               onChange={(event) => {
                 // Handle the file upload here if needed
-                const selectedFile = event.target.files[0];
-                console.log(selectedFile);
+                const selectedFiles = event.target.files;
+                // console.log(selectedFiles);
+                uploadFilesToS3(selectedFiles, projectId, "gallery")
+                  .then((fileUrls) => {
+                    // console.log(
+                    //   "fileupload finished, updating gallery",
+                    //   fileUrls
+                    // );
+                    let tempUrls = fileUrls;
+                    tempUrls = [...gallery, ...tempUrls];
+                    setGallery(tempUrls);
+                    updateProjectGallery(projectId, tempUrls);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    toast.error("Failed to upload image. Try again later.");
+                  });
               }}
             />
           </label>
@@ -39,41 +113,13 @@ function ProjectGallery(props) {
       <div className="divider"></div>
       {/* body */}
       <div className="flex flex-col w-full pb-6 space-y-4">
-        <div className="grid items-center justify-center grid-col-5 gap-x-4">
-          <div className="flex flex-col items-center justify-center p-3 space-y-2 rounded-xl bg-glGreen w-fit">
-            <img src={sampleOne} alt="" className="rounded-lg"></img>
-            <button className="text-white capitalize border-0 btn btn-sm bg-red hover:bg-red">
-              Delete
-            </button>
+        {gallery.length > 0 ? (
+          <div className="grid items-center justify-center w-full grid-cols-4 gap-x-4 gap-y-8">
+            {imageCards}
           </div>
-        </div>
-
-        {/* use a mapping function to create for every element in the story body array, render image or text input accordingly */}
-        {/* {storyBody.map((block, index) => {
-          if (block.type === "text") {
-            let ele = (
-              <div className="flex flex-row items-start space-x-4">
-                <img src={editIcon} alt="" className="w-8 h-8"></img>
-                <textarea
-                  className="w-full text-lg focus:outline-none"
-                  placeholder="Add some text"
-                ></textarea>
-              </div>
-            );
-            return ele;
-          } else if (block.type === "image") {
-            let ele = (
-              <div className="flex flex-row items-center pb-6 space-x-4">
-                <img src={fileUpload} alt="" className="w-8 h-8"></img>
-                <input
-                  type="file"
-                  className="w-full max-w-xs file-input file-input-sm"
-                />
-              </div>
-            );
-            return ele;
-          }
-        })} */}
+        ) : (
+          <p>No Images</p>
+        )}
       </div>
     </div>
   );

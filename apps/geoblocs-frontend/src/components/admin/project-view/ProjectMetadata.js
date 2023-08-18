@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AppContext } from "../../../AppContext";
+import { toast } from "react-hot-toast";
 
 import editIcon from "../../../assets/svg/edit.svg";
 import sampleOne from "../../../assets/test/sample-one.png";
 
 function ProjectMetadata(props) {
+  const { updateProjectMetadata } = useContext(AppContext);
   const [projectId, setProjectId] = useState(null);
+  const [projectMetadata, setProjectMetadata] = useState({});
 
   useEffect(() => {
+    console.log("ProjectMetadata props", props);
     setProjectId(props.projectId);
+    setProjectMetadata(props.projectMetadata);
   }, [props]);
 
   return (
@@ -19,8 +25,8 @@ function ProjectMetadata(props) {
       </div>
       <div className="divider"></div>
       {/* body */}
-      <div className="flex flex-col items-center justify-center w-full pb-6 space-y-4">
-        <div className="grid items-center justify-center grid-cols-4 gap-x-28 gap-y-8">
+      <div className="flex flex-col items-center justify-center w-full pt-8 pb-6 space-y-4">
+        <div className="grid items-center justify-center grid-cols-3 gap-x-20 gap-y-8">
           {/* Project Name */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
@@ -30,6 +36,15 @@ function ProjectMetadata(props) {
                 type="text"
                 placeholder="Project Name"
                 className="py-2 border-b-2 border-black/50 focus:outline-none"
+                value={projectMetadata.projectName}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      projectName: e.target.value,
+                    };
+                  });
+                }}
               />
             </div>
           </div>
@@ -43,6 +58,15 @@ function ProjectMetadata(props) {
                 type="text"
                 placeholder="Start Date"
                 className="py-2 border-b-2 border-black/50 focus:outline-none"
+                value={projectMetadata.startedFrom}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      startedFrom: e.target.value,
+                    };
+                  });
+                }}
               />
             </div>
           </div>
@@ -56,6 +80,15 @@ function ProjectMetadata(props) {
                 type="text"
                 placeholder="Project Size"
                 className="py-2 border-b-2 border-black/50 focus:outline-none"
+                value={projectMetadata.size}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      size: e.target.value,
+                    };
+                  });
+                }}
               />
             </div>
           </div>
@@ -69,6 +102,15 @@ function ProjectMetadata(props) {
                 type="text"
                 placeholder="Location"
                 className="py-2 border-b-2 border-black/50 focus:outline-none"
+                value={projectMetadata.location}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      location: e.target.value,
+                    };
+                  });
+                }}
               />
             </div>
           </div>
@@ -82,6 +124,15 @@ function ProjectMetadata(props) {
                 type="text"
                 placeholder="GPS Coordinates"
                 className="py-2 border-b-2 border-black/50 focus:outline-none"
+                value={projectMetadata.gps}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      gps: e.target.value,
+                    };
+                  });
+                }}
               />
             </div>
           </div>
@@ -95,6 +146,37 @@ function ProjectMetadata(props) {
                 type="text"
                 placeholder="Ownership"
                 className="py-2 border-b-2 border-black/50 focus:outline-none"
+                value={projectMetadata.ownership}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      ownership: e.target.value,
+                    };
+                  });
+                }}
+              />
+            </div>
+          </div>
+
+          {/* project status */}
+          <div className="flex flex-row items-end space-x-2">
+            <img src={editIcon} alt="" className="w-6 h-6"></img>
+            <div className="flex flex-col space-y-">
+              <p className="text-xs font-light">Project Status (0-100)</p>
+              <input
+                type="text"
+                placeholder="Project Status"
+                className="py-2 border-b-2 border-black/50 focus:outline-none"
+                value={projectMetadata.projectStatus}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      projectStatus: e.target.value,
+                    };
+                  });
+                }}
               />
             </div>
           </div>
@@ -108,10 +190,39 @@ function ProjectMetadata(props) {
                 type="text"
                 placeholder="Location Address"
                 className="py-2 border-b-2 border-black/50 focus:outline-none"
+                value={projectMetadata.locationAddress}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      locationAddress: e.target.value,
+                    };
+                  });
+                }}
               />
             </div>
           </div>
         </div>
+      </div>
+      {/* save button */}
+      <div className="flex flex-col w-full pt-10">
+        <button
+          className="self-center text-lg text-white capitalize border-2 w-fit btn bg-gGreen border-gGreen"
+          onClick={async () => {
+            console.log(projectMetadata);
+            const updateResult = await updateProjectMetadata(
+              projectId,
+              projectMetadata
+            );
+            if (updateResult === true) {
+              toast.success("Metadata updated successfully.");
+            } else {
+              toast.error("Failed to update story. Try again.");
+            }
+          }}
+        >
+          Save
+        </button>
       </div>
     </div>
   );

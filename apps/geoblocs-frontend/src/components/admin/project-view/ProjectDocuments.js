@@ -1,46 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AppContext } from "../../../AppContext";
+import { toast } from "react-hot-toast";
+
 import editIcon from "../../../assets/svg/edit.svg";
 import uploadIcon from "../../../assets/svg/file-upload.svg";
 
 function ProjectDocuments(props) {
+  const { updateProjectDocuments, uploadFilesToS3, deleteFileFromS3 } =
+    useContext(AppContext);
   const [projectId, setProjectId] = useState(null);
-  const [documents, setDocuments] = useState({});
+  const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
     setProjectId(props.projectId);
+    setDocuments(props.projectDocuments || []);
+    console.log("ProjectDocuments props", props);
   }, [props]);
 
-  const updateLink = (id, param, e) => {
-    setDocuments((prevDocuments) => ({
-      ...prevDocuments,
-      [id]: {
-        ...prevDocuments[id],
-        [param]: e.target.value,
-      },
-    }));
+  const updateDocument = (index, param, value) => {
+    const updatedDocuments = [...documents];
+    updatedDocuments[index] = {
+      ...updatedDocuments[index],
+      [param]: value,
+    };
+    setDocuments(updatedDocuments);
   };
 
   const addNewDocument = () => {
-    let nextId =
-      Object.keys(documents).length === 0
-        ? 1
-        : Math.max(...Object.keys(documents)) + 1;
-    setDocuments((prevDocuments) => ({
-      ...prevDocuments,
-      [nextId]: {
-        id: nextId,
-        label: "",
-        url: "",
-      },
-    }));
+    setDocuments([...documents, { label: "", url: "" }]);
   };
 
-  const removeLink = (id) => {
-    setDocuments((prevDocuments) => {
-      const updatedDocuments = { ...prevDocuments };
-      delete updatedDocuments[id];
-      return updatedDocuments;
-    });
+  const removeDocument = (index) => {
+    const updatedDocuments = documents.filter((_, i) => i !== index);
+    setDocuments(updatedDocuments);
   };
 
   return (
@@ -63,51 +55,81 @@ function ProjectDocuments(props) {
       <div className="divider"></div>
       {/* body */}
       <div className="flex flex-col pb-6 space-y-4">
-        {Object.values(documents).length === 0 ? (
+        {documents.length === 0 ? (
           <p className="text-2xl font-bold text-black/50">No Documents</p>
         ) : (
           <div className="grid items-center grid-cols-1 gap-y-8 w-fit">
-            {Object.values(documents).map((docElement) => {
+            {documents.map((docElement, index) => {
               return (
                 <div
-                  key={docElement.id}
+                  key={index}
                   className="flex flex-row items-center space-x-12"
                 >
-                  {/* link label */}
+                  {/* document label */}
                   <div className="flex flex-row items-end space-x-1">
-                    <img src={editIcon} alt="" className="w-6 h-6"></img>
+                    <img src={editIcon} alt="" className="w-6 h-6" />
                     <div className="flex flex-col space-y-">
                       <p className="text-xs font-light">Document Label</p>
                       <input
                         type="text"
-                        placeholder="Link Label"
+                        placeholder="Document Label"
                         className="py-2 border-b-2 border-black/50 focus:outline-none"
                         value={docElement.label}
-                        onChange={(e) => updateLink(docElement.id, "label", e)}
+                        onChange={(e) =>
+                          updateDocument(index, "label", e.target.value)
+                        }
                       />
                     </div>
                   </div>
 
-                  {/* link url */}
-                  <div className="flex flex-row items-end space-x-2">
-                    <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
-                      Upload Document
-                      <input
-                        type="file"
-                        className="hidden"
-                        onChange={(event) => {
-                          // Handle the file upload here if needed
-                          const selectedFile = event.target.files[0];
-                          console.log(selectedFile);
-                        }}
-                      />
-                    </label>
-                  </div>
+                  <p>
+                    {docElement.url !== ""
+                      ? "File already uploaded. Re-upload to replace."
+                      : null}
+                  </p>
+
+                  {/* upload button */}
+                  <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
+                    Upload Document
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={async (event) => {
+                        const tempImageArray = [];
+                        tempImageArray.push(event.target.files[0]);
+                        const fileUrls = await uploadFilesToS3(
+                          tempImageArray,
+                          projectId,
+                          "documents"
+                        );
+                        if (fileUrls.length > 0) {
+                          toast.success("File uploaded successfully.");
+                          updateDocument(index, "url", fileUrls[0]);
+                        } else {
+                          toast.error("Failed to upload file. Try again.");
+                        }
+                      }}
+                    />
+                  </label>
 
                   {/* remove button */}
                   <button
                     className="text-white capitalize border-0 w-fit btn bg-red focus:outline-none"
-                    onClick={() => removeLink(docElement.id)}
+                    onClick={async () => {
+                      if (docElement.url !== "") {
+                        const deleteResult = await deleteFileFromS3(
+                          docElement.url
+                        );
+                        if (deleteResult === true) {
+                          toast.success("File deleted successfully.");
+                          removeDocument(index);
+                        } else {
+                          toast.error("Failed to delete file. Try again.");
+                        }
+                      } else {
+                        removeDocument(index);
+                      }
+                    }}
                   >
                     Remove
                   </button>
@@ -116,6 +138,26 @@ function ProjectDocuments(props) {
             })}
           </div>
         )}
+      </div>
+      {/* save button */}
+      <div className="flex flex-col w-full pt-10">
+        <button
+          className="self-center text-lg text-white capitalize border-2 w-fit btn bg-gGreen border-gGreen"
+          onClick={async () => {
+            console.log(documents);
+            const updateResult = await updateProjectDocuments(
+              projectId,
+              documents
+            );
+            if (updateResult === true) {
+              toast.success("Project Documents updated successfully.");
+            } else {
+              toast.error("Failed to update documents. Try again.");
+            }
+          }}
+        >
+          Save
+        </button>
       </div>
     </div>
   );

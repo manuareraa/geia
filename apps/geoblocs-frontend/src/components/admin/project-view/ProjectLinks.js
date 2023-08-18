@@ -1,43 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AppContext } from "../../../AppContext";
+import { toast } from "react-hot-toast";
+
 import editIcon from "../../../assets/svg/edit.svg";
 
 function ProjectLinks(props) {
+  const { updateProjectLinks } = useContext(AppContext);
   const [projectId, setProjectId] = useState(null);
-  const [links, setLinks] = useState({});
+  const [links, setLinks] = useState([]);
 
   useEffect(() => {
     setProjectId(props.projectId);
+    setLinks(props.projectLinks || []);
+    console.log("ProjectLinks props", props);
   }, [props]);
 
-  const updateLink = (id, param, e) => {
-    setLinks((prevLinks) => ({
-      ...prevLinks,
-      [id]: {
-        ...prevLinks[id],
-        [param]: e.target.value,
-      },
-    }));
+  const updateLink = (index, param, value) => {
+    const updatedLinks = [...links];
+    updatedLinks[index] = {
+      ...updatedLinks[index],
+      [param]: value,
+    };
+    setLinks(updatedLinks);
   };
 
   const addNewLink = () => {
-    let nextId =
-      Object.keys(links).length === 0 ? 1 : Math.max(...Object.keys(links)) + 1;
-    setLinks((prevLinks) => ({
-      ...prevLinks,
-      [nextId]: {
-        id: nextId,
-        label: "",
-        url: "",
-      },
-    }));
+    setLinks([...links, { label: "", url: "" }]);
   };
 
-  const removeLink = (id) => {
-    setLinks((prevLinks) => {
-      const updatedLinks = { ...prevLinks };
-      delete updatedLinks[id];
-      return updatedLinks;
-    });
+  const removeLink = (index) => {
+    const updatedLinks = links.filter((_, i) => i !== index);
+    setLinks(updatedLinks);
   };
 
   return (
@@ -60,13 +53,16 @@ function ProjectLinks(props) {
       <div className="divider"></div>
       {/* body */}
       <div className="flex flex-col pb-6 space-y-4">
-        {Object.values(links).length === 0 ? (
+        {links.length === 0 ? (
           <p className="text-2xl font-bold text-black/50">No Links</p>
         ) : (
           <div className="grid items-center grid-cols-1 gap-y-8 w-fit">
-            {Object.values(links).map((linkElement) => {
+            {links.map((linkElement, index) => {
               return (
-                <div key={linkElement.id} className="flex flex-row items-center space-x-12">
+                <div
+                  key={index}
+                  className="flex flex-row items-center space-x-12"
+                >
                   {/* link label */}
                   <div className="flex flex-row items-end space-x-1">
                     <img src={editIcon} alt="" className="w-6 h-6"></img>
@@ -77,7 +73,9 @@ function ProjectLinks(props) {
                         placeholder="Link Label"
                         className="py-2 border-b-2 border-black/50 focus:outline-none"
                         value={linkElement.label}
-                        onChange={(e) => updateLink(linkElement.id, "label", e)}
+                        onChange={(e) =>
+                          updateLink(index, "label", e.target.value)
+                        }
                       />
                     </div>
                   </div>
@@ -92,7 +90,9 @@ function ProjectLinks(props) {
                         placeholder="Link URL"
                         className="py-2 border-b-2 border-black/50 focus:outline-none"
                         value={linkElement.url}
-                        onChange={(e) => updateLink(linkElement.id, "url", e)}
+                        onChange={(e) =>
+                          updateLink(index, "url", e.target.value)
+                        }
                       />
                     </div>
                   </div>
@@ -100,7 +100,7 @@ function ProjectLinks(props) {
                   {/* remove button */}
                   <button
                     className="text-white capitalize border-0 w-fit btn bg-red focus:outline-none"
-                    onClick={() => removeLink(linkElement.id)}
+                    onClick={() => removeLink(index)}
                   >
                     Remove
                   </button>
@@ -109,6 +109,23 @@ function ProjectLinks(props) {
             })}
           </div>
         )}
+      </div>
+      {/* save button */}
+      <div className="flex flex-col w-full pt-10">
+        <button
+          className="self-center text-lg text-white capitalize border-2 w-fit btn bg-gGreen border-gGreen"
+          onClick={async () => {
+            console.log(links);
+            const updateResult = await updateProjectLinks(projectId, links);
+            if (updateResult === true) {
+              toast.success("Project Links updated successfully.");
+            } else {
+              toast.error("Failed to update links. Try again.");
+            }
+          }}
+        >
+          Save
+        </button>
       </div>
     </div>
   );

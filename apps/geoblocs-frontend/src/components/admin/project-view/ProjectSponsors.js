@@ -1,53 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AppContext } from "../../../AppContext";
+import { toast } from "react-hot-toast";
+
 import editIcon from "../../../assets/svg/edit.svg";
 import uploadIcon from "../../../assets/svg/file-upload.svg";
 
 function ProjectSponsors(props) {
+  const { updateProjectSponsors, uploadFilesToS3, deleteFileFromS3 } =
+    useContext(AppContext);
   const [projectId, setProjectId] = useState(null);
-  const [sponsors, setSponsors] = useState({});
+  const [sponsors, setSponsors] = useState([]);
 
   useEffect(() => {
     setProjectId(props.projectId);
+    setSponsors(props.projectSponsors || []);
+    console.log("ProjectSponsors props", props);
   }, [props]);
 
-  const updateSponsor = (id, param, e) => {
-    setSponsors((prevSponsors) => ({
-      ...prevSponsors,
-      [id]: {
-        ...prevSponsors[id],
-        [param]: e.target.value,
-      },
-    }));
+  const updateSponsor = (index, param, value) => {
+    const updatedSponsors = [...sponsors];
+    updatedSponsors[index] = {
+      ...updatedSponsors[index],
+      [param]: value,
+    };
+    setSponsors(updatedSponsors);
   };
 
   const addNewSponsor = () => {
-    let nextId =
-      Object.keys(sponsors).length === 0
-        ? 1
-        : Math.max(...Object.keys(sponsors)) + 1;
-    setSponsors((prevSponsors) => ({
-      ...prevSponsors,
-      [nextId]: {
-        id: nextId,
-        label: "",
-        url: "",
-      },
-    }));
+    setSponsors([...sponsors, { label: "", link: "", image: "" }]);
   };
 
-  const removeSponsor = (id) => {
-    setSponsors((prevSponsors) => {
-      const updatedSponsors = { ...prevSponsors };
-      delete updatedSponsors[id];
-      return updatedSponsors;
-    });
+  const removeSponsor = (index) => {
+    const updatedSponsors = sponsors.filter((_, i) => i !== index);
+    setSponsors(updatedSponsors);
   };
 
   return (
     <div className="flex flex-col w-full space-y-4 overflow-auto">
       {/* title container */}
       <div className="flex flex-row items-center justify-between w-full">
-        {/* title  */}
+        {/* title */}
         <p className="text-4xl font-bold text-center">Project Sponsors</p>
 
         {/* title button containers */}
@@ -63,19 +55,19 @@ function ProjectSponsors(props) {
       <div className="divider"></div>
       {/* body */}
       <div className="flex flex-col pb-6 space-y-4">
-        {Object.values(sponsors).length === 0 ? (
+        {sponsors.length === 0 ? (
           <p className="text-2xl font-bold text-black/50">No Sponsors</p>
         ) : (
           <div className="grid items-center grid-cols-1 gap-y-8 w-fit">
-            {Object.values(sponsors).map((sponsorElement) => {
+            {sponsors.map((sponsorElement, index) => {
               return (
                 <div
-                  key={sponsorElement.id}
+                  key={index}
                   className="flex flex-row items-center space-x-12"
                 >
-                  {/* link label */}
+                  {/* sponsor label */}
                   <div className="flex flex-row items-end space-x-1">
-                    <img src={editIcon} alt="" className="w-6 h-6"></img>
+                    <img src={editIcon} alt="" className="w-6 h-6" />
                     <div className="flex flex-col space-y-">
                       <p className="text-xs font-light">Sponsor Label</p>
                       <input
@@ -83,31 +75,78 @@ function ProjectSponsors(props) {
                         placeholder="Sponsor Label"
                         className="py-2 border-b-2 border-black/50 focus:outline-none"
                         value={sponsorElement.label}
-                        onChange={(e) => updateLink(sponsorElement.id, "label", e)}
+                        onChange={(e) =>
+                          updateSponsor(index, "label", e.target.value)
+                        }
                       />
                     </div>
                   </div>
 
-                  {/* link url */}
-                  <div className="flex flex-row items-end space-x-2">
-                    <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
-                      Upload Image
+                  {/* link */}
+                  <div className="flex flex-row items-end space-x-1">
+                    <img src={editIcon} alt="" className="w-6 h-6" />
+                    <div className="flex flex-col space-y-">
+                      <p className="text-xs font-light">Link</p>
                       <input
-                        type="file"
-                        className="hidden"
-                        onChange={(event) => {
-                          // Handle the file upload here if needed
-                          const selectedFile = event.target.files[0];
-                          console.log(selectedFile);
-                        }}
+                        type="text"
+                        placeholder="Link"
+                        className="py-2 border-b-2 border-black/50 focus:outline-none"
+                        value={sponsorElement.link}
+                        onChange={(e) =>
+                          updateSponsor(index, "link", e.target.value)
+                        }
                       />
-                    </label>
+                    </div>
                   </div>
+
+                  <p className="text-center">
+                    {sponsorElement.link !== ""
+                      ? "File already uploaded. Re-upload to replace."
+                      : null}
+                  </p>
+
+                  {/* image */}
+                  <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
+                    Upload Image
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={async (event) => {
+                        const tempImageArray = [];
+                        tempImageArray.push(event.target.files[0]);
+                        const fileUrls = await uploadFilesToS3(
+                          tempImageArray,
+                          projectId,
+                          "sponsors"
+                        );
+                        if (fileUrls.length > 0) {
+                          toast.success("Image uploaded successfully.");
+                          updateSponsor(index, "image", fileUrls[0]);
+                        } else {
+                          toast.error("Failed to upload image. Try again.");
+                        }
+                      }}
+                    />
+                  </label>
 
                   {/* remove button */}
                   <button
                     className="text-white capitalize border-0 w-fit btn bg-red focus:outline-none"
-                    onClick={() => removeSponsor(sponsorElement.id)}
+                    onClick={async () => {
+                      if (sponsorElement.image !== "") {
+                        const deleteResult = await deleteFileFromS3(
+                          sponsorElement.image
+                        );
+                        if (deleteResult === true) {
+                          toast.success("Image deleted successfully.");
+                          removeSponsor(index);
+                        } else {
+                          toast.error("Failed to delete image. Try again.");
+                        }
+                      } else {
+                        removeSponsor(index);
+                      }
+                    }}
                   >
                     Remove
                   </button>
@@ -116,6 +155,26 @@ function ProjectSponsors(props) {
             })}
           </div>
         )}
+      </div>
+      {/* save button */}
+      <div className="flex flex-col w-full pt-10">
+        <button
+          className="self-center text-lg text-white capitalize border-2 w-fit btn bg-gGreen border-gGreen"
+          onClick={async () => {
+            console.log(sponsors);
+            const updateResult = await updateProjectSponsors(
+              projectId,
+              sponsors
+            );
+            if (updateResult === true) {
+              toast.success("Project Sponsors updated successfully.");
+            } else {
+              toast.error("Failed to update sponsors. Try again.");
+            }
+          }}
+        >
+          Save
+        </button>
       </div>
     </div>
   );
