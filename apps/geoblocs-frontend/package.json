@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@polkadot/wasm-crypto": "^7.2.2",
+    "@unique-nft/accounts": "^0.3.6",
+    "@unique-nft/sdk": "^0.2.19",
     "aws-sdk": "^2.1439.0",
     "axios": "^1.4.0",
     "framer-motion": "^10.15.0",

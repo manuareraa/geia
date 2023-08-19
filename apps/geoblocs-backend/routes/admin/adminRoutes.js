@@ -326,4 +326,140 @@ router.post("/update-conditions", authenticate, async (req, res) => {
   }
 });
 
+router.post("/update-geoblocs-data", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-geoblocs-data");
+  try {
+    if (req.role === "admin") {
+      const { projectId, geoblocsData } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            geoblocsData: geoblocsData,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while updating geoblocsData: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.get("/get-project-by-id", authenticate, async (req, res) => {
+  console.log("GET /api/admin/get-project-by-id");
+  try {
+    if (req.role === "admin") {
+      const { projectId } = req.query; // Use req.query to get parameters from GET request
+      console.log("ProjectID", projectId);
+      const projectData = await db
+        .collection("projects")
+        .findOne({ projectId: projectId });
+
+      if (!projectData) {
+        res.status(404).json({ status: "fail", message: "Project not found" });
+      } else {
+        res.status(200).json({ status: "success", project: projectData });
+      }
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while fetching project data: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/add-new-nft-collection", authenticate, async (req, res) => {
+  console.log("POST /api/admin/add-new-nft-collection");
+  try {
+    if (req.role === "admin") {
+      const { projectId, collectionData, tokenData } = req.body;
+      await db.collection("nftCollections").insertOne({
+        projectId: projectId,
+        collectionData: collectionData,
+        tokenData: tokenData,
+      });
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while adding new collection: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-nft-collection", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-nft-collection");
+  try {
+    if (req.role === "admin") {
+      const { projectId, tokenData } = req.body;
+      await db.collection("nftCollections").updateOne(
+        { projectId: projectId },
+        {
+          $push: {
+            tokenData: tokenData,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while adding new collection: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-token-id", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-token-id");
+  try {
+    if (req.role === "admin") {
+      const { projectId, tokenId } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $push: {
+            "geoblocsData.tokenId": tokenId,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while adding new collection: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-token-price", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-token-price");
+  try {
+    if (req.role === "admin") {
+      const { projectId, price } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            "geoblocsData.pricePerGeobloc": price,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while adding new collection: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
 module.exports = router;

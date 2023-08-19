@@ -388,10 +388,7 @@ function ProjectView(props) {
                     projectSeasons={appData.projectInView.seasons}
                   />
                 ) : subWindow === "geoblocs" ? (
-                  <ManageGeoblocs
-                    projectId={projectId}
-                    projectMetadata={"projectMetadata"}
-                  />
+                  <ManageGeoblocs projectId={projectId} />
                 ) : null}
 
                 <div className="flex flex-row justify-center w-full space-x-8 modal-action">

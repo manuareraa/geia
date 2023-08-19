@@ -11,12 +11,7 @@ import ButtonsContainer from "../../components/admin/ButtonsContainer";
 import { toast } from "react-hot-toast";
 
 function Dashboard(props) {
-  const {
-    appData,
-    getUserDataByToken,
-    getTokenFromLocalStorage,
-    checkForAuthentication,
-  } = useContext(AppContext);
+  const { checkForAuthentication } = useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {

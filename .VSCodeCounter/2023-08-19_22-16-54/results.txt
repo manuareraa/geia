@@ -1,0 +1,125 @@
+Date : 2023-08-19 22:16:54
+Directory : /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src
+Total : 85 files,  7069 codes, 85 comments, 549 blanks, all 7703 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |         42 |      6,737 |         76 |        487 |      7,300 |
+| XML        |         40 |        206 |          0 |         39 |        245 |
+| CSS        |          2 |        109 |          9 |         22 |        140 |
+| JSON       |          1 |         17 |          0 |          1 |         18 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                          | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                             |         85 |      7,069 |         85 |        549 |      7,703 |
+| . (Files)                                                                                                                     |          7 |      1,607 |         37 |        103 |      1,747 |
+| assets                                                                                                                        |         40 |        206 |          0 |         39 |        245 |
+| assets/svg                                                                                                                    |         40 |        206 |          0 |         39 |        245 |
+| components                                                                                                                    |         21 |      2,430 |         33 |        213 |      2,676 |
+| components (Files)                                                                                                            |          5 |        191 |          1 |         22 |        214 |
+| components/admin                                                                                                              |         13 |      1,897 |         32 |        146 |      2,075 |
+| components/admin (Files)                                                                                                      |          3 |        289 |          9 |         22 |        320 |
+| components/admin/project-view                                                                                                 |         10 |      1,608 |         23 |        124 |      1,755 |
+| components/stakeholders                                                                                                       |          3 |        342 |          0 |         45 |        387 |
+| pages                                                                                                                         |         17 |      2,826 |         15 |        194 |      3,035 |
+| pages/admin-panel                                                                                                             |          7 |        994 |          8 |         77 |      1,079 |
+| pages/landing-site                                                                                                            |          6 |        758 |          5 |         62 |        825 |
+| pages/platform                                                                                                                |          4 |      1,074 |          2 |         55 |      1,131 |
++-------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                                      | language   | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/App.css                                             | CSS        |         88 |          5 |         16 |        109 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/App.js                                              | JavaScript |        215 |          1 |          7 |        223 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/AppContext.js                                       | JavaScript |      1,248 |         27 |         68 |      1,343 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/Geoblocs.js                                         | JavaScript |          5 |          0 |          3 |          8 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/accountDets.json                                    | JSON       |         17 |          0 |          1 |         18 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/add.svg                                  | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/admin-logo.svg                           | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/back-circle.svg                          | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/baseline.svg                             | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/buyers.svg                               | XML        |          7 |          0 |          1 |          8 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/community-centric.svg                    | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/decentralization.svg                     | XML        |          6 |          0 |          1 |          7 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/document.svg                             | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/edit.svg                                 | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/efficiency-technology.svg                | XML        |          5 |          0 |          1 |          6 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/environment-icon.svg                     | XML        |          9 |          0 |          1 |         10 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/fb.svg                                   | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/file-upload.svg                          | XML        |          5 |          0 |          1 |          6 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/flow-dots.svg                            | XML        |         21 |          0 |          1 |         22 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/health.svg                               | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/insta.svg                                | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/linkedin.svg                             | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/loading.svg                              | XML        |         10 |          0 |          0 |         10 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/location.svg                             | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/management.svg                           | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/maximize.svg                             | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/monitor.svg                              | XML        |          5 |          0 |          1 |          6 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/monitoring-icon.svg                      | XML        |          9 |          0 |          1 |         10 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/paid-restore.svg                         | XML        |          6 |          0 |          1 |          7 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/purchase-geoblocs.svg                    | XML        |          5 |          0 |          1 |          6 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/radical-transparency.svg                 | XML        |          6 |          0 |          1 |          7 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/register-project.svg                     | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/register.svg                             | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/right-arrow-b.svg                        | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/right-arrow-g.svg                        | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/right-arrow.svg                          | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/scientists.svg                           | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/season-icon.svg                          | XML        |          9 |          0 |          1 |         10 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/sell.svg                                 | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/share.svg                                | XML        |          3 |          0 |          1 |          4 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/shield.svg                               | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/sponsors-icon.svg                        | XML        |          9 |          0 |          1 |         10 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/stewards.svg                             | XML        |          5 |          0 |          1 |          6 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/streamlined-process.svg                  | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/assets/svg/wallet.svg                               | XML        |          4 |          0 |          1 |          5 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/Footer.js                                | JavaScript |         38 |          0 |          5 |         43 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/Loading.js                               | JavaScript |         16 |          0 |          4 |         20 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/Navbar.js                                | JavaScript |        111 |          1 |          6 |        118 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/Tester.js                                | JavaScript |          9 |          0 |          2 |         11 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/Transition.js                            | JavaScript |         17 |          0 |          5 |         22 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/ButtonsContainer.js                | JavaScript |         38 |          0 |          3 |         41 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/GeoblocsChart.js                   | JavaScript |        137 |          5 |         12 |        154 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/StatusChart.js                     | JavaScript |        114 |          4 |          7 |        125 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/project-view/ManageGeoblocs.js     | JavaScript |        293 |         11 |         14 |        318 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/project-view/ProjectConditions.js  | JavaScript |        128 |          0 |         11 |        139 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/project-view/ProjectDocuments.js   | JavaScript |        154 |          0 |         13 |        167 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/project-view/ProjectEnvironment.js | JavaScript |        107 |          0 |         11 |        118 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/project-view/ProjectGallery.js     | JavaScript |        107 |         12 |         10 |        129 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/project-view/ProjectLinks.js       | JavaScript |        123 |          0 |         12 |        135 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/project-view/ProjectMetadata.js    | JavaScript |        219 |          0 |         13 |        232 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/project-view/ProjectSeasons.js     | JavaScript |        167 |          0 |         14 |        181 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/project-view/ProjectSponsors.js    | JavaScript |        170 |          0 |         14 |        184 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/admin/project-view/ProjectStory.js       | JavaScript |        140 |          0 |         12 |        152 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/stakeholders/Buyers.js                   | JavaScript |         98 |          0 |         10 |        108 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/stakeholders/LandStewards.js             | JavaScript |        208 |          0 |         28 |        236 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/components/stakeholders/Scientists.js               | JavaScript |         36 |          0 |          7 |         43 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/index.css                                           | CSS        |         21 |          4 |          6 |         31 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/index.js                                            | JavaScript |         13 |          0 |          2 |         15 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/admin-panel/ApplicationView.js                | JavaScript |        197 |          0 |          9 |        206 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/admin-panel/Applications.js                   | JavaScript |        121 |          1 |         14 |        136 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/admin-panel/Dashboard.js                      | JavaScript |         37 |          0 |          8 |         45 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/admin-panel/Login.js                          | JavaScript |         66 |          0 |          7 |         73 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/admin-panel/ProjectView.js                    | JavaScript |        395 |          6 |         20 |        421 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/admin-panel/Projects.js                       | JavaScript |        140 |          1 |         12 |        153 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/admin-panel/Stats.js                          | JavaScript |         38 |          0 |          7 |         45 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/landing-site/CaseStudies.js                   | JavaScript |        192 |          1 |          8 |        201 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/landing-site/Contact.js                       | JavaScript |         33 |          0 |          6 |         39 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/landing-site/Home.js                          | JavaScript |        196 |          0 |         14 |        210 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/landing-site/ProjectStories.js                | JavaScript |        201 |          2 |         11 |        214 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/landing-site/Stakeholders.js                  | JavaScript |         78 |          1 |          9 |         88 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/landing-site/Team.js                          | JavaScript |         58 |          1 |         14 |         73 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/platform/ExploreProjects.js                   | JavaScript |        201 |          2 |         10 |        213 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/platform/NewApplication.js                    | JavaScript |        240 |          0 |         18 |        258 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/platform/ProjectView.js                       | JavaScript |        566 |          0 |         20 |        586 |
+| /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages/platform/UserLogin.js                         | JavaScript |         67 |          0 |          7 |         74 |
+| Total                                                                                                                         |            |      7,069 |         85 |        549 |      7,703 |
++-------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

@@ -5,6 +5,11 @@ import { useNavigate } from "react-router-dom";
 import AWS from "aws-sdk";
 import { v4 as uuidv4 } from "uuid";
 
+import { generateAccount, SignatureType } from "@unique-nft/accounts";
+import { waitReady } from "@polkadot/wasm-crypto";
+import { KeyringProvider } from "@unique-nft/accounts/keyring";
+import Sdk from "@unique-nft/sdk";
+
 import Loading from "./components/Loading";
 import Navbar from "./components/Navbar";
 
@@ -26,6 +31,9 @@ export const AppProvider = ({ children }) => {
     applications: [],
     projects: [],
     projectInView: {},
+    blockchainConnStatus: false,
+    sdk: null,
+    userBlockchainData: null,
   });
 
   const backendUrl = "http://localhost:3010";
@@ -378,6 +386,11 @@ export const AppProvider = ({ children }) => {
               purchased: 0,
               totalSupply: 0,
               pricePerGeobloc: 0,
+              collectionId: 0,
+              tokenName: "",
+              description: "",
+              tickerSymbol: "",
+              tokenId: [],
             },
             sponsors: {},
             seasons: {},
@@ -663,7 +676,16 @@ export const AppProvider = ({ children }) => {
         );
         if (response.data.status === "success") {
           // toast.success("Metadata updated successfully");
-          return true;
+          const updatedProjectData = await getProjectById(projectId);
+          if (updatedProjectData.status === "success") {
+            setAppData((prevState) => {
+              return {
+                ...prevState,
+                projectInView: updatedProjectData.project,
+              };
+            });
+            return true;
+          }
         } else {
           toast.error("Error [AC116]: Metadata update error");
           return false;
@@ -843,6 +865,460 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const updateProjectGeoblocsData = async (projectId, geoblocsData) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-geoblocs-data",
+          {
+            projectId: projectId,
+            geoblocsData: geoblocsData,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("geoblocs data updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC118]: geoblocs data update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC119]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating geoblocs data: ", error);
+      return false;
+    }
+  };
+
+  const getProjectById = async (projectId) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.get(
+          backendUrl + "/api/admin/get-project-by-id",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            params: {
+              projectId: projectId,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("project retrieved successfully");
+          return response.data;
+        } else {
+          toast.error("Error [AC118]: project data fetch error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC119]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while fetching project data: ", error);
+      return false;
+    }
+  };
+
+  const addNewCollectionInDb = async (projectId, collectionData) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/add-new-nft-collection",
+          {
+            projectId: projectId,
+            collectionData: collectionData,
+            tokenData: [],
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("updated new collection successfully");
+          return true;
+        } else {
+          toast.error("Error [AC118]: new collection creation error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC119]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log(
+        "Error occurred while creating new collection in DB: ",
+        error
+      );
+      return false;
+    }
+  };
+
+  const updateProjectsArrayInState = (projectId, projectData) => {
+    // find a project in the appData.projects array and update it accordingly
+    const projectIndex = appData.projects.findIndex(
+      (project) => project.projectId === projectId
+    );
+    if (projectIndex !== -1) {
+      let tempArray = appData.projects;
+      tempArray[projectIndex] = projectData;
+      setAppData((prevState) => {
+        return {
+          ...prevState,
+          projects: tempArray,
+        };
+      });
+    } else {
+      console.log("Project not found");
+    }
+    return true;
+  };
+
+  const updateCollectionInDb = async (projectId, tokenData) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-nft-collection",
+          {
+            projectId: projectId,
+            tokenData: tokenData,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("updated  collection successfully");
+          return response.data;
+        } else {
+          toast.error("Error [AC118]: collection update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC119]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating collection in DB: ", error);
+      return false;
+    }
+  };
+
+  const updateTokenIdInProject = async (projectId, tokenId) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-token-id",
+          {
+            projectId: projectId,
+            tokenId: tokenId,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("token id updated successfully");
+          return response.data;
+        } else {
+          toast.error("Error [AC118]: token id update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC119]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating token id: ", error);
+      return false;
+    }
+  };
+
+  const updateTokenPrice = async (projectId, price) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-token-price",
+          {
+            projectId: projectId,
+            price: price,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("token price updated successfully");
+          const updatedProjectData = await getProjectById(projectId);
+          if (updatedProjectData.status === "success") {
+            setAppData((prevState) => {
+              return {
+                ...prevState,
+                projectInView: updatedProjectData.project,
+              };
+            });
+            return true;
+          } else {
+            toast.error("Error [AC118]: project data fetch error");
+            return false;
+          }
+        } else {
+          toast.error("Error [AC118]: token price update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC119]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating token price: ", error);
+      return false;
+    }
+  };
+
+  // ==============================
+  // Geoblocs Management
+  // ==============================
+
+  const createNewUniqueNetworkAcc = async (name) => {
+    try {
+      await waitReady(); // Wait for the WASM interface to initialize
+
+      const account = await generateAccount({
+        pairType: SignatureType.Sr25519,
+        meta: {
+          name: name,
+        },
+      });
+
+      return account;
+    } catch (error) {
+      console.error("Error generating account:", error);
+      return false;
+    }
+  };
+
+  const initiateBlockchainConnection = async (seed) => {
+    try {
+      const KROptions = {
+        type: "sr25519",
+      };
+      const provider = new KeyringProvider(KROptions);
+      await provider.init();
+
+      const signer = provider.addSeed(appData.userProfile.blockchainAcc.seed);
+
+      const options = {
+        baseUrl: "https://rest.unique.network/opal/v1",
+        signer: signer,
+      };
+      const sdk = new Sdk(options);
+      setAppData((prevState) => {
+        return { ...prevState, sdk: sdk, blockchainConnStatus: true };
+      });
+      console.log("SDK: ", sdk);
+      return sdk;
+    } catch (error) {
+      console.error("Error initiating blockchain connection:", error);
+      toast.error("Error initiating blockchain connection. Try again later.");
+      setAppData((prevState) => {
+        return { ...prevState, blockchainConnStatus: false };
+      });
+      return false;
+    }
+  };
+
+  const getBalance = async (sdk) => {
+    const balance = await sdk.balance.get({
+      address: appData.userProfile.blockchainAcc.keyfile.address,
+    });
+    setAppData((prevState) => {
+      return {
+        ...prevState,
+        userBlockchainData: {
+          ...prevState.userBlockchainData,
+          balance: balance,
+        },
+      };
+    });
+    console.log("Balance: ", balance);
+    return balance;
+  };
+
+  const connectToBlockchainAndGetData = async () => {
+    const sdk = await initiateBlockchainConnection();
+    if (sdk !== false) {
+      getBalance(sdk);
+    }
+  };
+
+  const createNewNftCollection = async (
+    name,
+    description,
+    tokenPrefix,
+    projectId,
+    geoblocsData,
+    totalSupply
+  ) => {
+    console.log(
+      "Creating new collection: ",
+      name,
+      description,
+      tokenPrefix,
+      projectId,
+      geoblocsData,
+      totalSupply
+    );
+    try {
+      const result =
+        await appData.sdk.refungible.createCollection.submitWaitResult({
+          address: appData.userProfile.blockchainAcc.keyfile.address,
+          name: name,
+          description: description,
+          tokenPrefix: tokenPrefix,
+        });
+      const { collectionId, amount } = result.parsed;
+      console.log("Collection Created: ", result);
+      console.log("Collection ID: ", collectionId);
+      toast.success("NFT Collection created successfully");
+      const addResult = await addNewCollectionInDb(projectId, result);
+      if (addResult === true) {
+        console.log("New Collection data updated in DB successfully");
+      } else {
+        console.log("Failed to update new collection data in the backend");
+        return false;
+      }
+      geoblocsData.collectionId = collectionId;
+      geoblocsData.tokenName = name;
+      geoblocsData.description = description;
+      geoblocsData.tickerSymbol = tokenPrefix;
+      geoblocsData.totalSupply = totalSupply;
+      const updateResult = await updateProjectGeoblocsData(
+        projectId,
+        geoblocsData
+      );
+      if (updateResult === true) {
+        const newNftResult = await createNewNFT(
+          projectId,
+          collectionId,
+          totalSupply
+        );
+        if (newNftResult === true) {
+          const projectData = await getProjectById(projectId);
+          if (projectData.status === "success") {
+            setAppData((prevState) => {
+              return {
+                ...prevState,
+                projectInView: projectData.project,
+              };
+            });
+            updateProjectsArrayInState(projectId, projectData.project);
+          } else {
+            console.log("Failed to fetch project data from backend");
+            return false;
+          }
+        } else {
+          console.log("Failed to create new NFT");
+          return false;
+        }
+      } else {
+        console.log("Failed to update project data in the backend");
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error("Error creating collection:", error);
+      toast.error("Error creating collection. Try again later.");
+      return false;
+    }
+  };
+
+  const createNewNFT = async (projectId, collectionId, amount) => {
+    const result = await appData.sdk.refungible.createToken.submitWaitResult({
+      address: appData.userProfile.blockchainAcc.keyfile.address,
+      collectionId: collectionId,
+      amount: amount,
+    });
+    const { tokenId } = result.parsed;
+    console.log("NFT Created: ", result);
+    console.log("Token ID: ", tokenId);
+    const updateResult = await updateCollectionInDb(projectId, result);
+    if (updateResult.status === "success") {
+      const tokenProjectUpdateResult = await updateTokenIdInProject(
+        projectId,
+        tokenId
+      );
+      if (tokenProjectUpdateResult.status === "success") {
+        return true;
+      } else {
+        console.log("Failed to update token data in project");
+        return false;
+      }
+    } else {
+      console.log("Error updating the collection with token data: ");
+      return false;
+    }
+  };
+
+  const getAllProjectsForUsers = async () => {
+    try {
+      const response = await axios.get(
+        backendUrl + "/api/user/get-all-projects"
+      );
+      if (response.data.status === "success") {
+        setAppData((prevState) => {
+          return {
+            ...prevState,
+            projects: response.data.projects,
+          };
+        });
+        console.log("Successfully retrieved", response.data.projects);
+        return true;
+      } else {
+        console.log("Failed to get all projects. Please reload.");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while fetching projects: ", error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    if (appData.userProfile && appData.userProfile.blockchainAcc) {
+      if (Object.keys(appData.userProfile.blockchainAcc).length > 0) {
+        connectToBlockchainAndGetData();
+      } else {
+        toast.error("Could not fetch blockchain data");
+      }
+    } else {
+      console.error("Could not fetch data from blockchain");
+    }
+    getAllProjectsForUsers();
+  }, [appData.userProfile]);
+
   return (
     <AppContext.Provider
       value={{
@@ -872,19 +1348,13 @@ export const AppProvider = ({ children }) => {
         updateProjectSponsors,
         updateProjectSeasons,
         updateProjectConditions,
+        updateTokenPrice,
+        // blockchain part
+        createNewUniqueNetworkAcc,
+        createNewNftCollection,
       }}
     >
-      <Toaster
-      // containerStyle={{
-      //   zIndex: 9999, // For the container
-      // }}
-      // toastOptions={{
-      //   style: {
-      //     zIndex: 9999, // For toasts
-      //   },
-      // }}
-      // className="alert"
-      />
+      <Toaster />
       <Navbar />
       <div className="">
         {loading.status === "true" ? (

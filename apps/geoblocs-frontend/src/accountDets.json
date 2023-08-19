@@ -1,0 +1,17 @@
+{
+  "mnemonic": "tilt drum fire jungle garage ship cousin mean concert supply start trigger",
+  "seed": "0x7c9812e9eb6aab08f940d4e128bd9d1351e65147de61470f4bfbbd8fe7932052",
+  "publicKey": "0xb01ce8dd61b5c20e0d2b18b40ba734e6b7211fb335a8a8244833e20d68443ad4",
+  "keyfile": {
+    "encoded": "MFMCAQEwBQYDK2VwBCIEIIh2G3+sxJz37nCXkPLB7NZF3HUWeS9g8lRtD86NCUdxim22QiYhEPhFEjdRBCuQcQ0OKi8oGjx1ojhyH1t+K3ihIwMhAPCGn0gj7+c8dz4Pl1CY3NJcJF5BUWs9d+MiwXFdgwgS",
+    "encoding": {
+      "content": ["pkcs8", "sr25519"],
+      "type": ["none"],
+      "version": "3"
+    },
+    "address": "5HW5Li9YDaG9v1yQZ83DbQWT92brzkVjBunCZpZ9zynnUaxB",
+    "meta": {
+      "name": "geoblocsTester1"
+    }
+  }
+}

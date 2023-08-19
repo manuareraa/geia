@@ -42,4 +42,15 @@ router.get("/user-data-by-token", authenticate, async (req, res, next) => {
   }
 });
 
+router.get("/get-all-projects", async (req, res) => {
+  console.log("GET /user/get-all-projects");
+  try {
+    const projects = await db.collection("projects").find().toArray();
+    res.status(200).json({ status: "success", projects: projects });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
 module.exports = router;
