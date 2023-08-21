@@ -30,17 +30,14 @@ function AllProjects(props) {
                 : project.metadata.projectName}
             </td>
             <td>
-              {new Date(project.createdOn).toLocaleDateString(
-                "en-US",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                }
-              )}
+              {new Date(project.createdOn).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
             </td>
             <td>
-              {project.metadata.startedFrom === ""
+              {/* {project.metadata.startedFrom === ""
                 ? "--"
                 : new Date(project.metadata.startedFrom).toLocaleDateString(
                     "en-US",
@@ -49,7 +46,8 @@ function AllProjects(props) {
                       month: "long",
                       day: "numeric",
                     }
-                  )}
+                  )} */}
+              {project.metadata.startedFrom}
             </td>
             <td>{project.metadata.location}</td>
             <td>

@@ -14,7 +14,17 @@ function ProjectStory(props) {
   useEffect(() => {
     setProjectId(props.projectId);
     setStoryBody(props.storyBody || []);
+    console.log("storyBody", storyBody, storyBody.length, props.storyBody);
   }, [props]);
+
+  useEffect(() => {
+    console.log(
+      "storyBody UE",
+      storyBody,
+      storyBody.length,
+      storyBody.length === 0
+    );
+  }, [storyBody]);
 
   const handleTextChange = (index, content) => {
     const updatedStoryBody = [...storyBody];
@@ -91,10 +101,8 @@ function ProjectStory(props) {
           <textarea
             className="w-full text-5xl font-black focus:outline-none"
             placeholder="Heading"
-            value={storyBody.length === 0 ? "" : storyBody[0].content}
-            onChange={
-              (e) => handleTextChange(0, e.target.value) // Assuming heading is the first block
-            }
+            value={storyBody.length === 0 ? "" : storyBody[0]?.content}
+            onChange={(e) => handleTextChange(0, e.target.value)}
           ></textarea>
         </div>
 

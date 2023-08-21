@@ -142,7 +142,7 @@ function ProjectView(props) {
                 <div className="flex flex-col space-y-2">
                   <p className="text-xl font-bold">Started Date</p>
                   <p className="text-lg font-">
-                    {appData.projectInView.metadata.startedFrom === ""
+                    {/* {appData.projectInView.metadata.startedFrom === ""
                       ? "--"
                       : new Date(
                           appData.projectInView.metadata.startedFrom
@@ -150,7 +150,8 @@ function ProjectView(props) {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
-                        })}
+                        })} */}
+                    {appData.projectInView.metadata.startedFrom}
                   </p>
                 </div>
                 <div className="flex flex-col space-y-2">
@@ -345,7 +346,7 @@ function ProjectView(props) {
                   <ProjectStory
                     projectId={projectId}
                     storyHeading={"storyHeading"}
-                    storyBody={appData.projectInView.story}
+                    storyBody={appData.projectInView.story.body}
                   />
                 ) : subWindow === "gallery" ? (
                   <ProjectGallery
