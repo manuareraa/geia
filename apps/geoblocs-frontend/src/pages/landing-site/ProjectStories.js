@@ -6,9 +6,10 @@ import { AppContext } from "../../AppContext";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import sampleOne from "../../assets/test/sample-one.png";
 import Footer from "../../components/Footer";
+import { toast } from "react-hot-toast";
 
 function ProjectStories(props) {
-  const { appData } = useContext(AppContext);
+  const { appData, setAppData } = useContext(AppContext);
   const navigate = useNavigate();
   const [storyCards, setStoryCards] = useState([]);
   const [recentStoryCards, setRecentStoryCards] = useState([]);
@@ -145,12 +146,6 @@ function ProjectStories(props) {
             </>
           ) : null}
         </div>
-
-        {/* title button */}
-        {/* <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
-          <p>Explore Projects</p>
-          <img src={rightArrow} className="w-4" />
-        </button> */}
       </div>
 
       {/* project stories container */}
@@ -199,18 +194,33 @@ function ProjectStories(props) {
           <div className="flex flex-col w-full space-y-4">
             <div className="flex flex-row items-center justify-between w-full">
               <p className="text-4xl font-bold text-center">Project Story</p>
-              <form method="dialog">
-                <button className="text-lg capitalize border-2 text-gGreen btn border-gGreen bg-white/0 hover:border-2 hover:border-gGreen hover:bg-white">
-                  Close
+              <div className="flex flex-row items-center space-x-8">
+                <button
+                  className="text-lg text-white capitalize border-2 btn border-gGreen bg-gGreen hover:border-2 hover:border-gGreen hover:bg-gGreen"
+                  onClick={() => {
+                    toast.error(
+                      "This feature is not available yet. Please navigate to 'Platform' to view different project"
+                    );
+                    // navigate(
+                    //   "/platform/projects/view/" + storyInView[0]?.projectId
+                    // );
+                  }}
+                >
+                  View Project
                 </button>
-              </form>
+                <form method="dialog">
+                  <button className="text-lg capitalize border-2 bg-gGreen text-gGreen btn border-gGreen bg-white/0 hover:border-2 hover:border-gGreen hover:bg-white">
+                    Close
+                  </button>
+                </form>
+              </div>
             </div>
             <div className="divider"></div>
 
             <div className="flex flex-col w-full space-y-4">
               <div className="flex flex-row items-start space-x-4">
                 <p className="w-full text-5xl font-black focus:outline-none">
-                  {storyInView[0].content}
+                  {storyInView[0]?.content}
                 </p>
               </div>
 
@@ -229,7 +239,7 @@ function ProjectStories(props) {
                         <img
                           src={block.file}
                           alt="Image"
-                          className="object-cover w-32 h-32"
+                          className="object-cover rounded-md w-44 h-44"
                         />
                       ) : null}
                     </div>

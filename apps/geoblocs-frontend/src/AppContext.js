@@ -122,6 +122,26 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const userRegister = async (email, password, role) => {
+    try {
+      const response = await axios.post(backendUrl + "/auth/signup", {
+        email,
+        password,
+        role,
+      });
+
+      if (response.data.status === "success") {
+        toast.success("User registered successfully. Please Login.");
+        navigate("/login");
+      } else {
+        toast.error("Error [AC100]: Error occurred while registering");
+      }
+    } catch (error) {
+      console.log("Error occurred while registering: ", error);
+      toast.error("Invalid Credentials");
+    }
+  };
+
   const getUserDataByUUID = async (uuid, token) => {
     try {
       const response = await axios.get(
@@ -392,18 +412,15 @@ export const AppProvider = ({ children }) => {
               tickerSymbol: "",
               tokenId: [],
             },
-            sponsors: {},
-            seasons: {},
-            monitoring: {},
-            environment: {},
-            story: {
-              heading: "",
-              body: [],
-            },
-            links: {},
-            documents: {},
-            conditions: {},
-            gallery: {},
+            sponsors: [],
+            seasons: [],
+            environment: [],
+            story: [],
+            links: [],
+            documents: [],
+            conditions: [],
+            gallery: [],
+            monitors: [],
           },
           {
             headers: {
@@ -898,6 +915,72 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const updateProjectMonitors = async (projectId, monitors) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-monitors",
+          {
+            projectId: projectId,
+            monitors: monitors,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("Monitors updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC122]: Monitors update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC123]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating Monitors: ", error);
+      return false;
+    }
+  };
+
+  const updateProjectEnvData = async (projectId, envData) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/update-envData",
+          {
+            projectId: projectId,
+            envData: envData,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          // toast.success("envData updated successfully");
+          return true;
+        } else {
+          toast.error("Error [AC122]: envData update error");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC123]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating envData: ", error);
+      return false;
+    }
+  };
+
   const getProjectById = async (projectId) => {
     try {
       const token = getTokenFromLocalStorage();
@@ -1164,6 +1247,41 @@ export const AppProvider = ({ children }) => {
       };
     });
     console.log("Balance: ", balance);
+
+    // ====================
+
+    const args = {
+      address: "5HW5Li9YDaG9v1yQZ83DbQWT92brzkVjBunCZpZ9zynnUaxB",
+      to: "5D2RJGWPjZUh61EYZT8mGAGHApqUwXucNeUbdQeUfnYzywvT",
+      collectionId: 2030,
+      tokenId: 1,
+      amount: 20,
+    };
+
+    // const result = await sdk.refungible.transferToken.submitWaitResult(args);
+
+    // console.log("Tranferred: ", result.parsed);
+
+    // const { amount } = await sdk.refungible.totalPieces({
+    //   collectionId: 2030,
+    //   tokenId: 1,
+    // });
+
+    // console.log("Total Pieces: ", amount);
+
+    const getBalanceArgs = {
+      address: "5HW5Li9YDaG9v1yQZ83DbQWT92brzkVjBunCZpZ9zynnUaxB",
+      collectionId: 2030,
+      tokenId: 1,
+    };
+
+    const { collectionId, tokenId, amount } = await sdk.refungible.getBalance(
+      getBalanceArgs
+    );
+
+    console.log("Balance: ", collectionId, tokenId, amount);
+
+    // ====================
     return balance;
   };
 
@@ -1306,6 +1424,8 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const geoblocsDataAndUpdate = async (projectId) => {};
+
   useEffect(() => {
     if (appData.userProfile && appData.userProfile.blockchainAcc) {
       if (Object.keys(appData.userProfile.blockchainAcc).length > 0) {
@@ -1349,6 +1469,9 @@ export const AppProvider = ({ children }) => {
         updateProjectSeasons,
         updateProjectConditions,
         updateTokenPrice,
+        updateProjectMonitors,
+        updateProjectEnvData,
+        userRegister,
         // blockchain part
         createNewUniqueNetworkAcc,
         createNewNftCollection,

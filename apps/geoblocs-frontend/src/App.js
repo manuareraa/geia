@@ -21,6 +21,7 @@ import ExploreProjects from "./pages/platform/ExploreProjects";
 import UserProjectView from "./pages/platform/ProjectView";
 import NewApplication from "./pages/platform/NewApplication";
 import UserLogin from "./pages/platform/UserLogin";
+import UserRegister from "./pages/platform/UserRegister";
 
 function App() {
   const location = useLocation();
@@ -211,6 +212,17 @@ function App() {
               isExiting={isExiting}
             >
               <UserLogin />
+            </Transition>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <Transition
+              trigger={location.pathname.startsWith("/register")}
+              isExiting={isExiting}
+            >
+              <UserRegister />
             </Transition>
           }
         />

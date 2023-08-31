@@ -1,19 +1,18 @@
 import React, { useState, useContext } from "react";
 import { toast } from "react-hot-toast";
 import { AppContext } from "../../AppContext";
-import { useNavigate } from "react-router-dom";
 
 import AdminLogo from "../../assets/svg/admin-logo.svg";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 
-function UserLogin(props) {
-  const navigate = useNavigate();
-  const { userLogin } = useContext(AppContext);
+function UserRegister(props) {
+  const { userRegister } = useContext(AppContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    confirmPassword: "",
   });
-  
+
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
@@ -25,7 +24,7 @@ function UserLogin(props) {
             Empowering Communities, Restoring Ecosystems
           </p>
           {/* main title */}
-          <p className="font- text-[80px] leading-[95px]">User Login</p>
+          <p className="font- text-[80px] leading-[95px]">User Register</p>
         </div>
 
         {/* right - logo container */}
@@ -53,31 +52,52 @@ function UserLogin(props) {
               setFormData({ ...formData, password: e.target.value })
             }
           ></input>
+          <input
+            type="text"
+            placeholder="Confirm your password"
+            className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+            value={formData.confirmPassword}
+            onChange={(e) =>
+              setFormData({ ...formData, confirmPassword: e.target.value })
+            }
+          ></input>
         </div>
 
         <p>
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <span
             className="hover:underline text-gGreen hover:cursor-pointer underline-offset-2"
             onClick={() => {
-              navigate("/register");
+              navigate("/login");
             }}
           >
-            Register
+            Login
           </span>
         </p>
 
         <button
           className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
           onClick={async () => {
-            if (formData.email === "" || formData.password === "") {
+            if (
+              formData.email === "" ||
+              formData.password === "" ||
+              formData.confirmPassword === ""
+            ) {
               toast.error("Please fill all the fields");
             } else {
-              const result = userLogin(formData.email, formData.password);
+              if (formData.password !== formData.confirmPassword) {
+                toast.error("Passwords do not match");
+              } else {
+                const result = userRegister(
+                  formData.email,
+                  formData.password,
+                  "user"
+                );
+              }
             }
           }}
         >
-          <p>Login</p>
+          <p>Register</p>
           <img src={rightArrow} className="w-4" />
         </button>
       </div>
@@ -85,4 +105,4 @@ function UserLogin(props) {
   );
 }
 
-export default UserLogin;
+export default UserRegister;

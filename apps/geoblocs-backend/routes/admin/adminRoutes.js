@@ -4,6 +4,7 @@ const router = express.Router();
 const nodemailer = require("nodemailer");
 const { mongoose } = require("../../utils/db/db");
 const { authenticate } = require("../../middlewares/auth");
+const axios = require("axios");
 
 const db = mongoose.connection;
 
@@ -280,6 +281,52 @@ router.post("/update-sponsors", authenticate, async (req, res) => {
   }
 });
 
+router.post("/update-monitors", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-monitors");
+  try {
+    if (req.role === "admin") {
+      const { projectId, monitors } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            monitors: monitors,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(200).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while updating monitors: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/update-envData", authenticate, async (req, res) => {
+  console.log("POST /api/admin/update-envData");
+  try {
+    if (req.role === "admin") {
+      const { projectId, envData } = req.body;
+      await db.collection("projects").updateOne(
+        { projectId: projectId },
+        {
+          $set: {
+            environment: envData,
+          },
+        }
+      );
+      res.status(200).json({ status: "success" });
+    } else {
+      res.status(200).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while updating envData: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
 router.post("/update-seasons", authenticate, async (req, res) => {
   console.log("POST /api/admin/delete-seasons");
   try {
@@ -461,5 +508,67 @@ router.post("/update-token-price", authenticate, async (req, res) => {
     res.status(500).json({ status: "fail", message: error.message });
   }
 });
+
+const updatePurchasedGeoblocs = async (projectId, purchasedCount) => {
+  try {
+    await db
+      .collection("projects")
+      .updateOne(
+        { projectId },
+        { $set: { "geoblocsData.purchased": purchasedCount } }
+      );
+    console.log(`Updated purchased count for project ${projectId}`);
+  } catch (error) {
+    console.error(
+      `Error updating purchased count for project ${projectId}:`,
+      error
+    );
+  }
+};
+
+// Periodic API request and data update every 30 seconds
+// setInterval(async () => {
+//   console.log("Started Periodic API request and data update every 30 seconds");
+//   try {
+//     const projects = await db.collection("projects").find().toArray();
+
+//     for (const project of projects) {
+//       const { projectId, geoblocsData } = project;
+
+//       if (parseInt(geoblocsData.collectionId) > 0) {
+//         console.log("Fetching for ", projectId, geoblocsData.collectionId);
+
+//         const response = await axios.get(
+//           "https://rest.unique.network/opal/v1/refungible/tokens/balance",
+//           {
+//             params: {
+//               collectionId: parseInt(geoblocsData.collectionId),
+//               tokenId: 1,
+//               address: "5HW5Li9YDaG9v1yQZ83DbQWT92brzkVjBunCZpZ9zynnUaxB",
+//             },
+//             headers: {
+//               Accept: "application/json",
+//             },
+//           }
+//         );
+
+//         const balance = response.data.amount;
+//         const purchasedCount =
+//           parseInt(geoblocsData.totalSupply) - parseInt(balance);
+
+//         console.log(
+//           "Project ID:",
+//           projectId,
+//           "Balance:",
+//           balance,
+//           purchasedCount
+//         );
+//         await updatePurchasedGeoblocs(projectId, purchasedCount);
+//       }
+//     }
+//   } catch (error) {
+//     console.error("Error in periodic API request and data update:");
+//   }
+// }, 5000);
 
 module.exports = router;

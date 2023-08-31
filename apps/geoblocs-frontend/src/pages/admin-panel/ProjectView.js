@@ -18,6 +18,7 @@ import ProjectEnvironment from "../../components/admin/project-view/ProjectEnvir
 import ProjectSeasons from "../../components/admin/project-view/ProjectSeasons";
 import ManageGeoblocs from "../../components/admin/project-view/ManageGeoblocs";
 import { toast } from "react-hot-toast";
+import ProjectMonitoring from "../../components/admin/project-view/ProjectMonitoring";
 
 function ProjectView(props) {
   const {
@@ -31,9 +32,12 @@ function ProjectView(props) {
   const [liveStatus, setLiveStatus] = useState(false);
   const [subWindow, setSubWindow] = useState("");
 
-  // useEffect(() => {
-  //   console.log(projectId);
-  // }, [appData.projectInView]);
+  useEffect(() => {
+    console.log(projectId);
+    if (Object.keys(appData.projectInView).length === 0) {
+      navigate("/platform/projects");
+    }
+  }, [appData.projectInView]);
 
   useEffect(() => {
     checkForAuthentication("admin");
@@ -325,13 +329,22 @@ function ProjectView(props) {
                   Edit Planting Season
                 </button>
                 <button
-                  className="col-span-3 px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     window.my_modal_1.showModal();
                     setSubWindow("geoblocs");
                   }}
                 >
                   Manage Geoblocs
+                </button>
+                <button
+                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  onClick={() => {
+                    window.my_modal_1.showModal();
+                    setSubWindow("monitors");
+                  }}
+                >
+                  Update Monitors
                 </button>
               </div>
             </div>
@@ -376,7 +389,7 @@ function ProjectView(props) {
                 ) : subWindow === "environment" ? (
                   <ProjectEnvironment
                     projectId={projectId}
-                    projectMetadata={"projectMetadata"}
+                    projectEnvDatas={appData.projectInView.environment}
                   />
                 ) : subWindow === "conditions" ? (
                   <ProjectConditions
@@ -390,6 +403,11 @@ function ProjectView(props) {
                   />
                 ) : subWindow === "geoblocs" ? (
                   <ManageGeoblocs projectId={projectId} />
+                ) : subWindow === "monitors" ? (
+                  <ProjectMonitoring
+                    projectId={projectId}
+                    projectMonitors={appData.projectInView.monitors}
+                  />
                 ) : null}
 
                 <div className="flex flex-row justify-center w-full space-x-8 modal-action">

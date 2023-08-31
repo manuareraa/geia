@@ -3,8 +3,11 @@ import { PieChart, Pie, Sector } from "recharts";
 
 export default function GeoblocsChart(props) {
   const data = [
-    { name: "Available", value: parseInt(props.totalSupply)},
-    { name: "Purchased", value: parseInt(props.purchased)},
+    {
+      name: "Available",
+      value: parseInt(props.totalSupply) - parseInt(props.purchased),
+    },
+    { name: "Purchased", value: parseInt(props.purchased) },
   ];
 
   function formatNumber(number) {
