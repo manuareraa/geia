@@ -42,7 +42,11 @@ function ProjectStories(props) {
             }}
           >
             <img
-              src={sampleOne}
+              src={
+                project.metadata.coverImage
+                  ? project.metadata.coverImage[0]
+                  : sampleOne
+              }
               className="object-cover w-full h-48 rounded-2xl"
             ></img>
             <div className="flex flex-col justify-between h-full">
@@ -82,7 +86,11 @@ function ProjectStories(props) {
             }}
           >
             <img
-              src={sampleOne}
+              src={
+                project.metadata.coverImage
+                  ? project.metadata.coverImage[0]
+                  : sampleOne
+              }
               className="object-cover w-full h-48 rounded-2xl"
             ></img>
             <div className="flex flex-col justify-between h-full">

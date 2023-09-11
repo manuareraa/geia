@@ -34,6 +34,7 @@ export const AppProvider = ({ children }) => {
     blockchainConnStatus: false,
     sdk: null,
     userBlockchainData: null,
+    afterLoginRedirectURL: null,
   });
 
   const backendUrl = "http://localhost:3010";
@@ -124,21 +125,68 @@ export const AppProvider = ({ children }) => {
 
   const userRegister = async (email, password, role) => {
     try {
-      const response = await axios.post(backendUrl + "/auth/signup", {
-        email,
-        password,
-        role,
-      });
+      const blockchainAcc = await createNewUniqueNetworkAcc(email);
 
-      if (response.data.status === "success") {
-        toast.success("User registered successfully. Please Login.");
-        navigate("/login");
+      if (blockchainAcc !== false) {
+        const response = await axios.post(backendUrl + "/auth/signup", {
+          email,
+          password,
+          role,
+          blockchainAcc,
+        });
+        if (response.data.status === "success") {
+          toast.success("User registered successfully. Please Login.");
+          navigate("/login");
+          return true;
+        } else {
+          toast.error("Error [AC100]: Error occurred while registering");
+          return false;
+        }
       } else {
-        toast.error("Error [AC100]: Error occurred while registering");
+        toast.error(
+          "Error [AC100]: Error occurred while creating new account. Please try again."
+        );
+        return false;
       }
     } catch (error) {
       console.log("Error occurred while registering: ", error);
       toast.error("Invalid Credentials");
+      return false;
+    }
+  };
+
+  const userRegisterQuietMode = async (email, password, role) => {
+    try {
+      const blockchainAcc = await createNewUniqueNetworkAcc(email);
+
+      if (blockchainAcc !== false) {
+        const response = await axios.post(backendUrl + "/auth/signup", {
+          email,
+          password,
+          role,
+          blockchainAcc,
+        });
+        if (response.data.status === "success") {
+          return {
+            email,
+            password,
+            role,
+            blockchainAcc,
+          };
+        } else {
+          console.error("Error [AC100]: Error occurred while registering");
+          return false;
+        }
+      } else {
+        console.error(
+          "Error [AC100]: Error occurred while creating new account. Please try again."
+        );
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while registering: ", error);
+      console.error("Invalid Credentials");
+      return false;
     }
   };
 
@@ -168,7 +216,22 @@ export const AppProvider = ({ children }) => {
       if (user.role === "admin") {
         navigate("/admin/dashboard");
       } else if (user.role === "user") {
-        navigate("/dashboard");
+        console.log(
+          "appData.afterLoginRedirectURL",
+          appData.afterLoginRedirectURL
+        );
+        if (appData.afterLoginRedirectURL !== null) {
+          console.log("redirecting to", appData.afterLoginRedirectURL);
+          navigate(appData.afterLoginRedirectURL);
+          setAppData((prevState) => {
+            return {
+              ...prevState,
+              afterLoginRedirectURL: null,
+            };
+          });
+        } else {
+          navigate("/dashboard");
+        }
       } else {
         toast.error("Error [AC101]: Role not found");
         navigate("/");
@@ -396,6 +459,7 @@ export const AppProvider = ({ children }) => {
               location: appData.applicationInView.body.location,
               locationAddress: "",
               projectStatus: 0,
+              coverImage: "",
             },
             applicationDetails: {
               applicationId: appData.applicationInView.applicationID,
@@ -1181,6 +1245,79 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const updateBlockchainAccInUser = async (uuid, account) => {
+    console.log("Updating blockchain account in user: ", uuid, account);
+    try {
+      const response = await axios.post(
+        backendUrl + "/api/user/update-blockchain-acc",
+        {
+          userUUID: uuid,
+          blockchainAcc: account,
+        }
+      );
+
+      if (response.data.status === "success") {
+        toast.success("Blockchain account updated successfully");
+        setAppData((prevState) => {
+          return {
+            ...prevState,
+            userProfile: {
+              ...prevState.userProfile,
+              blockchainAcc: account,
+            },
+          };
+        });
+        return true;
+      } else {
+        toast.error("Error [AC124]: Blockchain account update error");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while updating blockchain account: ", error);
+      return false;
+    }
+  };
+
+  const checkUserExistence = async (email) => {
+    try {
+      const response = await axios.post(
+        backendUrl + "/api/user/find-user-by-email",
+        {
+          email: email,
+        }
+      );
+      if (response.data.status === "success") {
+        return response.data.user;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while checking user existence: ", error);
+      return false;
+    }
+  };
+
+  const addNewTransaction = async (transactionData) => {
+    try {
+      const response = await axios.post(backendUrl + "/api/user/add-txn", {
+        uuid: crypto.randomUUID(),
+        email: transactionData.email,
+        projectUUID: transactionData.projectUUID,
+        txnType: transactionData.txnType,
+        txnData: transactionData.txnData,
+        txnDate: transactionData.txnDate,
+      });
+      if (response.data.status === "success") {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while adding new transaction: ", error);
+      return false;
+    }
+  };
+
   // ==============================
   // Geoblocs Management
   // ==============================
@@ -1203,7 +1340,7 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const initiateBlockchainConnection = async (seed) => {
+  const initiateBlockchainConnection = async () => {
     try {
       const KROptions = {
         type: "sr25519",
@@ -1217,7 +1354,9 @@ export const AppProvider = ({ children }) => {
         baseUrl: "https://rest.unique.network/opal/v1",
         signer: signer,
       };
+
       const sdk = new Sdk(options);
+
       setAppData((prevState) => {
         return { ...prevState, sdk: sdk, blockchainConnStatus: true };
       });
@@ -1424,6 +1563,72 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const transferToken = async (
+    projectId,
+    toAddress,
+    collectionId,
+    tokenId,
+    amount,
+    email
+  ) => {
+    try {
+      console.log("Transfering token: ", projectId, toAddress, amount);
+
+      const KROptions = {
+        type: "sr25519",
+      };
+      console.log("1");
+      const provider = new KeyringProvider(KROptions);
+      console.log("2");
+      await provider.init();
+      console.log("3");
+      const signer = provider.addSeed(process.env.REACT_APP_ADMIN_SEED);
+      console.log(
+        "4",
+        process.env.REACT_APP_ADMIN_SEED,
+        process.env.REACT_APP_ADMIN_ADDRESS
+      );
+      const options = {
+        baseUrl: "https://rest.unique.network/opal/v1",
+        signer: signer,
+      };
+      console.log("5");
+      const sdk = new Sdk(options);
+      console.log("6");
+      const result = await sdk.refungible.transferToken.submitWaitResult({
+        address: process.env.REACT_APP_ADMIN_ADDRESS,
+        to: toAddress,
+        collectionId: collectionId,
+        tokenId: tokenId,
+        amount: amount,
+      });
+      console.log("Tranferred: ", result.parsed);
+      toast.success("Token transferred successfully");
+
+      const txnData = {
+        uuid: crypto.randomUUID(),
+        email: email,
+        projectUUID: projectId,
+        txnType: "TRSF-ADM-USR-INITMINT",
+        txnData: {
+          toAddress: toAddress,
+          collectionId: collectionId,
+          tokenId: tokenId,
+          amount: amount,
+        },
+        txnDate: new Date(),
+      };
+
+      const addTxnResult = await addNewTransaction(txnData);
+
+      return true;
+    } catch (error) {
+      console.error("Error transferring token:", error);
+      toast.error("Error transferring token. Try again later.");
+      return false;
+    }
+  };
+
   const geoblocsDataAndUpdate = async (projectId) => {};
 
   useEffect(() => {
@@ -1472,9 +1677,13 @@ export const AppProvider = ({ children }) => {
         updateProjectMonitors,
         updateProjectEnvData,
         userRegister,
+        updateBlockchainAccInUser,
+        checkUserExistence,
         // blockchain part
         createNewUniqueNetworkAcc,
         createNewNftCollection,
+        transferToken,
+        userRegisterQuietMode,
       }}
     >
       <Toaster />

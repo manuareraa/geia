@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { email, password, role, blockchainAcc } = req.body;
 
     // Check if the email already exists
     const existingUser = await db.collection(collectionName).findOne({ email });
@@ -33,6 +33,7 @@ router.post("/signup", async (req, res) => {
       password: hashedPassword,
       uuid: userUUID,
       role: role,
+      blockchainAcc: blockchainAcc,
     });
 
     res

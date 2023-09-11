@@ -8,7 +8,7 @@ import rightArrow from "../assets/svg/right-arrow.svg";
 function Navbar(props) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { setLoading, loading } = useContext(AppContext);
+  const { setLoading, loading, appData, logoutUser } = useContext(AppContext);
   return (
     // outer container
     <div className="fixed z-20 flex flex-row items-center justify-between w-full p-4 bg-black/30">
@@ -85,17 +85,33 @@ function Navbar(props) {
         </div>
 
         {location.pathname.startsWith("/platform") ? (
-          <button
-            className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen outline-0 hover:bg-gGreen/60"
-            onClick={() => {
-              navigate("/login");
-            }}
-          >
-            <div className="flex flex-row items-center space-x-4">
-              <p>Login</p>
-              <img src={rightArrow} className="w-4" />
-            </div>
-          </button>
+          <>
+            {appData.loginMode !== "user" ? (
+              <button
+                className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen outline-0 hover:bg-gGreen/60"
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                <div className="flex flex-row items-center space-x-4">
+                  <p>Login</p>
+                  <img src={rightArrow} className="w-4" />
+                </div>
+              </button>
+            ) : (
+              <button
+                className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen outline-0 hover:bg-gGreen/60"
+                onClick={() => {
+                  logoutUser();
+                }}
+              >
+                <div className="flex flex-row items-center space-x-4">
+                  <p>Logout</p>
+                  <img src={rightArrow} className="w-4" />
+                </div>
+              </button>
+            )}
+          </>
         ) : (
           <button
             className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen outline-0 hover:bg-gGreen/60"
