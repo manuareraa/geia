@@ -113,6 +113,7 @@ router.post("/add-txn", async (req, res) => {
       txnDate: req.body.txnDate,
     };
 
+    
     await db.collection("transactions").insertOne(newTxn);
 
     res.status(200).json({ status: "success", txn: newTxn });
