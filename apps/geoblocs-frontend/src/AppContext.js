@@ -37,7 +37,7 @@ export const AppProvider = ({ children }) => {
     afterLoginRedirectURL: null,
   });
 
-  const backendUrl = "http://localhost:3010";
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const getApplicationCount = async () => {
     try {
