@@ -126,15 +126,15 @@ function ProjectStories(props) {
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
-      <div className="flex flex-row items-start justify-between px-32 pt-64 space-x-8">
+      <div className="flex flex-col items-start justify-between px-8 pt-64 lg:px-32 lg:flex-row lg:space-x-8">
         {/* left - title sub-container */}
         <div className="flex flex-col items-start space-y-4">
           {/* sub title */}
-          <p className="font-light text-center">
+          <p className="font-light text-left">
             Empowering Communities, Restoring Ecosystems
           </p>
           {/* main title */}
-          <p className="font- text-[80px] leading-[95px]">
+          <p className="font- lg:text-[80px] text-[33px] md:text-[50px] lg:leading-[95px] md:leading-[70px] leading-[50px] ">
             Stories of <br></br>{" "}
             <span className="font-bold text-gGreen">Transformative</span>{" "}
             <br></br> Projects
@@ -142,13 +142,11 @@ function ProjectStories(props) {
         </div>
 
         {/* right - recent stories sub-container */}
-        <div className="flex flex-col items-end ml-12 space-y-4">
+        <div className="flex flex-col self-center mt-16 space-y-4 lg:mt-0 lg:ml-12 lg:items-end">
           {recentStoryCards.length > 0 ? (
             <>
-              <p className="text-3xl font-bold text-center">Recent Stories</p>
-              <motion.div
-                className={`grid grid-cols-${recentStoryCards.length} grid-rows-1 gap-x-8`}
-              >
+              <p className="text-xl font-bold text-center lg:text-3xl">Recent Stories</p>
+              <motion.div className="grid grid-cols-1 lg:grid-rows-1 lg:grid-cols-2 lg:gap-x-8 gap-y-8 lg:gap-y-0">
                 <AnimatePresence>{recentStoryCards}</AnimatePresence>
               </motion.div>
             </>
@@ -157,19 +155,19 @@ function ProjectStories(props) {
       </div>
 
       {/* project stories container */}
-      <div className="flex flex-col items-center justify-center w-full my-24 mt-32 px-52">
+      <div className="flex flex-col items-center justify-center w-full px-8 my-24 mt-32 lg:px-52">
         {/* title */}
         <div className="flex flex-col items-start w-full my-8">
-          <p className="text-3xl font-bold text-center">All Stories</p>
+          <p className="self-center text-3xl font-bold text-center lg:self-start">All Stories</p>
         </div>
         {/* body */}
         {storyCards.length > 0 ? (
-          <div className="grid w-full grid-cols-4 gap-x-8">
+          <div className="grid w-full grid-cols-1 lg:grid-cols-4 lg:gap-x-8 justify-items-center lg:justify-items-start gap-y-8 lg:gap-y-0">
             <AnimatePresence>{storyCards}</AnimatePresence>
           </div>
         ) : (
           <div className="flex justify-center w-full ">
-            <p className="p-4 px-8 text-xl font-bold rounded-lg bg-gGray">
+            <p className="p-4 px-8 text-xl font-bold text-center rounded-lg bg-gGray">
               Stories are being written. Please come back later.
             </p>
           </div>
@@ -177,7 +175,7 @@ function ProjectStories(props) {
 
         {/* call for registration container */}
         <div className="flex flex-col mb-16 space-y-8 mt-44">
-          <p className="text-4xl font-bold">
+          <p className="text-2xl font-bold text-center lg:text-4xl">
             Profit from Restoration: Earn while Healing the Land!
           </p>
           <div className="flex flex-col items-center justify-center">

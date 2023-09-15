@@ -10,10 +10,12 @@ function Contact(props) {
       {/* title container */}
       <div className="flex flex-col items-center justify-center pt-64 space-y-8">
         {/* title */}
-        <p className="font- text-[80px]">Contact</p>
+        <p className="font- lg:text-[80px] text-[33px] md:text-[50px]">
+          Contact
+        </p>
 
         <p
-          className="pb-6 font-light text-center w-[1200px] text-[20px] hover:cursor-pointer"
+          className="pb-6 font-light text-center w-[1200px] lg:text-[20px] text-[15px] md:text-[17px]  hover:cursor-pointer"
           onClick={() => window.open("mailto:thomas@geia.ie")}
         >
           Mail Us @{" "}

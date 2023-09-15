@@ -30,25 +30,36 @@ function Home(props) {
           <div className="flex flex-col items-center justify-center pt-4 space-y-4 leading-none">
             {/* powered by container */}
             <div className="flex flex-row items-center space-x-4">
-              <p className="text-white">Powered By</p>
-              <img src={geiaLogo} alt="geia-logo" className="w-20" />
+              <p className="text-sm text-white lg:text-lg">Powered By</p>
+              <img src={geiaLogo} alt="geia-logo" className="w-12 lg:w-20" />
             </div>
             {/* title */}
-            <p className="text-[80px] text-white">Bringing radical</p>
-            <p className="text-[80px] text-white">transparency to</p>
-            <p className="text-[80px] font-bold text-gGreen">
+            <p className="text-[33px] lg:text-[80px] text-white">
+              Bringing radical
+            </p>
+            <p className="text-[33px] lg:text-[80px] text-white">
+              transparency to
+            </p>
+            <p className="hidden lg:flex md:flex  text-[33px] lg:text-[80px] font-bold text-gGreen text-center">
               biosphere regeneration
+            </p>
+            <p className="md:hidden lg:hidden text-[33px] lg:text-[80px] font-bold text-gGreen text-center">
+              biosphere
+            </p>
+            <p className="md:hidden lg:hidden text-[33px] lg:text-[80px] font-bold text-gGreen text-center">
+              regeneration
             </p>
           </div>
           {/* hero description container */}
           <div className="flex flex-col">
-            <p className="text-center text-white w-[1200px]">
+            <p className="text-center text-white md:w-[80%] lg:w-[40%] mx-auto">
               Geoblocs blockchain utilizes geospatial technology along with on
               the ground monitoring to create verifiable regeneration projects
               around the world that focus on biodiversity, social impact and
               local economics
             </p>
           </div>
+
           {/* hero button container */}
           <div className="flex flex-col">
             <button
@@ -69,7 +80,7 @@ function Home(props) {
           <span className="font-bold text-gGreen">geobloc </span>at a time
         </p>
         {/* outer container */}
-        <div className="flex flex-row items-start justify-center pt-12 space-x-32">
+        <div className="flex flex-col items-start justify-center pt-12 space-y-28 lg:space-y-0 lg:space-x-32 lg:flex-row">
           {/* container one */}
           <div className="flex flex-col items-center justify-center space-y-6">
             <img src={communityCentric} className="w-32" />
@@ -108,13 +119,16 @@ function Home(props) {
       </div>
 
       {/* solution container */}
-      <div className="flex flex-row items-center justify-center w-full py-16 space-x-24 bg-gGreen">
-        <img src={solution} className="w-[500px] rounded-2xl" />
+      <div className="flex flex-col items-center justify-center w-full py-16 space-y-8 lg:flex-row lg:space-y-0 lg:space-x-24 bg-gGreen">
+        <img
+          src={solution}
+          className="lg:w-[500px] md:w-[60%] w-[60%]  rounded-2xl"
+        />
         <div className="flex flex-col items-center justify-center space-y-8">
-          <p className="text-3xl font-semibold text-center text-white">
+          <p className="text-3xl font-semibold text-center text-white md:text-3xl lg:text-3xl">
             Our Solution
           </p>
-          <p className="font-light text-center text-white w-[400px]">
+          <p className="font-light text-center text-white lg:w-[400px] md:w-[400px] w-[70%]">
             Instead of focusing on just carbon, Geoblocs fund communities to
             implement regenerative land use practices, restore ecosystems and
             reverses climate change.
@@ -125,14 +139,14 @@ function Home(props) {
       {/* join us container */}
       <div className="flex flex-col items-center justify-center w-full my-24 space-y-8">
         <p className="text-3xl font-semibold text-center">Join Us</p>
-        <p className="font-light text-center w-[800px]">
+        <p className="font-light text-center lg:w-[800px] md:w-[60%] w-[70%]">
           GeoBlocs Registry allows land stewards to leverage theirecosystem
           services to buyers around the world to get funding for land
           regeneration.
         </p>
 
         {/* outer container */}
-        <div className="flex flex-row pt-10 space-x-20">
+        <div className="flex flex-col pt-10 space-y-28 lg:flex-row lg:space-y-0 lg:space-x-20">
           {/* register a project */}
           <div className="flex flex-col items-center justify-center space-y-8">
             <img src={registerProject} className="w-32" />
@@ -170,10 +184,10 @@ function Home(props) {
       </div>
 
       {/* blockchain container */}
-      <div className="flex flex-row items-center justify-center w-full py-32 mt-8 space-x-32 custom-bg-blockchain-image">
+      <div className="flex flex-col items-center justify-center w-full py-32 mt-8 space-y-8 lg:space-y-8 lg:space-x-32 lg:flex-row custom-bg-blockchain-image">
         <div className="flex flex-col items-center justify-center space-y-8">
           <p className="text-3xl font-semibold text-center">Blockchain</p>
-          <p className="font-light text-center w-[600px]">
+          <p className="font-light text-center lg:w-[600px] md:w-[60%] w-[70%]">
             The Geoblocs blockchain is a layer 1 blockchain that is dedicated to
             ecological health and climate action. It is a proof of stake
             blockchain that is secured by the validators and is governed by the
@@ -186,14 +200,14 @@ function Home(props) {
       {/* stay updated container */}
       <div className="flex flex-col items-center justify-center w-full py-16 my-16 space-y-10">
         <p className="text-3xl font-semibold text-center">Stay Updated</p>
-        <p className="font-light text-center w-[600px]">
+        <p className="font-light text-center lg:w-[600px] md:w-[60%] w-[70%]">
           Sign up to our newsletter to stay up to date with the latest news and
           updates.
         </p>
         <input
           type="text"
           placeholder="Enter your email"
-          className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+          className="lg:w-[400px] md:w-[60%] w-[70%] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
         ></input>
         <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
           <p>Subscribe</p>

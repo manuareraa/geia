@@ -12,9 +12,9 @@ function Team(props) {
       {/* title container */}
       <div className="flex flex-col items-center justify-center pt-64 space-y-8">
         {/* title */}
-        <p className="font- text-[80px]">The Team</p>
+        <p className="font- lg:text-[80px] text-[33px] md:text-[50px]">The Team</p>
 
-        <p className="pb-6 font-light text-center w-[1200px]">
+        <p className="font-light lg:w-[800px] w-[85%] md:w-[85%]  text-center pb-6">
           The team behind Geoblocs is a network of individuals, institutions,
           companies, non profits and indigenous groups all with a passion to
           find ways to regenerate our biosphere. Because it is structured this
@@ -41,7 +41,7 @@ function Team(props) {
 
         <p className="text-3xl font-bold text-center">Transparency</p>
 
-        <p className="font-light text-center w-[1200px]">
+        <p className="font-light text-center lg:w-[900px] w-[85%] md:w-[85%]">
           The Geoblocs system aims to be completely transparent at every step of
           the process ensuring that the maximum benefit is achieved and that all
           stakeholders adhere to the methodology.
@@ -49,14 +49,14 @@ function Team(props) {
 
         <p className="text-3xl font-bold text-center">Innovation</p>
 
-        <p className="font-light text-center w-[1200px]">
+        <p className="font-light lg:w-[900px] w-[85%] md:w-[85%]  text-center">
           Pioneering technology to calculate, monitor and evaluate every project
           down to the m².
         </p>
 
         <p className="text-3xl font-bold text-center">Morality</p>
 
-        <p className="font-light text-center w-[1200px]">
+        <p className="font-light lg:w-9800px] w-[85%] md:w-[85%]  text-center">
           In the coming boom of biosphere reclamation, GEIA stands against the
           monoculture model of carbon sinks and corporate land banks. Our
           projects support people and the land, addressing all of the UN

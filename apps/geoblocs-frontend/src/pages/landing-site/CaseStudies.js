@@ -14,11 +14,13 @@ function CaseStudies(props) {
       {/* title container */}
       <div className="flex flex-col items-center justify-center pt-64 space-y-8">
         {/* title */}
-        <p className="font- text-[80px]">Case Studies</p>
+        <p className="font- lg:text-[80px] text-[33px] md:text-[50px]">
+          Case Studies
+        </p>
 
         <p className="font-light text-center">Learn more about how we work</p>
 
-        <p className="font-light text-center w-[1200px]">
+        <p className="font-light lg:w-[800px] w-[100%] md:w-[85%]  text-center">
           All our projects focus on an holistic approach because without a
           symbiosis between the land and the people that rely on it no amount of
           tree planting is going to help, so whether it,s a sacred forest
@@ -28,7 +30,8 @@ function CaseStudies(props) {
         </p>
 
         {/* title button */}
-        <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+        <button
+          className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
           onClick={() => navigate("/platform/projects")}
         >
           <p>Explore Projects</p>
@@ -36,7 +39,7 @@ function CaseStudies(props) {
         </button>
       </div>
 
-      <motion.div className="grid grid-cols-4 grid-rows-2 px-64 py-24 pb-60 gap-x-8 gap-y-8">
+      <motion.div className="grid self-center grid-cols-1 py-24 md:grid-cols-2 lg:px-64 w-fit lg:grid-cols-4 lg:grid-rows-2 pb-60 lg:gap-x-8 gap-y-8 md:gap-x-8">
         <AnimatePresence>
           <motion.div
             key={1}

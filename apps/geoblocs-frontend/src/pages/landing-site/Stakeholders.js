@@ -21,7 +21,9 @@ function Stakeholders(props) {
       {/* title container */}
       <div className="flex flex-col items-center justify-center pt-64 space-y-8">
         {/* title */}
-        <p className="font- text-[80px]">The Stakeholders</p>
+        <p className="font- lg:text-[80px] text-[33px] md:text-[50px]">
+          The Stakeholders
+        </p>
         {/* title button */}
         <button
           className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
@@ -33,39 +35,39 @@ function Stakeholders(props) {
       </div>
 
       {/* trio select container */}
-      <div className="flex flex-row items-end justify-center w-full px-8 mt-40 space-x-44">
+      <div className="flex flex-row items-end justify-center px-2 mt-40 space-x-0 lg:w-full lg:px-8 lg:space-x-44">
         <div
           className={
             section === 0
-              ? "flex flex-col items-center justify-center px-24 py-16 space-y-8 rounded-tl-lg rounded-tr-lg bg-gGreen/20 hover:cursor-pointer"
-              : "flex flex-col items-center justify-center px-24 py-16 space-y-8 rounded-tl-lg rounded-tr-lg hover:bg-gGreen/20 hover:cursor-pointer"
+              ? "flex flex-col items-center justify-center lg:px-24 px-6 py-16 space-y-8 rounded-tl-lg rounded-tr-lg bg-gGreen/20 hover:cursor-pointer"
+              : "flex flex-col items-center justify-center lg:px-24 px-6 py-16 space-y-8 rounded-tl-lg rounded-tr-lg hover:bg-gGreen/20 hover:cursor-pointer"
           }
           onClick={() => setSection(0)}
         >
-          <img src={buyers} className="w-44" />
-          <p className="text-xl font-bold">Buyers</p>
+          <img src={buyers} className="w-20 lg:w-44" />
+          <p className="font-bold text-md lg:text-xl">Buyers</p>
         </div>
         <div
           className={
             section === 1
-              ? "flex flex-col items-center justify-center px-24 py-16 space-y-8 rounded-tl-lg rounded-tr-lg bg-gGreen/20 hover:cursor-pointer"
-              : "flex flex-col items-center justify-center px-24 py-16 space-y-8 rounded-tl-lg rounded-tr-lg hover:bg-gGreen/20 hover:cursor-pointer"
+              ? "flex flex-col items-center justify-center lg:px-24 px-6 py-16 space-y-8 rounded-tl-lg rounded-tr-lg bg-gGreen/20 hover:cursor-pointer"
+              : "flex flex-col items-center justify-center lg:px-24 px-6 py-16 space-y-8 rounded-tl-lg rounded-tr-lg hover:bg-gGreen/20 hover:cursor-pointer"
           }
           onClick={() => setSection(1)}
         >
-          <img src={stewards} className="w-44" />
-          <p className="text-xl font-bold">Land Stewards</p>
+          <img src={stewards} className="w-20 lg:w-44" />
+          <p className="font-bold text-center text-md lg:text-xl">Land Stewards</p>
         </div>
         <div
           className={
             section === 2
-              ? "flex flex-col items-center justify-center px-24 py-16 space-y-8 rounded-tl-lg rounded-tr-lg bg-gGreen/20 hover:cursor-pointer"
-              : "flex flex-col items-center justify-center px-24 py-16 space-y-8 rounded-tl-lg rounded-tr-lg hover:bg-gGreen/20 hover:cursor-pointer"
+              ? "flex flex-col items-center justify-center lg:px-24 px-6 py-16 space-y-8 rounded-tl-lg rounded-tr-lg bg-gGreen/20 hover:cursor-pointer"
+              : "flex flex-col items-center justify-center lg:px-24 px-6 py-16 space-y-8 rounded-tl-lg rounded-tr-lg hover:bg-gGreen/20 hover:cursor-pointer"
           }
           onClick={() => setSection(2)}
         >
-          <img src={scientists} className="w-44" />
-          <p className="text-xl font-bold">Scientists</p>
+          <img src={scientists} className="w-20 lg:w-44" />
+          <p className="font-bold text-md lg:text-xl">Scientists</p>
         </div>
       </div>
 
