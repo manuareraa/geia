@@ -1,8 +1,8 @@
 # Diff Details
 
-Date : 2023-08-19 22:16:09
+Date : 2023-09-20 13:00:31
 
-Directory /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend/src/pages
+Directory /home/manuareraa/Personal/github/personal/geia/apps/geoblocs-frontend
 
 Total : 0 files,  0 codes, 0 comments, 0 blanks, all 0 lines
 

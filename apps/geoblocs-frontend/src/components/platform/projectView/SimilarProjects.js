@@ -24,7 +24,7 @@ function SimilarProjects(props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1, delay: 0.1 }}
-              className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer w-[300px]"
+              className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[300px] w-full"
               onClick={() => {
                 setAppData((prevState) => {
                   return {
@@ -70,7 +70,7 @@ function SimilarProjects(props) {
   return (
     <>
       {projectCards.length > 0 ? (
-        <div className="grid grid-cols-4 gap-x-8">
+        <div className="grid self-center grid-cols-1 space-y-8 lg:w-full lg:grid-cols-4 lg:gap-x-8 lg:space-y-0 w-fit">
           <AnimatePresence>{projectCards}</AnimatePresence>
         </div>
       ) : (

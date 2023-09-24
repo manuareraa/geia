@@ -14,7 +14,7 @@ export default function DefaultCarousel(props) {
           alt="..."
           src={imageUrl}
           key={index}
-          className="rounded-lg w-[800px] object-cover"
+          className="rounded-lg lg:w-[800px] w-[60%] object-cover"
         />
       );
       cardElements.push(card);

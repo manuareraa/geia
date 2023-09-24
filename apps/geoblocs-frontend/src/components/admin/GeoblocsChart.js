@@ -100,13 +100,17 @@ export default function GeoblocsChart(props) {
           d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
           stroke={fill}
           fill="none"
+          className="hidden lg:block"
         />
-        <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+        <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" 
+        className="hidden lg:block"
+        />
         <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
           y={ey}
           textAnchor={textAnchor}
           fill="#333"
+          className="hidden lg:block"
         >{`${formatNumberWithCommas(value)} Geoblocs`}</text>
         <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
@@ -114,6 +118,7 @@ export default function GeoblocsChart(props) {
           dy={18}
           textAnchor={textAnchor}
           fill="#333"
+          className="hidden lg:block"
         >
           {name}
         </text>
@@ -123,6 +128,7 @@ export default function GeoblocsChart(props) {
           dy={36}
           textAnchor={textAnchor}
           fill="#999"
+          className="hidden lg:block"
         >
           {`(${(percent * 100).toFixed(2)}%)`}
         </text>

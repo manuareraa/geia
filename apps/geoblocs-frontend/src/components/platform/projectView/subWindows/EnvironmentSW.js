@@ -30,14 +30,16 @@ function EnvironmentSW(props) {
   }, [props.projectEnvDatas]);
 
   return (
-    <div className="flex flex-col pb-16 px-60">
+    <div className="flex flex-col px-6 pb-16 lg:px-60">
       <div className="flex flex-col p-8 rounded-xl bg-glGreen">
         {/* title bar */}
         <div className="flex flex-row items-center justify-between">
-          <p className="text-2xl font-bold text-center">Environment Data</p>
+          <p className="text-lg font-bold text-center lg:text-2xl">
+            Environment Data
+          </p>
           <img
             src={backCircle}
-            className="w-12 hover:cursor-pointer"
+            className="w-8 lg:w-12 hover:cursor-pointer"
             onClick={() => {
               props.setSubWindow("default");
             }}

@@ -283,6 +283,7 @@ function Navbar(props) {
                   <button
                     className="px-8 capitalize bg-white border-0 rounded-full text-gGreen btn outline-0 hover:bg-gGreen/60"
                     onClick={() => {
+                      document.getElementById("mobileMenu").close();
                       navigate("/login");
                     }}
                   >
@@ -295,6 +296,7 @@ function Navbar(props) {
                   <button
                     className="px-8 capitalize bg-white border-0 rounded-full text-gGreen btn outline-0 hover:bg-gGreen/60"
                     onClick={() => {
+                      document.getElementById("mobileMenu").close();
                       logoutUser();
                     }}
                   >
@@ -309,6 +311,7 @@ function Navbar(props) {
               <button
                 className="px-8 capitalize bg-white border-0 rounded-full text-gGreen btn outline-0 hover:bg-gGreen/60"
                 onClick={() => {
+                  document.getElementById("mobileMenu").close();
                   navigate("/platform/projects");
                 }}
               >

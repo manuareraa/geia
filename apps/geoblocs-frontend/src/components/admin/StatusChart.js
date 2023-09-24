@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import { PieChart, Pie, Sector } from "recharts";
 
 export default function StatusChart(props) {
-
   const data = [
     { name: "Completed", value: parseInt(props.completed) },
     { name: "In Progress", value: parseInt(props.inProgress) },
@@ -42,7 +41,7 @@ export default function StatusChart(props) {
           dy={18}
           textAnchor="middle"
           fill={fill}
-          className="text-5xl font-bold"
+          className="text-5xl font-black"
         >
           {payload.value}%
         </text>
@@ -68,8 +67,16 @@ export default function StatusChart(props) {
           d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
           stroke={fill}
           fill="none"
+          className="hidden lg:block"
         />
-        <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+        <circle
+          cx={ex}
+          cy={ey}
+          r={2}
+          fill={fill}
+          stroke="none"
+          className="hidden lg:block"
+        />
         {/* <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
           y={ey}
@@ -82,6 +89,7 @@ export default function StatusChart(props) {
           dy={18}
           textAnchor={textAnchor}
           fill="#999"
+          className="hidden lg:block"
         >
           {`(Rate ${(percent * 100).toFixed(2)}%)`}
         </text>
@@ -90,6 +98,7 @@ export default function StatusChart(props) {
           y={ey}
           textAnchor={textAnchor}
           fill="#333"
+          className="hidden lg:block"
         >
           {name}
         </text>
@@ -113,7 +122,7 @@ export default function StatusChart(props) {
         data={data}
         cx={400}
         cy={200}
-        innerRadius={70}
+        innerRadius={80}
         outerRadius={140}
         fill="#000000"
         dataKey="value"

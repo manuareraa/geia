@@ -39,14 +39,14 @@ function LinksSW(props) {
   }, [props.linksData]);
 
   return (
-    <div className="flex flex-col pb-16 px-60">
+    <div className="flex flex-col px-6 pb-16 lg:px-60">
       <div className="flex flex-col p-8 rounded-xl bg-glGreen">
         {/* title bar */}
         <div className="flex flex-row items-center justify-between">
-          <p className="text-2xl font-bold text-center">Links</p>
+          <p className="text-lg font-bold text-center lg:text-2xl">Links</p>
           <img
             src={backCircle}
-            className="w-12 hover:cursor-pointer"
+            className="w-8 lg:w-12 hover:cursor-pointer"
             onClick={() => {
               props.setSubWindow("default");
             }}
@@ -55,7 +55,7 @@ function LinksSW(props) {
         <div className="divider"></div>
 
         {linkCards.length > 0 ? (
-          <div className="grid grid-cols-3 gap-x-8 gap-y-6">{linkCards}</div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-8 gap-y-6">{linkCards}</div>
         ) : (
           <p className="text-2xl font-bold text-center">No Links</p>
         )}

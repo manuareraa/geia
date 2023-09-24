@@ -16,19 +16,19 @@ function UserRegister(props) {
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
-      <div className="flex flex-row items-center justify-between px-32 space-x-8 pt-44">
+      <div className="flex flex-row items-center justify-between space-x-8 lg:px-32 pt-44">
         {/* left - title sub-container */}
-        <div className="flex flex-col items-start space-y-4">
+        <div className="flex flex-col items-center space-y-4 lg:items-start">
           {/* sub title */}
           <p className="font-light text-center">
             Empowering Communities, Restoring Ecosystems
           </p>
           {/* main title */}
-          <p className="font- text-[80px] leading-[95px]">User Register</p>
+          <p className="font- lg:text-[80px] text-5xl lg:leading-[95px] text-center">User Register</p>
         </div>
 
         {/* right - logo container */}
-        <img src={AdminLogo} alt="Admin Logo" className="w-[150px]"></img>
+        <img src={AdminLogo} alt="Admin Logo" className="hidden lg:block w-[150px]"></img>
       </div>
 
       {/* buttons container */}
@@ -37,7 +37,7 @@ function UserRegister(props) {
           <input
             type="text"
             placeholder="Enter your email"
-            className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+            className="lg:w-[400px] w-[100%] lg:h-12 h-10 px-8 text-black  rounded-full outline-none bg-gGray py-2 text-sm lg:text-lg"
             value={formData.email}
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
@@ -46,7 +46,7 @@ function UserRegister(props) {
           <input
             type="text"
             placeholder="Enter your password"
-            className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+            className="lg:w-[400px] w-[100%] lg:h-12 h-10 px-8 text-black  rounded-full outline-none bg-gGray py-2 text-sm lg:text-lg"
             value={formData.password}
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
@@ -55,7 +55,7 @@ function UserRegister(props) {
           <input
             type="text"
             placeholder="Confirm your password"
-            className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+            className="lg:w-[400px] w-[100%] lg:h-12 h-10 px-8 text-black  rounded-full outline-none bg-gGray py-2 text-sm lg:text-lg"
             value={formData.confirmPassword}
             onChange={(e) =>
               setFormData({ ...formData, confirmPassword: e.target.value })

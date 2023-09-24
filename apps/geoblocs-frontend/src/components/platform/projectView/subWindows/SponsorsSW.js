@@ -38,14 +38,14 @@ function SponsorsSW(props) {
 
   return (
     <>
-      <div className="flex flex-col pb-16 px-60">
+      <div className="flex flex-col px-6 pb-16 lg:px-60">
         <div className="flex flex-col p-8 rounded-xl bg-glGreen">
           {/* title bar */}
           <div className="flex flex-row items-center justify-between">
-            <p className="text-2xl font-bold text-center">Sponsors</p>
+            <p className="text-lg font-bold text-center lg:text-2xl">Sponsors</p>
             <img
               src={backCircle}
-              className="w-12 hover:cursor-pointer"
+              className="w-8 lg:w-12 hover:cursor-pointer"
               onClick={() => {
                 props.setSubWindow("default");
               }}
@@ -53,7 +53,7 @@ function SponsorsSW(props) {
           </div>
           <div className="divider"></div>
           {sponsorCards.length > 0 ? (
-            <div className="grid grid-cols-4">{sponsorCards}</div>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-y-6 lg:gap-y-0">{sponsorCards}</div>
           ) : (
             <p className="text-2xl font-bold text-center">No Sponsors</p>
           )}
