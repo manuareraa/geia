@@ -205,7 +205,7 @@ function ProjectMetadata(props) {
 
           <div className="flex flex-row col-span-3 space-x-4">
             <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
-              {projectMetadata.coverImage.length > 0
+              {props.projectMetadata.coverImage?.length > 0
                 ? "Replace Cover Image"
                 : "Upload Cover Image"}
               <input
@@ -237,7 +237,7 @@ function ProjectMetadata(props) {
             </label>
           </div>
 
-          {projectMetadata.coverImage.length > 0 ? (
+          {projectMetadata.coverImage?.length > 0 ? (
             <img
               src={projectMetadata.coverImage[0]}
               alt=""
