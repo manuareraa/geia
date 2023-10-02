@@ -4,7 +4,7 @@ import loadingAnimation from "../assets/svg/loading.svg";
 
 function Loading(props) {
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
+    <div className="z-[100] flex flex-col items-center justify-center h-screen bg-white">
       <img
         src={loadingAnimation}
         className="w-44 h-44"

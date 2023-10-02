@@ -39,7 +39,7 @@ function ProjectStories(props) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 1, delay: 0.1 }}
-                  className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer w-[300px]"
+                  className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
                 >
                   <img
                     src={sampleOne}
@@ -61,7 +61,7 @@ function ProjectStories(props) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 1, delay: 0.2 }}
-                  className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer w-[300px]"
+                  className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
                 >
                   <img
                     src={sampleOne}
@@ -97,7 +97,7 @@ function ProjectStories(props) {
               key={1}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 1.0 }}
-              className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer w-[300px]"
+              className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
             >
               <motion.div
                 initial={{ opacity: 0 }}
@@ -120,7 +120,7 @@ function ProjectStories(props) {
               key={2}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 1.0 }}
-              className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer w-[300px]"
+              className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
             >
               <motion.div
                 initial={{ opacity: 0 }}
@@ -142,7 +142,7 @@ function ProjectStories(props) {
               key={3}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 1.0 }}
-              className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer w-[300px]"
+              className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
             >
               <motion.div
                 initial={{ opacity: 0 }}
@@ -165,7 +165,7 @@ function ProjectStories(props) {
               key={4}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 1.0 }}
-              className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer w-[300px]"
+              className="flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
             >
               <motion.div
                 initial={{ opacity: 0 }}

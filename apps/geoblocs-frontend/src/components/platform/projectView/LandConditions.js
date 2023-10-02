@@ -11,7 +11,7 @@ function LandConditions(props) {
         <div className="flex flex-col space-y-1" key={index}>
           <p>{landCondition.label}</p>
           <progress
-            className="bg-white lg:w-[550px] w-[100%]  progress text-gGreen"
+            className="bg-white lg:w-full w-[100%]  progress text-gGreen"
             value={parseInt(landCondition.value)}
             max="100"
           ></progress>
@@ -37,7 +37,7 @@ function LandConditions(props) {
         </div>
 
         {landConditions.length > 0 ? (
-          <div className="grid grid-cols-1 py-6 lg:grid-cols-2 gap-y-6">
+          <div className="grid grid-cols-1 py-6 lg:grid-cols-2 gap-y-6 lg:gap-x-20">
             {landConditions}
           </div>
         ) : (

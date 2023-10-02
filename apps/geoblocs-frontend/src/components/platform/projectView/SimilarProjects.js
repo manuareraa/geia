@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "../../../AppContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import sampleOne from "../../../assets/test/sample-one.png";
 
 function SimilarProjects(props) {
   const { appData, setAppData } = useContext(AppContext);
   const [projectCards, setProjectCards] = useState([]);
+  const navigate = useNavigate();
 
   const renderProjectCards = async () => {
     let tempArrayForProjectCards = [];
@@ -18,13 +20,14 @@ function SimilarProjects(props) {
             key={index}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
+            className="w-[100%]"
           >
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1, delay: 0.1 }}
-              className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[300px] w-full"
+              className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
               onClick={() => {
                 setAppData((prevState) => {
                   return {
@@ -37,7 +40,11 @@ function SimilarProjects(props) {
               }}
             >
               <img
-                src={sampleOne}
+                src={
+                  project.metadata.coverImage
+                    ? project.metadata.coverImage[0]
+                    : sampleOne
+                }
                 className="object-cover w-full h-48 rounded-2xl"
               ></img>
               <div className="flex flex-col justify-between h-full">

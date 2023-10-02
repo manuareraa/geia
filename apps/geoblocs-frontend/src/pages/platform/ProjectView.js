@@ -20,6 +20,7 @@ import document from "../../assets/svg/document.svg";
 import StatusChart from "../../components/admin/StatusChart";
 import GeoblocsChart from "../../components/admin/GeoblocsChart";
 import Carousel from "../../components/Carousel";
+import CarouselTwo from "../../components/CarouselTwo";
 import SponsorsSW from "../../components/platform/projectView/subWindows/SponsorsSW";
 import SeasonsSW from "../../components/platform/projectView/subWindows/SeasonsSW";
 import MonitorsSW from "../../components/platform/projectView/subWindows/MonitorsSW";
@@ -28,6 +29,7 @@ import LinksSW from "../../components/platform/projectView/subWindows/LinksSW";
 import DocumentsSW from "../../components/platform/projectView/subWindows/DocumentsSW";
 import LandConditions from "../../components/platform/projectView/LandConditions";
 import SimilarProjects from "../../components/platform/projectView/SimilarProjects";
+import Paypal from "../../components/Paypal";
 
 function ProjectView(props) {
   const navigate = useNavigate();
@@ -87,7 +89,9 @@ function ProjectView(props) {
             appData.projectInView.geoblocsData.collectionId,
             appData.projectInView.geoblocsData.tokenId[0],
             1,
-            appData.userProfile.email
+            appData.userProfile.email,
+            "redeem",
+            null
           );
           if (transferResult === true) {
             toast.success("Geoblocs Redeemed");
@@ -119,7 +123,9 @@ function ProjectView(props) {
                 appData.projectInView.geoblocsData.collectionId,
                 appData.projectInView.geoblocsData.tokenId[0],
                 1,
-                appData.userProfile.email
+                appData.userProfile.email,
+                "redeem",
+                null
               );
               if (transferResult === true) {
                 toast.success("Geoblocs Redeemed");
@@ -154,7 +160,9 @@ function ProjectView(props) {
               appData.projectInView.geoblocsData.collectionId,
               appData.projectInView.geoblocsData.tokenId[0],
               1,
-              checkUser.email
+              checkUser.email,
+              "redeem",
+              null
             );
             if (transferResult === true) {
               toast.success("Geoblocs Redeemed");
@@ -186,7 +194,9 @@ function ProjectView(props) {
                   appData.projectInView.geoblocsData.collectionId,
                   appData.projectInView.geoblocsData.tokenId[0],
                   1,
-                  checkUser.email
+                  checkUser.email,
+                  "redeem",
+                  null
                 );
                 if (transferResult === true) {
                   toast.success("Geoblocs Redeemed");
@@ -221,7 +231,9 @@ function ProjectView(props) {
               appData.projectInView.geoblocsData.collectionId,
               appData.projectInView.geoblocsData.tokenId[0],
               1,
-              email
+              email,
+              "redeem",
+              null
             );
             if (transferResult === true) {
               toast.success("Geoblocs Redeemed");
@@ -236,6 +248,177 @@ function ProjectView(props) {
     }
   };
 
+  const onPaypalSuccess = async (details, data) => {
+    console.log("details", details);
+    console.log("data", data);
+    // if logged in
+    if (appData.loginMode === "user") {
+      // if an address already exists
+      if (
+        appData.userProfile.blockchainAcc &&
+        appData.userProfile.blockchainAcc.seed
+      ) {
+        const transferResult = await transferToken(
+          projectId,
+          appData.userProfile.blockchainAcc.keyfile.address,
+          appData.projectInView.geoblocsData.collectionId,
+          appData.projectInView.geoblocsData.tokenId[0],
+          formData.quantity,
+          details.payer.email_address,
+          "paypal",
+          { ...details, ...data }
+        );
+        if (transferResult === true) {
+          toast.success("Geoblocs Purchased");
+          setBuyContainerView(false);
+          setRedeemContainerView(false);
+        } else {
+          toast.error("Cannot purchase at the moment. Please try again.");
+        }
+      } else {
+        // if an address does not exist before
+        // create the account
+        const accCreationResult = await createNewUniqueNetworkAcc(
+          details.payer.email_address
+        );
+
+        if (accCreationResult !== false) {
+          // update the profile in the database and appData
+          const profileUpdateResult = await updateBlockchainAccInUser(
+            appData.userProfile.uuid,
+            accCreationResult
+          );
+
+          if (profileUpdateResult === true) {
+            // transfer the tokens
+            const transferResult = await transferToken(
+              projectId,
+              accCreationResult.keyfile.address,
+              appData.projectInView.geoblocsData.collectionId,
+              appData.projectInView.geoblocsData.tokenId[0],
+              formData.quantity,
+              details.payer.email_address,
+              "paypal",
+              { ...details, ...data }
+            );
+            if (transferResult === true) {
+              toast.success("Geoblocs Purchased");
+              setBuyContainerView(false);
+              setRedeemContainerView(false);
+            } else {
+              toast.error("Cannot purchase at the moment. Please try again.");
+            }
+          }
+        } else {
+          toast.error("Cannot redeem at the moment. Please try again.");
+        }
+      }
+      toast.success("Geoblocs Redeemed");
+    } else {
+      // if not logged in or if it is the admin (do nothing)
+
+      // check if the user actuall exists
+      const checkUser = await checkUserExistence(details.payer.email_address);
+
+      // if exists
+      if (checkUser !== false) {
+        if (
+          checkUser.blockchainAcc &&
+          checkUser.blockchainAcc.keyfile.address
+        ) {
+          // get the address and transfer
+          const transferResult = await transferToken(
+            projectId,
+            checkUser.blockchainAcc.keyfile.address,
+            appData.projectInView.geoblocsData.collectionId,
+            appData.projectInView.geoblocsData.tokenId[0],
+            formData.quantity,
+            details.payer.email_address,
+            "paypal",
+            { ...details, ...data }
+          );
+          if (transferResult === true) {
+            toast.success("Geoblocs Purchased");
+            setBuyContainerView(false);
+            setRedeemContainerView(false);
+          } else {
+            toast.error("Cannot purchase at the moment. Please try again.");
+          }
+        } else {
+          // if user exists but does not have a blockchain account
+          const accCreationResult = await createNewUniqueNetworkAcc(
+            details.payer.email_address
+          );
+
+          console.log("accCreationResult", accCreationResult, checkUser);
+          if (accCreationResult !== false) {
+            // update the profile in the database and appData
+            const profileUpdateResult = await updateBlockchainAccInUser(
+              checkUser.uuid,
+              accCreationResult
+            );
+
+            if (profileUpdateResult === true) {
+              // transfer the tokens
+              const transferResult = await transferToken(
+                projectId,
+                accCreationResult.keyfile.address,
+                appData.projectInView.geoblocsData.collectionId,
+                appData.projectInView.geoblocsData.tokenId[0],
+                formData.quantity,
+                details.payer.email_address,
+                "paypal",
+                { ...details, ...data }
+              );
+              if (transferResult === true) {
+                toast.success("Geoblocs Purchased");
+                setBuyContainerView(false);
+                setRedeemContainerView(false);
+              } else {
+                toast.error("Cannot purchase at the moment. Please try again.");
+              }
+            }
+          } else {
+            toast.error("Cannot redeem at the moment. Please try again.");
+          }
+        }
+      } else {
+        // if user does not exist
+
+        // generate a 12 character random alpha numeric password
+        const randomPassword = Math.random().toString(36).slice(-12);
+
+        const createUser = await userRegisterQuietMode(
+          details.payer.email_address,
+          randomPassword,
+          "buyer"
+        );
+
+        if (createUser !== false) {
+          const { email, password, role, blockchainAcc } = createUser;
+          // transfer the tokens
+          const transferResult = await transferToken(
+            projectId,
+            blockchainAcc.keyfile.address,
+            appData.projectInView.geoblocsData.collectionId,
+            appData.projectInView.geoblocsData.tokenId[0],
+            formData.quantity,
+            details.payer.email_address,
+            "paypal",
+            { ...details, ...data }
+          );
+          if (transferResult === true) {
+            toast.success("Geoblocs Purchased");
+            setBuyContainerView(false);
+            setRedeemContainerView(false);
+          } else {
+            toast.error("Cannot purchase at the moment. Please try again.");
+          }
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     console.log("appData", appData);
     if (Object.keys(appData.projectInView).length > 0) {
@@ -244,6 +427,10 @@ function ProjectView(props) {
       navigate("/platform/projects");
     }
   }, []);
+
+  useEffect(() => {
+    console.log("formData", formData);
+  }, [formData]);
 
   return (
     <>
@@ -266,7 +453,7 @@ function ProjectView(props) {
                 Back to explore projects
               </p>
             </div>
-            <div className="flex flex-col items-center justify-between px-8 lg:flex-row lg:px-32 lg:space-x-28">
+            <div className="flex flex-col items-center justify-between px-8 lg:px-32 lg:space-x-28 2xl:flex-row">
               {/* left - title sub-container */}
               <div className="flex flex-col space-y-4 lg:items-start">
                 {/* sub title */}
@@ -297,9 +484,7 @@ function ProjectView(props) {
                 </div>
               </div>
               {/* right container - gallery */}
-              <div className="">
-                <Carousel imageUrls={appData.projectInView.gallery || []} />
-              </div>
+              <Carousel imageUrls={appData.projectInView.gallery} />
             </div>
           </div>
 
@@ -307,7 +492,9 @@ function ProjectView(props) {
           <div className="grid items-center justify-center grid-cols-1 mt-16 lg:grid-cols-4 lg:px-60 lg:gap-x-16 gap-y-8 lg:gap-y-0">
             {/* remaining geoblocs */}
             <div className="flex flex-col items-center justify-center space-y-2">
-              <p className="font-bold lg:text-lg text-md">Geoblocs Remaining</p>
+              <p className="font-bold text-center lg:text-lg text-md">
+                Geoblocs Remaining
+              </p>
               <p className="text-4xl lg:text-5xl">
                 {parseInt(appData.projectInView.geoblocsData.totalSupply) -
                   appData.projectInView.geoblocsData.purchased}
@@ -316,7 +503,9 @@ function ProjectView(props) {
 
             {/* total supply */}
             <div className="flex flex-col items-center justify-center space-y-2">
-              <p className="font-bold lg:text-lg text-md">Total Supply</p>
+              <p className="font-bold text-center lg:text-lg text-md">
+                Total Supply
+              </p>
               <p className="text-4xl lg:text-5xl">
                 {appData.projectInView.geoblocsData.totalSupply}
               </p>
@@ -371,9 +560,20 @@ function ProjectView(props) {
                           formData.quantity || 0}{" "}
                         USD
                       </p>
-                      <button className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen">
+                      {/* <button className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen">
                         Proceed to Checkout
-                      </button>
+                      </button> */}
+                      {formData.quantity > 0 && formData.quantity <= 20 ? (
+                        <Paypal
+                          successCallback={onPaypalSuccess}
+                          price={
+                            appData.projectInView.geoblocsData.pricePerGeobloc *
+                              formData.quantity || 0
+                          }
+                        />
+                      ) : (
+                        <p>Please enter a quantity between 1 and 20</p>
+                      )}
                     </div>
                   ) : (
                     <div className="flex flex-col items-center justify-center space-y-4">
@@ -635,7 +835,10 @@ function ProjectView(props) {
             id="my_modal_1"
             className="items-start justify-center w-screen px-8 py-16 overflow-auto lg:w-full lg:px-28 modal bg-gGreen/20"
           >
-            <div method="dialog" className="w-full p-8 bg-white lg:p-12 rounded-3xl">
+            <div
+              method="dialog"
+              className="w-full p-8 bg-white lg:p-12 rounded-3xl"
+            >
               {/* body goes here */}
               <div className="flex flex-col w-full space-y-4">
                 <div className="flex flex-col items-center w-full space-y-4 lg:justify-between lg:flex-row">

@@ -111,6 +111,7 @@ router.post("/add-txn", async (req, res) => {
       txnType: req.body.txnType,
       txnData: req.body.txnData,
       txnDate: req.body.txnDate,
+      txnMode: req.body.txnMode,
     };
 
     

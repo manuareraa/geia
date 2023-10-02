@@ -1306,6 +1306,7 @@ export const AppProvider = ({ children }) => {
         txnType: transactionData.txnType,
         txnData: transactionData.txnData,
         txnDate: transactionData.txnDate,
+        txnMode: transactionData.txnMode,
       });
       if (response.data.status === "success") {
         return true;
@@ -1569,9 +1570,15 @@ export const AppProvider = ({ children }) => {
     collectionId,
     tokenId,
     amount,
-    email
+    email,
+    mode,
+    miscData
   ) => {
     try {
+      setLoading({
+        status: "true",
+        message: "Transferring token. Please wait for a minute.",
+      });
       console.log("Transfering token: ", projectId, toAddress, amount);
 
       const KROptions = {
@@ -1610,21 +1617,30 @@ export const AppProvider = ({ children }) => {
         email: email,
         projectUUID: projectId,
         txnType: "TRSF-ADM-USR-INITMINT",
+        txnMode: mode,
         txnData: {
           toAddress: toAddress,
           collectionId: collectionId,
           tokenId: tokenId,
           amount: amount,
+          misc: miscData,
         },
         txnDate: new Date(),
       };
 
       const addTxnResult = await addNewTransaction(txnData);
-
+      setLoading({
+        status: "false",
+        message: "Transferring token. Please wait for a minute.",
+      });
       return true;
     } catch (error) {
       console.error("Error transferring token:", error);
       toast.error("Error transferring token. Try again later.");
+      setLoading({
+        status: "false",
+        message: "Transferring token. Please wait for a minute.",
+      });
       return false;
     }
   };
@@ -1686,13 +1702,16 @@ export const AppProvider = ({ children }) => {
         userRegisterQuietMode,
       }}
     >
-      <Toaster />
-      <Navbar />
       <div className="">
         {loading.status === "true" ? (
           <Loading message={loading.message} />
-        ) : null}
-        {children}
+        ) : (
+          <>
+            <Toaster />
+            <Navbar />
+            {children}
+          </>
+        )}
       </div>
     </AppContext.Provider>
   );

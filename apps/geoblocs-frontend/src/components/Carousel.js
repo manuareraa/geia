@@ -6,16 +6,19 @@ export default function DefaultCarousel(props) {
   const [imageCards, setImageCards] = useState([]);
 
   const renderImageCards = () => {
+    console.log("renderImageCards");
     let cardElements = [];
     setImageCards([]);
     imageUrls.forEach((imageUrl, index) => {
       let card = (
-        <img
-          alt="..."
-          src={imageUrl}
-          key={index}
-          className="rounded-lg lg:w-[800px] w-[60%] object-cover"
-        />
+        <div className="">
+          <img
+            alt="..."
+            src={imageUrl}
+            key={index}
+            className="rounded-lg lg:w-[100%] w-[100%] md:w-[100%] object-cover"
+          />
+        </div>
       );
       cardElements.push(card);
       setImageCards(cardElements);
@@ -23,12 +26,25 @@ export default function DefaultCarousel(props) {
   };
 
   useEffect(() => {
+    console.log("imageUrls", props.imageUrls);
     setImageUrls(props.imageUrls);
   }, [props]);
 
   useEffect(() => {
+    console.log("imageUrls", imageUrls.length);
     if (imageUrls.length > 0) renderImageCards();
   }, [imageUrls]);
 
-  return <Carousel slide={false}>{imageCards}</Carousel>;
+  useEffect(() => {
+    console.log("imageCards", imageCards.length);
+  }, [imageCards]);
+
+  return (
+    <Carousel
+      slide={false}
+      className="2xl:h-[40rem] xl:h-[40rem] lg:h-[40rem] md:h-[40rem] h-[30rem]"
+    >
+      {imageCards}
+    </Carousel>
+  );
 }
