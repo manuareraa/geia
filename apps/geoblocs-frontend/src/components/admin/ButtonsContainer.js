@@ -28,6 +28,14 @@ function ButtonsContainer(props) {
       <button
         className="px-10 py-4 text-xl text-white capitalize rounded-lg bg-gGreen hover:bg-gGreen/70"
         onClick={() => {
+          navigate("/admin/create-new-project")
+        }}
+      >
+        Create New Project
+      </button>
+      <button
+        className="px-10 py-4 text-xl text-white capitalize rounded-lg bg-gGreen hover:bg-gGreen/70"
+        onClick={() => {
           logoutUser();
         }}
       >

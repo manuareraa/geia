@@ -22,6 +22,7 @@ import UserProjectView from "./pages/platform/ProjectView";
 import NewApplication from "./pages/platform/NewApplication";
 import UserLogin from "./pages/platform/UserLogin";
 import UserRegister from "./pages/platform/UserRegister";
+import CreateNewProject from "./pages/admin-panel/CreateNewProject";
 
 function App() {
   const location = useLocation();
@@ -158,6 +159,17 @@ function App() {
               isExiting={isExiting}
             >
               <Stats />
+            </Transition>
+          }
+        />
+        <Route
+          path="/admin/create-new-project"
+          element={
+            <Transition
+              trigger={location.pathname === "/admin/create-new-project"}
+              isExiting={isExiting}
+            >
+              <CreateNewProject />
             </Transition>
           }
         />

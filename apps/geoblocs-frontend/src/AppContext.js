@@ -509,6 +509,79 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const createNewProjectByAdmin = async (data) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/create-new-project",
+          {
+            projectId: generateRandomProjectId(appData.projectCount),
+            createdOn: Date.now(),
+            status: "not live",
+            metadata: {
+              gps: data.gps,
+              size: data.size,
+              ownership: data.ownership,
+              projectName: data.projectName,
+              startedFrom: "",
+              location: data.location,
+              locationAddress: "",
+              projectStatus: 0,
+              coverImage: "",
+            },
+            applicationDetails: {
+              applicationId: 0,
+              name: "NA",
+              email: "NA",
+            },
+            geoblocsData: {
+              purchased: 0,
+              totalSupply: 0,
+              pricePerGeobloc: 0,
+              collectionId: 0,
+              tokenName: "",
+              description: "",
+              tickerSymbol: "",
+              tokenId: [],
+            },
+            sponsors: [],
+            seasons: [],
+            environment: [],
+            story: [],
+            links: [],
+            documents: [],
+            conditions: [],
+            gallery: [],
+            monitors: [],
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data.status === "success") {
+          toast.success("Project created successfully");
+          navigate("/admin/dashboard/applications");
+          return true;
+        } else {
+          toast.error(
+            "Error [AC107]: Error occured while creating new project"
+          );
+          navigate("/admin/dashboard/applications");
+          return false;
+        }
+      } else {
+        toast.error("Error [AC108]: Token not found");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while creating new project: ", error);
+      return false;
+    }
+  };
+
   const getAllProjects = async () => {
     try {
       const token = getTokenFromLocalStorage();
@@ -1695,6 +1768,7 @@ export const AppProvider = ({ children }) => {
         userRegister,
         updateBlockchainAccInUser,
         checkUserExistence,
+        createNewProjectByAdmin,
         // blockchain part
         createNewUniqueNetworkAcc,
         createNewNftCollection,
