@@ -13,8 +13,8 @@ function ProjectStory(props) {
 
   useEffect(() => {
     setProjectId(props.projectId);
-    setStoryBody(props.storyBody || []);
-    console.log("storyBody", storyBody, storyBody.length, props.storyBody);
+    setStoryBody(props.storyBody);
+    console.log("props", props.storyBody);
   }, [props]);
 
   useEffect(() => {

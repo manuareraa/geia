@@ -24,94 +24,98 @@ function ProjectStories(props) {
       .sort((a, b) => b.createdOn - a.createdOn)
       .slice(0, 2);
     recentProjects.forEach((project) => {
-      let storyCard = (
-        <motion.div
-          key={1}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 1.0 }}
-          className="w-[100%]"
-        >
+      if (project.story.length !== 0) {
+        let storyCard = (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1, delay: 0.1 }}
-            className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-[100%] max-w-[300px]"
-            onClick={() => {
-              setStoryInView(project.story);
-              window.my_modal_1.showModal();
-            }}
+            key={1}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 1.0 }}
+            className="w-[100%]"
           >
-            <img
-              src={
-                project.metadata.coverImage
-                  ? project.metadata.coverImage[0]
-                  : sampleOne
-              }
-              className="object-cover w-full h-48 rounded-2xl"
-            ></img>
-            <div className="flex flex-col justify-between h-full">
-              <p className="px-2 text-lg font-bold">
-                {project.story[0].content}
-              </p>
-              <p className="px-2 pt-3 text-sm font-light">
-                {new Date(project.createdOn).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
-            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1, delay: 0.1 }}
+              className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-[100%] max-w-[300px]"
+              onClick={() => {
+                setStoryInView(project.story);
+                window.my_modal_1.showModal();
+              }}
+            >
+              <img
+                src={
+                  project.metadata.coverImage
+                    ? project.metadata.coverImage[0]
+                    : sampleOne
+                }
+                className="object-cover w-full h-48 rounded-2xl"
+              ></img>
+              <div className="flex flex-col justify-between h-full">
+                <p className="px-2 text-lg font-bold">
+                  {project.story[0].content}
+                </p>
+                <p className="px-2 pt-3 text-sm font-light">
+                  {new Date(project.createdOn).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      );
-      tempArrayForRecentStoryCards.push(storyCard);
-      setRecentStoryCards(tempArrayForRecentStoryCards);
+        );
+        tempArrayForRecentStoryCards.push(storyCard);
+        setRecentStoryCards(tempArrayForRecentStoryCards);
+      }
     });
     appData.projects.forEach((project) => {
-      let storyCard = (
-        <motion.div
-          key={1}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 1.0 }}
-          className="w-[100%]"
-        >
+      if (project.story.length !== 0) {
+        let storyCard = (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1, delay: 0.1 }}
-            className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
-            onClick={() => {
-              setStoryInView(project.story);
-              window.my_modal_1.showModal();
-            }}
+            key={1}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 1.0 }}
+            className="w-[100%]"
           >
-            <img
-              src={
-                project.metadata.coverImage
-                  ? project.metadata.coverImage[0]
-                  : sampleOne
-              }
-              className="object-cover w-full h-48 rounded-2xl"
-            ></img>
-            <div className="flex flex-col justify-between h-full">
-              <p className="px-2 text-lg font-bold">
-                {project.story[0].content}
-              </p>
-              <p className="px-2 pt-3 text-sm font-light">
-                {new Date(project.createdOn).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
-            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1, delay: 0.1 }}
+              className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
+              onClick={() => {
+                setStoryInView(project.story);
+                window.my_modal_1.showModal();
+              }}
+            >
+              <img
+                src={
+                  project.metadata.coverImage
+                    ? project.metadata.coverImage[0]
+                    : sampleOne
+                }
+                className="object-cover w-full h-48 rounded-2xl"
+              ></img>
+              <div className="flex flex-col justify-between h-full">
+                <p className="px-2 text-lg font-bold">
+                  {project.story[0].content}
+                </p>
+                <p className="px-2 pt-3 text-sm font-light">
+                  {new Date(project.createdOn).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      );
-      tempArrayForStoryCards.push(storyCard);
-      setStoryCards(tempArrayForStoryCards);
+        );
+        tempArrayForStoryCards.push(storyCard);
+        setStoryCards(tempArrayForStoryCards);
+      }
     });
   };
 
@@ -147,7 +151,9 @@ function ProjectStories(props) {
         <div className="flex flex-col self-center mt-16 space-y-4 lg:mt-0 lg:ml-12 lg:items-end">
           {recentStoryCards.length > 0 ? (
             <>
-              <p className="text-xl font-bold text-center lg:text-3xl">Recent Stories</p>
+              <p className="text-xl font-bold text-center lg:text-3xl">
+                Recent Stories
+              </p>
               <motion.div className="grid grid-cols-1 lg:grid-rows-1 lg:grid-cols-2 lg:gap-x-8 gap-y-8 lg:gap-y-0">
                 <AnimatePresence>{recentStoryCards}</AnimatePresence>
               </motion.div>
@@ -160,7 +166,9 @@ function ProjectStories(props) {
       <div className="flex flex-col items-center justify-center w-full px-8 my-24 mt-32 lg:px-52">
         {/* title */}
         <div className="flex flex-col items-start w-full my-8">
-          <p className="self-center text-3xl font-bold text-center lg:self-start">All Stories</p>
+          <p className="self-center text-3xl font-bold text-center lg:self-start">
+            All Stories
+          </p>
         </div>
         {/* body */}
         {storyCards.length > 0 ? (

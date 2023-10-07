@@ -359,7 +359,7 @@ function ProjectView(props) {
                   <ProjectStory
                     projectId={projectId}
                     storyHeading={"storyHeading"}
-                    storyBody={appData.projectInView.story.body}
+                    storyBody={appData.projectInView.story}
                   />
                 ) : subWindow === "gallery" ? (
                   <ProjectGallery
