@@ -20,10 +20,13 @@ function ProjectStories(props) {
     let tempArrayForRecentStoryCards = [];
     setStoryCards([]);
     setRecentStoryCards([]);
-    const recentProjects = appData.projects
-      .sort((a, b) => b.createdOn - a.createdOn)
-      .slice(0, 2);
+    const recentProjects = appData.projects.sort(
+      (a, b) => b.createdOn - a.createdOn
+    );
+
+    console.log("recentProjects", recentProjects);
     recentProjects.forEach((project) => {
+      if(tempArrayForRecentStoryCards.length === 2) return;
       if (project.story.length !== 0) {
         let storyCard = (
           <motion.div
@@ -152,7 +155,7 @@ function ProjectStories(props) {
           {recentStoryCards.length > 0 ? (
             <>
               <p className="text-xl font-bold text-center lg:text-3xl">
-                Recent Stories
+                Recent Stories {recentStoryCards.length}
               </p>
               <motion.div className="grid grid-cols-1 lg:grid-rows-1 lg:grid-cols-2 lg:gap-x-8 gap-y-8 lg:gap-y-0">
                 <AnimatePresence>{recentStoryCards}</AnimatePresence>

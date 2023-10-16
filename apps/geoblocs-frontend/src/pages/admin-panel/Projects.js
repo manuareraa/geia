@@ -23,20 +23,22 @@ function AllProjects(props) {
       if (project.status === "live" || project.status === "not live") {
         let tableRowElement = (
           <tr className="hover" key={project.projectId}>
-            <th>#{project.projectId}</th>
+            <th className="hidden lg:table-cell md:table-cell">
+              #{project.projectId}
+            </th>
             <td>
               {project.metadata.projectName === ""
                 ? "(pending initialisation)"
                 : project.metadata.projectName}
             </td>
-            <td>
+            <td className="hidden lg:table-cell">
               {new Date(project.createdOn).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               })}
             </td>
-            <td>
+            <td className="hidden lg:table-cell">
               {/* {project.metadata.startedFrom === ""
                 ? "--"
                 : new Date(project.metadata.startedFrom).toLocaleDateString(
@@ -112,7 +114,7 @@ function AllProjects(props) {
       <ButtonsContainer />
 
       {/* project stories container */}
-      <div className="flex flex-col items-center justify-center w-full my-24 mt-20 px-52">
+      <div className="flex flex-col items-center justify-center w-full px-16 my-24 mt-20">
         {/* title */}
         <div className="flex flex-col items-start w-full my-">
           <p className="text-3xl font-bold text-center">All Projects</p>
@@ -126,10 +128,12 @@ function AllProjects(props) {
               {/* head */}
               <thead>
                 <tr>
-                  <th>Project ID</th>
+                  <th className="hidden lg:table-cell md:table-cell">
+                    Project ID
+                  </th>
                   <th>Project Name</th>
-                  <th>Created Date</th>
-                  <th>Started Date</th>
+                  <th className="hidden lg:table-cell">Created Date</th>
+                  <th className="hidden lg:table-cell">Started Date</th>
                   <th>Location</th>
                   <th></th>
                 </tr>

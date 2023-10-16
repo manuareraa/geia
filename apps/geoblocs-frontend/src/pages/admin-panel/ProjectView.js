@@ -64,7 +64,7 @@ function ProjectView(props) {
       <ButtonsContainer />
 
       {/* body */}
-      <div className="flex flex-col items-center justify-center w-full my-24 mt-20 px-52">
+      <div className="flex flex-col items-center justify-center w-full px-16 my-24 mt-20">
         {Object.keys(appData.projectInView).length > 0 ? (
           <>
             {/* title bar */}
@@ -130,7 +130,7 @@ function ProjectView(props) {
               </div>
 
               {/* project metadata  */}
-              <div className="grid w-full grid-cols-4 grid-rows- gap-y-12">
+              <div className="grid w-full lg:grid-cols-4 md:grid-cols-3 grid-rows- gap-y-12">
                 <div className="flex flex-col space-y-2">
                   <p className="text-xl font-bold">Application No.</p>
                   <p className="text-lg font-">{projectId}</p>
@@ -195,7 +195,7 @@ function ProjectView(props) {
               <div className="divider"></div>
 
               {/* geoblocs stats container */}
-              <div className="flex flex-row items-center justify-center space-x-28">
+              <div className="flex flex-col items-center justify-center space-y-8 lg:flex-row md:flex-row lg:space-x-28 md:space-x-12 lg:space-y-0 md:space-y-0">
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <p className="text-xl font-bold">Geoblocs Purchased</p>
                   <p className="text-4xl">
@@ -218,7 +218,7 @@ function ProjectView(props) {
               </div>
 
               {/* charts container */}
-              <div className="flex flex-row items-center justify-center w-full space-x-2">
+              <div className="flex flex-col items-center justify-center w-full space-x-2 md:flex-col lg:flex-row">
                 {/* project status chart */}
                 <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
                   <p className="text-2xl font-bold text-center">
@@ -246,9 +246,9 @@ function ProjectView(props) {
               <div className="divider"></div>
 
               {/* buttons container */}
-              <div className="grid grid-cols-3 gap-x-8 gap-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-x-8 gap-y-6">
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("story");
                     window.my_modal_1.showModal();
@@ -257,7 +257,7 @@ function ProjectView(props) {
                   Manage Project Story
                 </button>
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("gallery");
                     window.my_modal_1.showModal();
@@ -266,7 +266,7 @@ function ProjectView(props) {
                   Manage Project Gallery
                 </button>
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("metadata");
                     window.my_modal_1.showModal();
@@ -275,7 +275,7 @@ function ProjectView(props) {
                   Edit Project Metadata
                 </button>
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("links");
                     window.my_modal_1.showModal();
@@ -284,7 +284,7 @@ function ProjectView(props) {
                   Update Project Links
                 </button>
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("documents");
                     window.my_modal_1.showModal();
@@ -293,7 +293,7 @@ function ProjectView(props) {
                   Update Project Documents
                 </button>
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("sponsors");
                     window.my_modal_1.showModal();
@@ -302,7 +302,7 @@ function ProjectView(props) {
                   Manage Sponsors
                 </button>
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("environment");
                     window.my_modal_1.showModal();
@@ -311,7 +311,7 @@ function ProjectView(props) {
                   Update Environment Data
                 </button>
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("conditions");
                     window.my_modal_1.showModal();
@@ -320,7 +320,7 @@ function ProjectView(props) {
                   Edit Land Conditions
                 </button>
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     window.my_modal_1.showModal();
                     setSubWindow("season");
@@ -329,7 +329,7 @@ function ProjectView(props) {
                   Edit Planting Season
                 </button>
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     window.my_modal_1.showModal();
                     setSubWindow("geoblocs");
@@ -338,7 +338,7 @@ function ProjectView(props) {
                   Manage Geoblocs
                 </button>
                 <button
-                  className="px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
+                  className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     window.my_modal_1.showModal();
                     setSubWindow("monitors");

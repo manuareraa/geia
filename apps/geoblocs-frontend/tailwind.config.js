@@ -14,7 +14,14 @@ module.exports = {
       white: "#FFFFFF",
       black: "#000000",
     },
-    extend: {},
+    extend: {
+      screens: {
+        md: "640px",
+        lg: "970px",
+        xl: "1280px",
+        "2xl": "1536px",
+      },
+    },
   },
   // plugins: [require("daisyui"), require("flowbite/plugin")],
   plugins: [require("daisyui")],

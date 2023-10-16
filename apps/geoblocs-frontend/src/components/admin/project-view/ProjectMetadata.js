@@ -26,7 +26,7 @@ function ProjectMetadata(props) {
       <div className="divider"></div>
       {/* body */}
       <div className="flex flex-col items-center justify-center w-full pt-8 pb-6 space-y-4">
-        <div className="grid items-center justify-center grid-cols-3 gap-x-20 gap-y-8">
+        <div className="grid items-center justify-center grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-x-20 gap-y-8">
           {/* Project Name */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
@@ -182,7 +182,7 @@ function ProjectMetadata(props) {
           </div>
 
           {/* address */}
-          <div className="flex flex-row items-end col-span-2 space-x-2">
+          <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
             <div className="flex flex-col space-y-">
               <p className="text-xs font-light">Location Address</p>
@@ -202,52 +202,52 @@ function ProjectMetadata(props) {
               />
             </div>
           </div>
-
-          <div className="flex flex-row col-span-3 space-x-4">
-            <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
-              {props.projectMetadata.coverImage?.length > 0
-                ? "Replace Cover Image"
-                : "Upload Cover Image"}
-              <input
-                type="file"
-                className="hidden"
-                onChange={(event) => {
-                  // Handle the file upload here if needed
-                  const selectedFiles = event.target.files;
-                  // console.log(selectedFiles);
-                  uploadFilesToS3(selectedFiles, projectId, "metadata")
-                    .then((fileUrls) => {
-                      // console.log(
-                      //   "fileupload finished, updating gallery",
-                      //   fileUrls
-                      // );
-                      setProjectMetadata((prevState) => {
-                        return {
-                          ...prevState,
-                          coverImage: fileUrls,
-                        };
-                      });
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                      toast.error("Failed to upload image. Try again later.");
-                    });
-                }}
-              />
-            </label>
-          </div>
-
-          {projectMetadata.coverImage?.length > 0 ? (
-            <img
-              src={projectMetadata.coverImage[0]}
-              alt=""
-              className="w-[350px] h-[200px] rounded-md"
-            ></img>
-          ) : (
-            <p className="text-lg">No Cover Image Uploaded</p>
-          )}
         </div>
       </div>
+
+      <div className="flex flex-row col-span-3 space-x-4">
+        <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
+          {props.projectMetadata.coverImage?.length > 0
+            ? "Replace Cover Image"
+            : "Upload Cover Image"}
+          <input
+            type="file"
+            className="hidden"
+            onChange={(event) => {
+              // Handle the file upload here if needed
+              const selectedFiles = event.target.files;
+              // console.log(selectedFiles);
+              uploadFilesToS3(selectedFiles, projectId, "metadata")
+                .then((fileUrls) => {
+                  // console.log(
+                  //   "fileupload finished, updating gallery",
+                  //   fileUrls
+                  // );
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      coverImage: fileUrls,
+                    };
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                  toast.error("Failed to upload image. Try again later.");
+                });
+            }}
+          />
+        </label>
+      </div>
+
+      {projectMetadata.coverImage?.length > 0 ? (
+        <img
+          src={projectMetadata.coverImage[0]}
+          alt=""
+          className="w-[350px] h-[200px] rounded-md"
+        ></img>
+      ) : (
+        <p className="text-lg">No Cover Image Uploaded</p>
+      )}
       {/* save button */}
       <div className="flex flex-col w-full pt-10">
         <button

@@ -72,15 +72,15 @@ function ProjectGallery(props) {
   return (
     <div className="flex flex-col w-full space-y-4 overflow-auto">
       {/* title container */}
-      <div className="flex flex-row items-center justify-between w-full">
+      <div className="flex flex-col items-center justify-between w-full md:flex-row lg:flex-row">
         {/* title  */}
-        <p className="text-4xl font-bold text-center">
+        <p className="text-lg font-bold text-center md:text-xl lg:text-4xl">
           Project Gallery ({gallery.length})
         </p>
 
         {/* title button containers */}
         <div className="flex flex-row space-x-4">
-          <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
+          <label className="p-1 px-2 text-sm text-white capitalize border-0 rounded-lg cursor-pointer lg:p-2 lg:px-4 md:px-2 lg:text-lg md:text-md btn bg-gGreen hover:bg-gGreen">
             Upload Image
             <input
               type="file"
@@ -114,7 +114,7 @@ function ProjectGallery(props) {
       {/* body */}
       <div className="flex flex-col w-full pb-6 space-y-4">
         {gallery.length > 0 ? (
-          <div className="grid items-center justify-center w-full grid-cols-4 gap-x-4 gap-y-8">
+          <div className="grid items-center justify-center w-full grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-8">
             {imageCards}
           </div>
         ) : (
