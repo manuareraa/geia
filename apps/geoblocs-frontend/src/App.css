@@ -1,6 +1,6 @@
 .bg-home-image {
   /* get image from assets folder */
-  background-image: url(./assets/img/home-bg.png);
+  background-image: url(./assets/img/home-bg-v2.png);
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -11,6 +11,14 @@
   background-repeat: no-repeat;
   background-size: cover;
   height: fit-content;
+}
+
+.contact-page-bg {
+  /* get image from assets folder */
+  background-image: url(./assets/img/contact/11.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* height: fit-content; */
 }
 
 /* ==== */

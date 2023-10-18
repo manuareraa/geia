@@ -36,7 +36,7 @@ function LandStewards(props) {
         {/* get paid to restore your land */}
         <div className="flex flex-col items-center justify-center space-y-6">
           <img src={paidRestore} className="w-36"></img>
-          <p className="text-lg font-bold text-center ">
+          <p className="text-lg font-bold text-center underline">
             Get Paid to Restore Your Land
           </p>
           <p className="font-light w-[375px] text-center">
@@ -48,7 +48,9 @@ function LandStewards(props) {
         {/* streamlined process */}
         <div className="flex flex-col items-center justify-center space-y-6">
           <img src={streamlinedProcess} className="w-36"></img>
-          <p className="text-lg font-bold text-center ">Streamlined Process</p>
+          <p className="text-lg font-bold text-center underline">
+            Streamlined Process
+          </p>
           <p className="font-light w-[375px] text-center">
             Registration, monitoring, reporting, verification andpayment are
             streamlined to save you precious time.
@@ -58,7 +60,7 @@ function LandStewards(props) {
         {/* efficiency through technology */}
         <div className="flex flex-col items-center justify-center space-y-6">
           <img src={efficiencyTechnology} className="w-36"></img>
-          <p className="text-lg font-bold text-center ">
+          <p className="text-lg font-bold text-center underline">
             Efficiency through Technology
           </p>
           <p className="font-light w-[375px] text-center">

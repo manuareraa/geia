@@ -6,16 +6,16 @@ import rightArrow from "../../assets/svg/right-arrow.svg";
 function Contact(props) {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col justify-center w-full">
+    <div className="flex flex-col justify-center w-full h-screen contact-page-bg">
       {/* title container */}
-      <div className="flex flex-col items-center justify-center pt-64 space-y-8">
+      <div className="flex flex-col items-center justify-center space-y-8 pt-36">
         {/* title */}
-        <p className="font- lg:text-[80px] text-[33px] md:text-[50px]">
+        <p className="font- lg:text-[80px] text-[33px] md:text-[50px] text-white">
           Contact
         </p>
 
         <p
-          className="pb-6 font-light text-center w-[1200px] lg:text-[20px] text-[15px] md:text-[17px]  hover:cursor-pointer"
+          className="pb-6 font-light text-center w-[1200px] lg:text-[20px] text-[15px] md:text-[17px]  hover:cursor-pointer text-white"
           onClick={() => window.open("mailto:thomas@geia.ie")}
         >
           Mail Us @{" "}

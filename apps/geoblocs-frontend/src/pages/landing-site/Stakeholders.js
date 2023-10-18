@@ -67,7 +67,7 @@ function Stakeholders(props) {
           onClick={() => setSection(2)}
         >
           <img src={scientists} className="w-20 lg:w-44" />
-          <p className="font-bold text-md lg:text-xl">Scientists</p>
+          <p className="font-bold text-md lg:text-xl">Network</p>
         </div>
       </div>
 

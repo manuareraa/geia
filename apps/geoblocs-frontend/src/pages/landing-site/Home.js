@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 import geiaLogo from "../../assets/img/geia-high-res.png";
 import rightArrow from "../../assets/svg/right-arrow.svg";
-import communityCentric from "../../assets/svg/community-centric.svg";
-import radicalTransparency from "../../assets/svg/radical-transparency.svg";
-import decentralization from "../../assets/svg/decentralization.svg";
+import communityCentric from "../../assets/svg/community-centric-v2.svg";
+import radicalTransparency from "../../assets/svg/radical-transparency-v2.svg";
+import decentralization from "../../assets/svg/decentralization-v2.svg";
 import solution from "../../assets/img/solution.png";
-import registerProject from "../../assets/svg/register-project.svg";
-import purchaseGeoblocs from "../../assets/svg/purchase-geoblocs.svg";
+import registerProject from "../../assets/svg/register-project-v2.svg";
+import purchaseGeoblocs from "../../assets/svg/purchase-geoblocs-v2.svg";
 import blockchainBg from "../../assets/img/blockchain-bg.png";
 import uniqueLogo from "../../assets/img/unique-logo.png";
 import fb from "../../assets/svg/fb.svg";
@@ -23,30 +23,30 @@ function Home(props) {
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* hero outer container */}
-      <div className="flex flex-col items-center justify-center w-full p-8 bg-home-image">
+      <div className="flex flex-col items-center justify-center w-full h-screen p-8 bg-home-image">
         {/* hero inner container */}
-        <div className="flex flex-col items-center justify-center py-32 space-y-12">
+        <div className="flex flex-col items-center justify-center pt-32 pb-20 space-y-12">
           {/* title container */}
           <div className="flex flex-col items-center justify-center pt-4 space-y-4 leading-none">
             {/* powered by container */}
-            <div className="flex flex-row items-center space-x-4">
+            {/* <div className="flex flex-row items-center space-x-4">
               <p className="text-sm text-white lg:text-lg">Powered By</p>
               <img src={geiaLogo} alt="geia-logo" className="w-12 lg:w-20" />
-            </div>
+            </div> */}
             {/* title */}
-            <p className="text-[33px] lg:text-[80px] text-white">
+            <p className="text-[33px] lg:text-[80px] text-black">
               Bringing radical
             </p>
-            <p className="text-[33px] lg:text-[80px] text-white">
+            <p className="text-[33px] lg:text-[80px] text-gBlue">
               transparency to
             </p>
-            <p className="hidden lg:flex md:flex  text-[33px] lg:text-[80px] font-bold text-gGreen text-center">
+            <p className="hidden lg:flex md:flex  text-[33px] lg:text-[80px] font-bold text-black text-center">
               biosphere regeneration
             </p>
-            <p className="md:hidden lg:hidden text-[33px] lg:text-[80px] font-bold text-gGreen text-center">
+            <p className="md:hidden lg:hidden text-[33px] lg:text-[80px] font-bold text-black text-center">
               biosphere
             </p>
-            <p className="md:hidden lg:hidden text-[33px] lg:text-[80px] font-bold text-gGreen text-center">
+            <p className="md:hidden lg:hidden text-[33px] lg:text-[80px] font-bold text-black text-center">
               regeneration
             </p>
           </div>
@@ -69,6 +69,12 @@ function Home(props) {
               <p>Explore Projects</p>
               <img src={rightArrow} className="w-4" />
             </button>
+          </div>
+
+          {/* powered by container */}
+          <div className="flex flex-row items-center justify-end w-full pt-10 mr-20 space-x-4">
+            <p className="text-sm text-white lg:text-2xl">Powered By</p>
+            <img src={geiaLogo} alt="geia-logo" className="w-15 lg:w-25" />
           </div>
         </div>
       </div>

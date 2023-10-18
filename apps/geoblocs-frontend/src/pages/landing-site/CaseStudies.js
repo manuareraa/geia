@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import sampleOne from "../../assets/test/sample-one.png";
 import Footer from "../../components/Footer";
+import imageOne from "../../assets/img/casestudies/11.png";
 
 function CaseStudies(props) {
   const navigate = useNavigate();
@@ -12,22 +13,30 @@ function CaseStudies(props) {
     // outer container
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
-      <div className="flex flex-col items-center justify-center pt-64 space-y-8">
+      <div className="flex flex-col items-center justify-center space-y-8 pt-36">
         {/* title */}
         <p className="font- lg:text-[80px] text-[33px] md:text-[50px]">
-          Case Studies
+          <span className="text-gGreen">Case</span> Studies
         </p>
 
-        <p className="font-light text-center">Learn more about how we work</p>
+        <div className="flex flex-col items-center justify-center py-8 space-y-16 lg:px-40 lg:space-x-12 lg:space-y-0 lg:flex-row">
+          <p className="font-light text-center w-[85%]">
+            All our projects focus on an holistic approach because without a
+            symbiosis between the land and the people that rely on it no amount
+            of tree planting is going to help, so whether it,s a sacred forest
+            restoration in the Philippines using a mix of fmnr* and
+            agroforestry, or re-wilding in the west of Ireland we make sure that
+            long term viability is built in to every project.
+          </p>
 
-        <p className="font-light lg:w-[800px] w-[100%] md:w-[85%]  text-center">
-          All our projects focus on an holistic approach because without a
-          symbiosis between the land and the people that rely on it no amount of
-          tree planting is going to help, so whether it,s a sacred forest
-          restoration in the Philippines using a mix of fmnr* and agroforestry,
-          or re-wilding in the west of Ireland we make sure that long term
-          viability is built in to every project.
-        </p>
+          <div className="flex flex-col items-center justify-center space-y-8">
+            <p className="text-xl font-bold text-center">
+              Learn more about how we work
+            </p>
+
+            <img src={imageOne} className="w-[60%]"></img>
+          </div>
+        </div>
 
         {/* title button */}
         <button
@@ -39,7 +48,11 @@ function CaseStudies(props) {
         </button>
       </div>
 
-      <motion.div className="grid self-center grid-cols-1 py-24 md:grid-cols-2 lg:px-64 w-fit lg:grid-cols-4 lg:grid-rows-2 pb-60 lg:gap-x-8 gap-y-8 md:gap-x-8">
+      <div className="flex flex-col items-center justify-center w-full py-24">
+        <p className="text-2xl font-bold">We are working on it</p>
+      </div>
+
+      {/* <motion.div className="grid self-center grid-cols-1 py-24 md:grid-cols-2 lg:px-64 w-fit lg:grid-cols-4 lg:grid-rows-2 pb-60 lg:gap-x-8 gap-y-8 md:gap-x-8">
         <AnimatePresence>
           <motion.div
             key={1}
@@ -194,7 +207,7 @@ function CaseStudies(props) {
             </motion.div>
           </motion.div>
         </AnimatePresence>
-      </motion.div>
+      </motion.div> */}
       <Footer />
     </div>
   );

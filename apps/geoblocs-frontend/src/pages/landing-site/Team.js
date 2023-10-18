@@ -4,27 +4,38 @@ import { useNavigate } from "react-router-dom";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import Footer from "../../components/Footer";
 
+import imageOne from "../../assets/img/team/11.png";
+import imageTwo from "../../assets/img/team/12.png";
+import imageThree from "../../assets/img/team/13.png";
+import imageFour from "../../assets/img/team/14.png";
+
 function Team(props) {
   const navigate = useNavigate();
   return (
     // outer container
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
-      <div className="flex flex-col items-center justify-center pt-64 space-y-8">
+      <div className="flex flex-col items-center justify-center space-y-8 pt-36">
         {/* title */}
-        <p className="font- lg:text-[80px] text-[33px] md:text-[50px]">The Team</p>
-
-        <p className="font-light lg:w-[800px] w-[85%] md:w-[85%]  text-center pb-6">
-          The team behind Geoblocs is a network of individuals, institutions,
-          companies, non profits and indigenous groups all with a passion to
-          find ways to regenerate our biosphere. Because it is structured this
-          way there are low overheads making it possible to use the funds to the
-          greatest benefit as each part of the network is only being rewarded
-          for work being carried out by them at that time. The entire platform
-          is run on the same principal from the IT people to the people doing
-          the work on the ground. Geoblocs is administered by GEIA who, like all
-          other stakeholders works on a commission basis.
+        <p className="font- lg:text-[80px] text-[33px] md:text-[50px]">
+          The Team
         </p>
+
+        <div className="flex flex-col items-center justify-center pt-12 pb-16 space-y-8 lg:flex-row lg:space-y-0 lg:space-x-16">
+          <p className="font-light lg:w-[40%] w-[85%] md:w-[85%]  text-center pb-6">
+            The team behind Geoblocs is a network of individuals, institutions,
+            companies, non profits and indigenous groups all with a passion to
+            find ways to regenerate our biosphere. Because it is structured this
+            way there are low overheads making it possible to use the funds to
+            the greatest benefit as each part of the network is only being
+            rewarded for work being carried out by them at that time. The entire
+            platform is run on the same principal from the IT people to the
+            people doing the work on the ground. Geoblocs is administered by
+            GEIA who, like all other stakeholders works on a commission basis.
+          </p>
+
+          <img src={imageOne} className="w-[40%]"></img>
+        </div>
 
         {/* title button */}
         <button
@@ -36,32 +47,51 @@ function Team(props) {
         </button>
       </div>
 
-      <div className="flex flex-col items-center justify-center w-full space-y-16 my-28">
-        <p className="font- text-[50px]">Our Value</p>
+      <div className="flex flex-col items-center justify-center w-full px-16 my-24 space-y-16">
+        <p className="font- text-[50px]">Our Values</p>
 
-        <p className="text-3xl font-bold text-center">Transparency</p>
+        {/* transparency */}
+        <div className="flex flex-row space-x-8">
+          <div className="flex flex-col items-center justify-center space-y-8">
+            <p className="text-3xl font-bold text-center">Transparency</p>
+            <p className="font-light text-center">
+              The Geoblocs system aims to be completely transparent at every
+              step of the process ensuring that the maximum benefit is achieved
+              and that all stakeholders adhere to the methodology.
+            </p>
+          </div>
 
-        <p className="font-light text-center lg:w-[900px] w-[85%] md:w-[85%]">
-          The Geoblocs system aims to be completely transparent at every step of
-          the process ensuring that the maximum benefit is achieved and that all
-          stakeholders adhere to the methodology.
-        </p>
+          <img src={imageTwo} className="w-[40%]"></img>
+        </div>
 
-        <p className="text-3xl font-bold text-center">Innovation</p>
+        {/* innovation */}
+        <div className="flex flex-row space-x-8">
+          <img src={imageThree} className="w-[40%]"></img>
+          <div className="flex flex-col items-center justify-center space-y-8">
+            <p className="text-3xl font-bold text-center">Innovation</p>
 
-        <p className="font-light lg:w-[900px] w-[85%] md:w-[85%]  text-center">
-          Pioneering technology to calculate, monitor and evaluate every project
-          down to the m².
-        </p>
+            <p className="font-light text-center">
+              Pioneering technology to calculate, monitor and evaluate every
+              project down to the m².
+            </p>
+          </div>
+        </div>
 
-        <p className="text-3xl font-bold text-center">Morality</p>
+        {/* morality */}
 
-        <p className="font-light lg:w-9800px] w-[85%] md:w-[85%]  text-center">
-          In the coming boom of biosphere reclamation, GEIA stands against the
-          monoculture model of carbon sinks and corporate land banks. Our
-          projects support people and the land, addressing all of the UN
-          Sustainable Development Goals in harmony.
-        </p>
+        <div className="flex flex-row space-x-8">
+          <div className="flex flex-col items-center justify-center space-y-8">
+            <p className="text-3xl font-bold text-center">Morality</p>
+
+            <p className="font-light text-center">
+              In the coming boom of biosphere reclamation, GEIA stands against
+              the monoculture model of carbon sinks and corporate land banks.
+              Our projects support people and the land, addressing all of the UN
+              Sustainable Development Goals in harmony.
+            </p>
+          </div>
+          <img src={imageFour} className="w-[40%]"></img>
+        </div>
       </div>
 
       <Footer />

@@ -13,7 +13,7 @@ function Navbar(props) {
   const { setLoading, loading, appData, logoutUser } = useContext(AppContext);
   return (
     // outer container
-    <div className="fixed z-20 flex flex-row items-center justify-between w-full p-4 bg-black/30">
+    <div className="fixed z-20 flex flex-row items-center justify-between w-full p-4 bg-white/40">
       {/* first half */}
 
       {/* logo container */}
@@ -24,7 +24,7 @@ function Navbar(props) {
       {/* second half for large screen */}
       <div className="flex-row items-center hidden space-x-16 lg:flex">
         {/* menu container */}
-        <div className="flex flex-row items-center justify-between space-x-12 text-white">
+        <div className="flex flex-row items-center justify-between space-x-12 text-black">
           <p
             className={
               location.pathname === "/"
@@ -123,7 +123,7 @@ function Navbar(props) {
             }}
           >
             <div className="flex flex-row items-center space-x-4">
-              <p>To Platform</p>
+              <p>To Projects</p>
               <img src={rightArrow} className="w-4" />
             </div>
           </button>
@@ -140,6 +140,7 @@ function Navbar(props) {
         />
       </div>
 
+      {/* mobile menu */}
       <dialog id="mobileMenu" className="modal bg-gGreen">
         <div className="shadow-none modal-box bg-gGreen/0">
           <h3 className="flex flex-col items-center w-full text-2xl font-bold text-white">
@@ -316,7 +317,7 @@ function Navbar(props) {
                 }}
               >
                 <div className="flex flex-row items-center space-x-4">
-                  <p>To Platform</p>
+                  <p>To Projects</p>
                   <img src={rightArrowG} className="w-4" />
                 </div>
               </button>
