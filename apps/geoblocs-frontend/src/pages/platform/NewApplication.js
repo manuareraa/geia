@@ -141,14 +141,14 @@ function NewApplication(props) {
             </div>
           </div>
 
-          {/* Project Size in m2 */}
+          {/* Project Size in Ha */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
             <div className="flex flex-col space-y-">
-              <p className="text-xs font-light">Project Size in m2</p>
+              <p className="text-xs font-light">Project Size in Ha</p>
               <input
                 type="text"
-                placeholder="Project Size in m2"
+                placeholder="Project Size in Ha"
                 className="py-2 border-b-2 border-black/50 focus:outline-none"
                 value={formData.size}
                 onChange={(e) =>

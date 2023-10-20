@@ -27,6 +27,8 @@ import monitoringIcon from "../../assets/svg/monitoring-icon.svg";
 import sponsorOne from "../../assets/test/sponsor-one.png";
 import document from "../../assets/svg/document.svg";
 import markerIcon from "../../assets/img/marker-icon.png";
+import calendarIcon from "../../assets/img/dashboard/calendar-icon.png";
+import locationIcon from "../../assets/img/dashboard/location-icon.png";
 
 import StatusChart from "../../components/admin/StatusChart";
 import GeoblocsChart from "../../components/admin/GeoblocsChart";
@@ -44,7 +46,7 @@ import Paypal from "../../components/Paypal";
 import "../../utils/TooltipStyles.css";
 
 function ProjectView(props) {
-  const position = [51.505, -0.09];
+  let position = [51.903614, -8.468399];
   const navigate = useNavigate();
   const {
     appData,
@@ -63,8 +65,8 @@ function ProjectView(props) {
   const [redeemContainerView, setRedeemContainerView] = useState(false);
   const [redeemStatus, setRedeemStatus] = useState(false);
   const [redeeemInProcess, setRedeemInProcess] = useState(false);
-  const [latLong, setLatLong] = useState([51.505, -0.09]);
-  const [mapCenter, setMapCenter] = useState(position);
+  const [latLong, setLatLong] = useState([51.903614, -8.468399]);
+  const [mapCenter, setMapCenter] = useState(latLong);
 
   const ChangeView = ({ center }) => {
     console.log("executing change view");
@@ -83,6 +85,26 @@ function ProjectView(props) {
     // shadowAnchor: [13, 41], // the same for the shadow
     // popupAnchor: [0, -41], // point from which the popup should open relative to the iconAnchor
   });
+
+  function isValidLatLon(latLonArray) {
+    // Check if the array has exactly two elements
+    if (latLonArray.length !== 2) return false;
+
+    // Destructure the array into lat and lon variables
+    const [lat, lon] = latLonArray;
+
+    // Check if lat and lon are numbers
+    if (typeof lat !== "number" || typeof lon !== "number") return false;
+
+    // Check the range of lat and lon values
+    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) return false;
+
+    // If all checks pass, return true
+    position = latLonArray;
+    setLatLong(latLonArray);
+    setMapCenter(latLonArray);
+    console.log("all checks passed", position);
+  }
 
   function formatDate(inputDate) {
     const [day, month, year] = inputDate.split("-");
@@ -456,6 +478,8 @@ function ProjectView(props) {
     console.log("appData", appData);
     if (Object.keys(appData.projectInView).length > 0) {
       console.log(appData.projectInView);
+      // isValidLatLon(appData.projectInView.metadata.gps);
+      isValidLatLon([48.8566, 2.3522]);
     } else {
       navigate("/platform/projects");
     }
@@ -470,7 +494,7 @@ function ProjectView(props) {
       {Object.keys(appData.projectInView).length > 0 ? (
         <div className="flex flex-col justify-center w-full">
           {/* title container */}
-          <div className="flex flex-col pt-40">
+          <div className="flex flex-col pt-12">
             {/* back button container */}
             <div className="flex flex-row items-center justify-center px-8 mb-16 space-x-8 lg:justify-start lg:px-32">
               <img
@@ -503,12 +527,15 @@ function ProjectView(props) {
                 >
                   {appData.projectInView.metadata.projectName}
                 </p>
-                <p className="text-sm text-center lg:text-left lg:text-lg">
-                  Started on {appData.projectInView.metadata.startedFrom}
-                </p>
+                <div className="flex flex-row items-center space-x-2">
+                  <img src={calendarIcon} className="w-4 lg:w-6"></img>
+                  <p className="text-sm text-center lg:text-left lg:text-lg">
+                    Started on {appData.projectInView.metadata.startedFrom}
+                  </p>
+                </div>
                 <div className="flex flex-row items-center justify-center space-x-8 lg:justify-left">
                   <div className="flex flex-row items-center space-x-2">
-                    <img src={location} className="w-4 lg:w-6"></img>
+                    <img src={locationIcon} className="w-4 lg:w-6"></img>
                     <p className="text-sm lg:text-lg">
                       {appData.projectInView.metadata.location}
                     </p>
@@ -516,7 +543,6 @@ function ProjectView(props) {
                 </div>
               </div>
               {/* right container - gallery */}
-              {/* <Carousel imageUrls={appData.projectInView.gallery} /> */}
             </div>
           </div>
 
@@ -524,7 +550,7 @@ function ProjectView(props) {
           <div className="flex flex-col items-center justify-center w-full">
             {/* map container */}
             <MapContainer
-              center={position}
+              center={latLong}
               zoom={13}
               style={{
                 height: "60vh",
@@ -539,7 +565,7 @@ function ProjectView(props) {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               />
-              <Marker position={position} icon={customIcon}>
+              <Marker position={latLong} icon={customIcon}>
                 <Tooltip
                   permanent
                   interactive
@@ -558,7 +584,7 @@ function ProjectView(props) {
               className="px-6 py-1 my-0 font-bold text-white capitalize border-0 rounded-full text-md lg:text-md w-fit bg-gGreen lg:px-10 lg:py-4"
               onClick={() => {
                 console.log("button clicked position", position);
-                setMapCenter(position);
+                setMapCenter(latLong);
               }}
             >
               Recenter
@@ -622,7 +648,7 @@ function ProjectView(props) {
               <p className="text-4xl lg:text-5xl">
                 {appData.projectInView.geoblocsData.totalSupply}
               </p>
-              <FlipNumbers
+              {/* <FlipNumbers
                 height={40}
                 width={40}
                 color="white"
@@ -631,7 +657,7 @@ function ProjectView(props) {
                 perspective={1000}
                 numbers="12345"
                 duration={10}
-              />
+              /> */}
             </div>
 
             {/* redeem geoblocs button */}
@@ -790,25 +816,36 @@ function ProjectView(props) {
             ) : null}
           </div>
 
-          {/* green* container */}
-          <div className="grid items-center justify-center grid-cols-1 py-12 my-16 space-y-12 bg-gGreen lg:grid-cols-3 lg:space-y-0">
-            <div className="flex flex-col items-center justify-center space-y-2 text-white">
-              <p className="text-6xl font-black">
-                {appData.projectInView.metadata.size} Ha
-              </p>
-              <p className="text-lg font-bold">Project Area</p>
-            </div>
-            <div className="flex flex-col items-center justify-center space-y-2 text-white">
-              <p className="text-6xl font-black">
-                {appData.projectInView.seasons.length}
-              </p>
-              <p className="text-lg font-bold">Species Growing</p>
-            </div>
-            <div className="flex flex-col items-center justify-center space-y-2 text-white">
-              <p className="text-6xl font-black capitalize">
-                {appData.projectInView.metadata.ownership}
-              </p>
-              <p className="text-lg font-bold">Ownership</p>
+          {/* gallery and green container */}
+          <div className="flex flex-row items-center justify-center w-full px-32 py-16 space-x-32">
+            <Carousel imageUrls={appData.projectInView.gallery} />
+
+            {/* green* container */}
+            <div className="grid items-center justify-center grid-cols-3 grid-rows-1 py-12 my-16 space-y-12 lg:grid-cols-1 lg:space-y-6">
+              <div className="flex flex-col items-center justify-center space-y-2 text-black">
+                <p className="text-2xl font-bold underline underline-offset-2">
+                  Ownership
+                </p>
+                <p className="text-2xl font-semibold capitalize">
+                  {appData.projectInView.metadata.ownership}
+                </p>
+              </div>
+              <div className="flex flex-col items-center justify-center space-y-2 text-black">
+                <p className="text-2xl font-bold underline underline-offset-2">
+                  Project Size
+                </p>
+                <p className="text-2xl font-semibold capitalize">
+                  {appData.projectInView.metadata.size} Ha
+                </p>
+              </div>
+              <div className="flex flex-col items-center justify-center space-y-2 text-black">
+                <p className="text-2xl font-bold underline underline-offset-2">
+                  Intervention Type
+                </p>
+                <p className="text-2xl font-semibold capitalize">
+                  {appData.projectInView.seasons.length}
+                </p>
+              </div>
             </div>
           </div>
 

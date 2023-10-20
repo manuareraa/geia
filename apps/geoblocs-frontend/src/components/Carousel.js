@@ -42,7 +42,7 @@ export default function DefaultCarousel(props) {
   return (
     <Carousel
       slide={false}
-      className="2xl:h-[40rem] xl:h-[40rem] lg:h-[40rem] md:h-[40rem] h-[30rem]"
+      className="lg:h-[30rem] lg:w-[50rem]  md:h-[40rem] h-[30rem] "
     >
       {imageCards}
     </Carousel>
