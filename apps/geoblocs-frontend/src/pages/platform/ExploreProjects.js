@@ -139,7 +139,7 @@ function ExploreProjects(props) {
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
-      <div className="flex flex-col items-center justify-between px-8 pt-64 lg:items-start lg:flex-row lg:space-x-8 lg:px-32">
+      <div className="flex flex-col items-center justify-between px-8 pt-36 lg:items-start lg:flex-row lg:space-x-8 lg:px-32">
         {/* left - title sub-container */}
         <div className="flex flex-col items-center space-y-4 lg:items-start">
           {/* sub title */}

@@ -135,7 +135,7 @@ function ProjectStories(props) {
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
-      <div className="flex flex-col items-start justify-between px-8 pt-64 lg:px-32 lg:flex-row lg:space-x-8">
+      <div className="flex flex-col items-start justify-between px-8 pt-36 lg:px-32 lg:flex-row lg:space-x-8">
         {/* left - title sub-container */}
         <div className="flex flex-col items-start space-y-4">
           {/* sub title */}

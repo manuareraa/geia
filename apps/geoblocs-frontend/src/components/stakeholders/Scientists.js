@@ -11,7 +11,7 @@ function Scientists(props) {
 
       {/* description */}
       <div className="grid items-center justify-center grid-cols-1 py-8 space-y-8 lg:grid-cols-2 lg:flex-row lg:space-x-8 lg:space-y-0">
-        <p className="py-12 text-lg font-light text-center">
+        <p className="py-12 text-3xl font-medium text-center">
           GEIA is building a global network of individuals, institutions and
           companies that are dedicated to a regenerative futureusing the latest
           in geospatial and on the ground analysis. This coupled with Geoblocs
@@ -27,13 +27,13 @@ function Scientists(props) {
         Measuring Ecological Health
       </p>
 
-      <p className="font-light lg:w-[800px] w-[100%] md:w-[85%]  text-center text-lg py-12">
-        GEIA, through it's platform Geoblocs, is bringing together specialists
+      <p className="font-medium lg:w-[800px] w-[100%] md:w-[85%]  text-center text-2xl py-12">
+        GEIA, through it's platform <span className="text-gGreen">Geoblocs</span>, is bringing together specialists
         from a wide variety of disciplines and backgrounds from
         satellitemonitoring platforms to university departments dedicated to the
         observation and restoration of biodiversity.
       </p>
-      <p className="font-light lg:w-[800px] w-[100%] md:w-[85%]  text-center text-lg py-12">
+      <p className="font-medium lg:w-[800px] w-[100%] md:w-[85%]  text-center text-2xl py-12">
         Earth observation science, landscape ecology and our ability to
         understand complex ecological systemsare undergoing a technological
         revolution. GEIA is working with communities at the coalface of the

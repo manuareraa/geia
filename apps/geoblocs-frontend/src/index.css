@@ -1,11 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Add this line to src/index.css */
+@import url('https://unpkg.com/leaflet/dist/leaflet.css');
+
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "Open Sans", sans-serif;
 }
 
 /* Width and Height */
@@ -21,10 +24,10 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #65A500; /* color of the scroll thumb */
+  background: #65a500; /* color of the scroll thumb */
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #65A500; /* color of the scroll thumb on hover */
+  background: #65a500; /* color of the scroll thumb on hover */
 }

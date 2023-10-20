@@ -4,6 +4,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AppContext } from "../../AppContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Tooltip,
+  Popup,
+  useMap,
+} from "react-leaflet";
+import { icon } from "leaflet";
+import FlipNumbers from "react-flip-numbers";
 
 import rightArrow from "../../assets/svg/right-arrow-b.svg";
 import sampleOne from "../../assets/test/sample-one.png";
@@ -16,6 +26,7 @@ import seasonIcon from "../../assets/svg/season-icon.svg";
 import monitoringIcon from "../../assets/svg/monitoring-icon.svg";
 import sponsorOne from "../../assets/test/sponsor-one.png";
 import document from "../../assets/svg/document.svg";
+import markerIcon from "../../assets/img/marker-icon.png";
 
 import StatusChart from "../../components/admin/StatusChart";
 import GeoblocsChart from "../../components/admin/GeoblocsChart";
@@ -30,8 +41,10 @@ import DocumentsSW from "../../components/platform/projectView/subWindows/Docume
 import LandConditions from "../../components/platform/projectView/LandConditions";
 import SimilarProjects from "../../components/platform/projectView/SimilarProjects";
 import Paypal from "../../components/Paypal";
+import "../../utils/TooltipStyles.css";
 
 function ProjectView(props) {
+  const position = [51.505, -0.09];
   const navigate = useNavigate();
   const {
     appData,
@@ -50,6 +63,26 @@ function ProjectView(props) {
   const [redeemContainerView, setRedeemContainerView] = useState(false);
   const [redeemStatus, setRedeemStatus] = useState(false);
   const [redeeemInProcess, setRedeemInProcess] = useState(false);
+  const [latLong, setLatLong] = useState([51.505, -0.09]);
+  const [mapCenter, setMapCenter] = useState(position);
+
+  const ChangeView = ({ center }) => {
+    console.log("executing change view");
+    const map = useMap();
+    map.setView(center, map.getZoom());
+    return null;
+  };
+
+  const customIcon = icon({
+    iconUrl: markerIcon,
+    // iconRetinaUrl: "/marker-icon-2x.png",
+    // shadowUrl: "/marker-shadow.png",
+    iconSize: [25, 41], // size of the icon
+    // shadowSize: [41, 41], // size of the shadow
+    iconAnchor: [12.5, 41], // point of the icon which will correspond to marker's location
+    // shadowAnchor: [13, 41], // the same for the shadow
+    // popupAnchor: [0, -41], // point from which the popup should open relative to the iconAnchor
+  });
 
   function formatDate(inputDate) {
     const [day, month, year] = inputDate.split("-");
@@ -91,7 +124,7 @@ function ProjectView(props) {
             1,
             appData.userProfile.email,
             "redeem",
-            null
+            null,
           );
           if (transferResult === true) {
             toast.success("Geoblocs Redeemed");
@@ -105,14 +138,14 @@ function ProjectView(props) {
           // if an address does not exist before
           // create the account
           const accCreationResult = await createNewUniqueNetworkAcc(
-            appData.userProfile.email
+            appData.userProfile.email,
           );
 
           if (accCreationResult !== false) {
             // update the profile in the database and appData
             const profileUpdateResult = await updateBlockchainAccInUser(
               appData.userProfile.uuid,
-              accCreationResult
+              accCreationResult,
             );
 
             if (profileUpdateResult === true) {
@@ -125,7 +158,7 @@ function ProjectView(props) {
                 1,
                 appData.userProfile.email,
                 "redeem",
-                null
+                null,
               );
               if (transferResult === true) {
                 toast.success("Geoblocs Redeemed");
@@ -162,7 +195,7 @@ function ProjectView(props) {
               1,
               checkUser.email,
               "redeem",
-              null
+              null,
             );
             if (transferResult === true) {
               toast.success("Geoblocs Redeemed");
@@ -175,7 +208,7 @@ function ProjectView(props) {
           } else {
             // if user exists but does not have a blockchain account
             const accCreationResult = await createNewUniqueNetworkAcc(
-              formData.redeemEmail
+              formData.redeemEmail,
             );
 
             console.log("accCreationResult", accCreationResult, checkUser);
@@ -183,7 +216,7 @@ function ProjectView(props) {
               // update the profile in the database and appData
               const profileUpdateResult = await updateBlockchainAccInUser(
                 checkUser.uuid,
-                accCreationResult
+                accCreationResult,
               );
 
               if (profileUpdateResult === true) {
@@ -196,7 +229,7 @@ function ProjectView(props) {
                   1,
                   checkUser.email,
                   "redeem",
-                  null
+                  null,
                 );
                 if (transferResult === true) {
                   toast.success("Geoblocs Redeemed");
@@ -219,7 +252,7 @@ function ProjectView(props) {
           const createUser = await userRegisterQuietMode(
             formData.redeemEmail,
             randomPassword,
-            "redeemer"
+            "redeemer",
           );
 
           if (createUser !== false) {
@@ -233,7 +266,7 @@ function ProjectView(props) {
               1,
               email,
               "redeem",
-              null
+              null,
             );
             if (transferResult === true) {
               toast.success("Geoblocs Redeemed");
@@ -266,7 +299,7 @@ function ProjectView(props) {
           formData.quantity,
           details.payer.email_address,
           "paypal",
-          { ...details, ...data }
+          { ...details, ...data },
         );
         if (transferResult === true) {
           toast.success("Geoblocs Purchased");
@@ -279,14 +312,14 @@ function ProjectView(props) {
         // if an address does not exist before
         // create the account
         const accCreationResult = await createNewUniqueNetworkAcc(
-          details.payer.email_address
+          details.payer.email_address,
         );
 
         if (accCreationResult !== false) {
           // update the profile in the database and appData
           const profileUpdateResult = await updateBlockchainAccInUser(
             appData.userProfile.uuid,
-            accCreationResult
+            accCreationResult,
           );
 
           if (profileUpdateResult === true) {
@@ -299,7 +332,7 @@ function ProjectView(props) {
               formData.quantity,
               details.payer.email_address,
               "paypal",
-              { ...details, ...data }
+              { ...details, ...data },
             );
             if (transferResult === true) {
               toast.success("Geoblocs Purchased");
@@ -335,7 +368,7 @@ function ProjectView(props) {
             formData.quantity,
             details.payer.email_address,
             "paypal",
-            { ...details, ...data }
+            { ...details, ...data },
           );
           if (transferResult === true) {
             toast.success("Geoblocs Purchased");
@@ -347,7 +380,7 @@ function ProjectView(props) {
         } else {
           // if user exists but does not have a blockchain account
           const accCreationResult = await createNewUniqueNetworkAcc(
-            details.payer.email_address
+            details.payer.email_address,
           );
 
           console.log("accCreationResult", accCreationResult, checkUser);
@@ -355,7 +388,7 @@ function ProjectView(props) {
             // update the profile in the database and appData
             const profileUpdateResult = await updateBlockchainAccInUser(
               checkUser.uuid,
-              accCreationResult
+              accCreationResult,
             );
 
             if (profileUpdateResult === true) {
@@ -368,7 +401,7 @@ function ProjectView(props) {
                 formData.quantity,
                 details.payer.email_address,
                 "paypal",
-                { ...details, ...data }
+                { ...details, ...data },
               );
               if (transferResult === true) {
                 toast.success("Geoblocs Purchased");
@@ -391,7 +424,7 @@ function ProjectView(props) {
         const createUser = await userRegisterQuietMode(
           details.payer.email_address,
           randomPassword,
-          "buyer"
+          "buyer",
         );
 
         if (createUser !== false) {
@@ -405,7 +438,7 @@ function ProjectView(props) {
             formData.quantity,
             details.payer.email_address,
             "paypal",
-            { ...details, ...data }
+            { ...details, ...data },
           );
           if (transferResult === true) {
             toast.success("Geoblocs Purchased");
@@ -447,17 +480,17 @@ function ProjectView(props) {
                 onClick={() => navigate("/platform/projects")}
               ></img>
               <p
-                className="font-bold underline text-md md:text-md lg:text-lg underline-offset-2 hover:cursor-pointer"
+                className="font-bold underline text-md md:text-md underline-offset-2 hover:cursor-pointer lg:text-lg"
                 onClick={() => navigate("/platform/projects")}
               >
                 Back to explore projects
               </p>
             </div>
-            <div className="flex flex-col items-center justify-between px-8 lg:px-32 lg:space-x-28 2xl:flex-row">
+            <div className="flex flex-col items-center justify-between px-8 lg:space-x-28 lg:px-32 2xl:flex-row">
               {/* left - title sub-container */}
               <div className="flex flex-col space-y-4 lg:items-start">
                 {/* sub title */}
-                <div className="p-1 px-2 rounded-md lg:p-2 lg:px-4 bg-gGreen">
+                <div className="p-1 px-2 rounded-md bg-gGreen lg:p-2 lg:px-4">
                   <p className="text-sm font-bold text-center text-white lg:text-lg">
                     Dashboard
                   </p>
@@ -465,14 +498,13 @@ function ProjectView(props) {
                 {/* main title */}
                 <p
                   className="
-                  font- lg:text-[80px] text-3xl text-center lg:text-start self-center w-full  lg:leading-[95px] lg:w-[800px] md:
+                  font- md: w-full self-center text-center text-3xl lg:w-[800px]  lg:text-start lg:text-[80px] lg:leading-[95px]
                 "
                 >
                   {appData.projectInView.metadata.projectName}
                 </p>
                 <p className="text-sm text-center lg:text-left lg:text-lg">
-                  Started on{" "}
-                  {formatDate(appData.projectInView.metadata.startedFrom)}
+                  Started on {appData.projectInView.metadata.startedFrom}
                 </p>
                 <div className="flex flex-row items-center justify-center space-x-8 lg:justify-left">
                   <div className="flex flex-row items-center space-x-2">
@@ -484,15 +516,96 @@ function ProjectView(props) {
                 </div>
               </div>
               {/* right container - gallery */}
-              <Carousel imageUrls={appData.projectInView.gallery} />
+              {/* <Carousel imageUrls={appData.projectInView.gallery} /> */}
+            </div>
+          </div>
+
+          {/* map container */}
+          <div className="flex flex-col items-center justify-center w-full">
+            {/* map container */}
+            <MapContainer
+              center={position}
+              zoom={13}
+              style={{
+                height: "60vh",
+                width: "60%",
+                borderRadius: "40px",
+                marginTop: "50px",
+                marginBottom: "50px",
+              }}
+            >
+              <ChangeView center={mapCenter} />
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <Marker position={position} icon={customIcon}>
+                <Tooltip
+                  permanent
+                  interactive
+                  direction="top"
+                  offset={[0, -40]}
+                >
+                  {appData.projectInView.metadata.projectName}
+                </Tooltip>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>
+            </MapContainer>
+
+            <button
+              className="px-6 py-1 my-0 font-bold text-white capitalize border-0 rounded-full text-md lg:text-md w-fit bg-gGreen lg:px-10 lg:py-4"
+              onClick={() => {
+                console.log("button clicked position", position);
+                setMapCenter(position);
+              }}
+            >
+              Recenter
+            </button>
+          </div>
+
+          {/* charts container */}
+          <div className="flex flex-col items-center justify-center mt-20 space-x-0 space-y-16 lg:flex-row lg:space-y-0">
+            {/* project status chart */}
+            <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
+              <p className="text-2xl font-bold text-center">Project Status</p>
+              <StatusChart
+                completed={appData.projectInView.metadata.projectStatus}
+                inProgress={100 - appData.projectInView.metadata.projectStatus}
+              />
+            </div>
+
+            {/* geoblocs distribution chart */}
+            <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
+              <p className="text-2xl font-bold text-center">
+                Geoblocs Distribution
+              </p>
+              <GeoblocsChart
+                totalSupply={appData.projectInView.geoblocsData.totalSupply}
+                purchased={appData.projectInView.geoblocsData.purchased}
+              />
             </div>
           </div>
 
           {/* geoblocs stats */}
-          <div className="grid items-center justify-center grid-cols-1 mt-16 lg:grid-cols-4 lg:px-60 lg:gap-x-16 gap-y-8 lg:gap-y-0">
+          <div className="mt-16 grid w-full grid-cols-1 items-center justify-center gap-y-8 bg-[#A1AEB4] py-6 lg:grid-cols-4 lg:gap-x-16 lg:gap-y-0 lg:px-60">
+            {/* buy geoblocs button */}
+            <div className="flex flex-col items-center justify-center space-y-2">
+              <button
+                className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
+                onClick={() => {
+                  setBuyContainerView(!buyContainerView);
+                  setRedeemContainerView(false);
+                }}
+              >
+                Buy Geoblocs
+              </button>
+            </div>
+
             {/* remaining geoblocs */}
             <div className="flex flex-col items-center justify-center space-y-2">
-              <p className="font-bold text-center lg:text-lg text-md">
+              <p className="font-bold text-center text-md lg:text-lg">
                 Geoblocs Remaining
               </p>
               <p className="text-4xl lg:text-5xl">
@@ -503,31 +616,28 @@ function ProjectView(props) {
 
             {/* total supply */}
             <div className="flex flex-col items-center justify-center space-y-2">
-              <p className="font-bold text-center lg:text-lg text-md">
+              <p className="font-bold text-center text-md lg:text-lg">
                 Total Supply
               </p>
               <p className="text-4xl lg:text-5xl">
                 {appData.projectInView.geoblocsData.totalSupply}
               </p>
-            </div>
-
-            {/* buy geoblocs button */}
-            <div className="flex flex-col items-center justify-center space-y-2">
-              <button
-                className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen"
-                onClick={() => {
-                  setBuyContainerView(!buyContainerView);
-                  setRedeemContainerView(false);
-                }}
-              >
-                Buy Geoblocs
-              </button>
+              <FlipNumbers
+                height={40}
+                width={40}
+                color="white"
+                background="black"
+                play
+                perspective={1000}
+                numbers="12345"
+                duration={10}
+              />
             </div>
 
             {/* redeem geoblocs button */}
             <div className="flex flex-col items-center justify-center space-y-2">
               <button
-                className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen"
+                className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
                 onClick={() => {
                   setRedeemContainerView(!redeemContainerView);
                   setBuyContainerView(false);
@@ -539,7 +649,7 @@ function ProjectView(props) {
 
             {buyContainerView === true ? (
               <div className="w-full col-span-1 lg:col-span-4">
-                <div className="flex flex-col items-center justify-center py-8 mt-12 rounded-lg lg:w-full bg-gGreen/30">
+                <div className="flex flex-col items-center justify-center py-8 mt-12 rounded-lg bg-gGreen/30 lg:w-full">
                   {appData.loginMode !== "user" ? (
                     <div className="flex flex-col items-center justify-center space-y-4">
                       <p>
@@ -549,13 +659,13 @@ function ProjectView(props) {
                       <input
                         type="text"
                         placeholder="Geoblocs to purchase"
-                        className="lg:w-[400px] w-[95%]  lg:h-12 h-10 lg:px-8 px-6 text-black  rounded-full outline-none bg-gGray py-2 lg:text-lg text-sm text-center lg:text-left"
+                        className="h-10 w-[95%]  rounded-full bg-gGray px-6 py-2 text-center  text-sm text-black outline-none lg:h-12 lg:w-[400px] lg:px-8 lg:text-left lg:text-lg"
                         value={formData.quantity}
                         onChange={(e) =>
                           setFormData({ ...formData, quantity: e.target.value })
                         }
                       ></input>
-                      <p className="font-bold lg:text-xl text-md">
+                      <p className="font-bold text-md lg:text-xl">
                         {appData.projectInView.geoblocsData.pricePerGeobloc *
                           formData.quantity || 0}{" "}
                         USD
@@ -577,9 +687,9 @@ function ProjectView(props) {
                     </div>
                   ) : (
                     <div className="flex flex-col items-center justify-center space-y-4">
-                      <div className="flex flex-col items-center space-y-6 lg:space-x-4 lg:space-y-0 lg:flex-row">
+                      <div className="flex flex-col items-center space-y-6 lg:flex-row lg:space-x-4 lg:space-y-0">
                         <button
-                          className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen"
+                          className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
                           onClick={() => {
                             setAppData((prevState) => ({
                               ...prevState,
@@ -592,7 +702,7 @@ function ProjectView(props) {
                           Register
                         </button>
                         <button
-                          className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen"
+                          className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
                           onClick={() => {
                             setAppData((prevState) => ({
                               ...prevState,
@@ -624,7 +734,7 @@ function ProjectView(props) {
                           <input
                             type="text"
                             placeholder="Enter your email"
-                            className="lg:w-[400px] w-[95%]  lg:h-12 h-10 lg:px-8 px-6 text-black  rounded-full outline-none bg-gGray py-2 lg:text-lg text-sm text-center lg:text-left"
+                            className="h-10 w-[95%]  rounded-full bg-gGray px-6 py-2 text-center  text-sm text-black outline-none lg:h-12 lg:w-[400px] lg:px-8 lg:text-left lg:text-lg"
                             value={formData.redeemEmail}
                             onChange={(e) =>
                               setFormData({
@@ -635,7 +745,7 @@ function ProjectView(props) {
                           ></input>
                           <button
                             disabled={redeeemInProcess}
-                            className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen"
+                            className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
                             onClick={async () => {
                               setRedeemInProcess(true);
                               executeRedeemProcess();
@@ -661,7 +771,7 @@ function ProjectView(props) {
                       </p>
                       <button
                         disabled={redeeemInProcess}
-                        className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen"
+                        className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
                         onClick={async () => {
                           setRedeemInProcess(true);
                           executeRedeemProcess();
@@ -680,31 +790,8 @@ function ProjectView(props) {
             ) : null}
           </div>
 
-          {/* charts container */}
-          <div className="flex flex-col items-center justify-center mt-20 space-x-0 space-y-16 lg:flex-row lg:space-y-0">
-            {/* project status chart */}
-            <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
-              <p className="text-2xl font-bold text-center">Project Status</p>
-              <StatusChart
-                completed={appData.projectInView.metadata.projectStatus}
-                inProgress={100 - appData.projectInView.metadata.projectStatus}
-              />
-            </div>
-
-            {/* geoblocs distribution chart */}
-            <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
-              <p className="text-2xl font-bold text-center">
-                Geoblocs Distribution
-              </p>
-              <GeoblocsChart
-                totalSupply={appData.projectInView.geoblocsData.totalSupply}
-                purchased={appData.projectInView.geoblocsData.purchased}
-              />
-            </div>
-          </div>
-
           {/* green* container */}
-          <div className="grid items-center justify-center grid-cols-1 py-12 my-16 space-y-12 lg:grid-cols-3 bg-gGreen lg:space-y-0">
+          <div className="grid items-center justify-center grid-cols-1 py-12 my-16 space-y-12 bg-gGreen lg:grid-cols-3 lg:space-y-0">
             <div className="flex flex-col items-center justify-center space-y-2 text-white">
               <p className="text-6xl font-black">
                 {appData.projectInView.metadata.size} Ha
@@ -770,9 +857,9 @@ function ProjectView(props) {
               </div>
 
               {/* 3 button container */}
-              <div className="flex flex-col items-center justify-center w-full space-x-0 space-y-6 lg:flex-row lg:space-x-12 pb-28 lg:space-y-0">
+              <div className="flex flex-col items-center justify-center w-full space-x-0 space-y-6 pb-28 lg:flex-row lg:space-x-12 lg:space-y-0">
                 <button
-                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg h-fit bg-gGreen w-80 btn hover:bg-gGreen/80"
+                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg btn h-fit w-80 bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setStoryInView(appData.projectInView.story);
                     window.my_modal_1.showModal();
@@ -781,7 +868,7 @@ function ProjectView(props) {
                   Project Story
                 </button>
                 <button
-                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg h-fit bg-gGreen w-80 btn hover:bg-gGreen/80"
+                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg btn h-fit w-80 bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("links");
                   }}
@@ -789,7 +876,7 @@ function ProjectView(props) {
                   Links
                 </button>
                 <button
-                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg h-fit bg-gGreen w-80 btn hover:bg-gGreen/80"
+                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg btn h-fit w-80 bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("documents");
                   }}
@@ -833,24 +920,24 @@ function ProjectView(props) {
           {/* // story view modal */}
           <dialog
             id="my_modal_1"
-            className="items-start justify-center w-screen px-8 py-16 overflow-auto lg:w-full lg:px-28 modal bg-gGreen/20"
+            className="items-start justify-center w-screen px-8 py-16 overflow-auto modal bg-gGreen/20 lg:w-full lg:px-28"
           >
             <div
               method="dialog"
-              className="w-full p-8 bg-white lg:p-12 rounded-3xl"
+              className="w-full p-8 bg-white rounded-3xl lg:p-12"
             >
               {/* body goes here */}
               <div className="flex flex-col w-full space-y-4">
-                <div className="flex flex-col items-center w-full space-y-4 lg:justify-between lg:flex-row">
+                <div className="flex flex-col items-center w-full space-y-4 lg:flex-row lg:justify-between">
                   <p className="text-xl font-bold text-center lg:text-4xl">
                     Project Story
                   </p>
                   <div className="flex flex-row items-center space-x-8">
                     <button
-                      className="text-sm text-white capitalize border-2 lg:text-lg btn border-gGreen bg-gGreen hover:border-2 hover:border-gGreen hover:bg-gGreen"
+                      className="text-sm text-white capitalize border-2 btn border-gGreen bg-gGreen hover:border-2 hover:border-gGreen hover:bg-gGreen lg:text-lg"
                       onClick={() => {
                         toast.error(
-                          "This feature is not available yet. Please navigate to 'Platform' to view different project"
+                          "This feature is not available yet. Please navigate to 'Platform' to view different project",
                         );
                         // navigate(
                         //   "/platform/projects/view/" + storyInView[0]?.projectId
@@ -860,7 +947,7 @@ function ProjectView(props) {
                       View Project
                     </button>
                     <form method="dialog">
-                      <button className="text-sm capitalize border-2 lg:text-lg bg-gGreen text-gGreen btn border-gGreen bg-white/0 hover:border-2 hover:border-gGreen hover:bg-white">
+                      <button className="text-sm capitalize border-2 btn border-gGreen bg-gGreen bg-white/0 text-gGreen hover:border-2 hover:border-gGreen hover:bg-white lg:text-lg">
                         Close
                       </button>
                     </form>
@@ -870,7 +957,7 @@ function ProjectView(props) {
 
                 <div className="flex flex-col w-full space-y-4">
                   <div className="flex flex-row items-start space-x-4">
-                    <p className="w-full text-2xl font-black text-center lg:text-5xl focus:outline-none">
+                    <p className="w-full text-2xl font-black text-center focus:outline-none lg:text-5xl">
                       {storyInView[0]?.content}
                     </p>
                   </div>
@@ -890,7 +977,7 @@ function ProjectView(props) {
                             <img
                               src={block.file}
                               alt="Image"
-                              className="object-cover w-24 h-24 rounded-md lg:w-44 lg:h-44"
+                              className="object-cover w-24 h-24 rounded-md lg:h-44 lg:w-44"
                             />
                           ) : null}
                         </div>
@@ -906,7 +993,7 @@ function ProjectView(props) {
           <LandConditions landConditions={appData.projectInView.conditions} />
 
           {/* similar projects */}
-          <div className="flex flex-col w-full px-16 pt-12 space-y-4 lg:px-32 pb-28">
+          <div className="flex flex-col w-full px-16 pt-12 space-y-4 pb-28 lg:px-32">
             <div className="flex flex-col items-center w-full mb-8 space-y-2 lg:items-start">
               <p className="text-3xl font-bold text-center">
                 Explore Similar Projects

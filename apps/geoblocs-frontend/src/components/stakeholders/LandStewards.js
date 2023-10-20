@@ -23,7 +23,7 @@ function LandStewards(props) {
       </p>
 
       {/* description */}
-      <p className="font-light lg:w-[800px] w-[100%] md:w-[85%]  text-center text-lg py-12">
+      <p className="font-light lg:w-[800px] w-[100%] md:w-[85%]  text-center text-2xl py-12">
         Using the Geoblocs system we restore the natural capitol of a project
         and create blockchain verified tokens that can be embedded into goods or
         services to help offset their biosphere footprint.The land owner does
@@ -32,14 +32,14 @@ function LandStewards(props) {
       <div className="divider"></div>
 
       {/* trio container */}
-      <div className="flex flex-col items-center justify-center w-full p-16 space-y-8 lg:items-start lg:flex-row lg:space-y-0 lg:space-x-20">
+      <div className="flex flex-col items-center justify-center w-full p-16 space-y-8 lg:items-start lg:flex-row lg:space-y-0 lg:space-x-20 bg-[#B5BFA4] rounded-xl">
         {/* get paid to restore your land */}
         <div className="flex flex-col items-center justify-center space-y-6">
           <img src={paidRestore} className="w-36"></img>
           <p className="text-lg font-bold text-center underline">
             Get Paid to Restore Your Land
           </p>
-          <p className="font-light w-[375px] text-center">
+          <p className="font-medium w-[375px] text-center">
             Once the lands are restored all physical benefits go to the
             landowner in the form of produce and a healthy environment.
           </p>
@@ -51,7 +51,7 @@ function LandStewards(props) {
           <p className="text-lg font-bold text-center underline">
             Streamlined Process
           </p>
-          <p className="font-light w-[375px] text-center">
+          <p className="font-medium w-[375px] text-center">
             Registration, monitoring, reporting, verification andpayment are
             streamlined to save you precious time.
           </p>
@@ -63,7 +63,7 @@ function LandStewards(props) {
           <p className="text-lg font-bold text-center underline">
             Efficiency through Technology
           </p>
-          <p className="font-light w-[375px] text-center">
+          <p className="font-medium w-[375px] text-center">
             Because most of the system is automated Geoblocs is very efficient
             at turning money into regeneration.
           </p>

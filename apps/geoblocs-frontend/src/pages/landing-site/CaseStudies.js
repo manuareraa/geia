@@ -20,7 +20,7 @@ function CaseStudies(props) {
         </p>
 
         <div className="flex flex-col items-center justify-center py-8 space-y-16 lg:px-40 lg:space-x-12 lg:space-y-0 lg:flex-row">
-          <p className="font-light text-center w-[85%]">
+          <p className="font-light text-center w-[85%] text-3xl">
             All our projects focus on an holistic approach because without a
             symbiosis between the land and the people that rely on it no amount
             of tree planting is going to help, so whether it,s a sacred forest

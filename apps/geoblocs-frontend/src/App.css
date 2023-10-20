@@ -5,6 +5,12 @@
   background-size: cover;
 }
 
+.bg-stakeholders-image {
+  /* get image from assets folder */
+  background-image: url(./assets/img/stakeholders/stakeholders.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .custom-bg-blockchain-image {
   /* get image from assets folder */
   background-image: url(./assets/img/blockchain-bg.png);

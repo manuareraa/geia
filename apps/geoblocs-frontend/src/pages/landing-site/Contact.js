@@ -8,14 +8,14 @@ function Contact(props) {
   return (
     <div className="flex flex-col justify-center w-full h-screen contact-page-bg">
       {/* title container */}
-      <div className="flex flex-col items-center justify-center space-y-8 pt-36">
+      <div className="mx-60 flex flex-col items-center justify-center space-y-8 bg-[#656565]/80 p-24">
         {/* title */}
-        <p className="font- lg:text-[80px] text-[33px] md:text-[50px] text-white">
+        <p className="font- text-[33px] text-white md:text-[50px] lg:text-[80px]">
           Contact
         </p>
 
         <p
-          className="pb-6 font-light text-center w-[1200px] lg:text-[20px] text-[15px] md:text-[17px]  hover:cursor-pointer text-white"
+          className="w-[1200px] text-center text-md font-light text-white hover:cursor-pointer  md:text-xl lg:text-3xl"
           onClick={() => window.open("mailto:thomas@geia.ie")}
         >
           Mail Us @{" "}
@@ -23,7 +23,8 @@ function Contact(props) {
             thomas@geia.ie
           </span>
         </p>
-
+      </div>
+      <div className="flex flex-col items-center w-full pt-28">
         {/* title button */}
         <button
           className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
