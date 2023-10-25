@@ -16,7 +16,7 @@ import logo from "../../assets/img/full-logo.png";
 function LandStewards(props) {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center justify-center w-full p-20 bg-gGreen/20">
+    <div className="flex flex-col items-center justify-center w-full p-20 bg-[#F9FAF6]">
       {/* title */}
       <p className="text-[25px] md:text-[35px] lg:text-[45px] text-center lg:w-[1000px] md:w-[85%] w-[100%]">
         Let us pay for the regeneration work and you reap the benefits.
@@ -26,7 +26,7 @@ function LandStewards(props) {
       <p className="font-light lg:w-[800px] w-[100%] md:w-[85%]  text-center text-2xl py-12">
         Using the Geoblocs system we restore the natural capitol of a project
         and create blockchain verified tokens that can be embedded into goods or
-        services to help offset their biosphere footprint.The land owner does
+        services to help offset their biosphere footprint. The land owner does
         not give up any sovereign rights.
       </p>
       <div className="divider"></div>
@@ -52,7 +52,7 @@ function LandStewards(props) {
             Streamlined Process
           </p>
           <p className="font-medium w-[375px] text-center">
-            Registration, monitoring, reporting, verification andpayment are
+            Registration, monitoring, reporting, verification and payment are
             streamlined to save you precious time.
           </p>
         </div>

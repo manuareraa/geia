@@ -69,9 +69,16 @@ function ProjectView(props) {
   const [mapCenter, setMapCenter] = useState(latLong);
 
   const ChangeView = ({ center }) => {
-    console.log("executing change view");
+    // console.log("executing change view");
     const map = useMap();
     map.setView(center, map.getZoom());
+    map.on("load", () => {
+      map.on("click", "circle", (e) => {
+        map.flyTo({
+          center: e.features[0].geometry.coordinates,
+        });
+      });
+    });
     return null;
   };
 
@@ -87,17 +94,30 @@ function ProjectView(props) {
   });
 
   function isValidLatLon(latLonArray) {
+    console.log("validating", latLonArray)
+    try {
+      // remove white space in the string
+      latLonArray = latLonArray.replace(/\s/g, "");
+      latLonArray = latLonArray.split(",");
+      latLonArray[0] = parseFloat(latLonArray[0]);
+      latLonArray[1] = parseFloat(latLonArray[1]);
+      console.log("latLonArray after parsing", latLonArray);
+    } catch (error) {
+      console.error("Error parsing latLonArray", error);
+      return false;
+    }
+
     // Check if the array has exactly two elements
     if (latLonArray.length !== 2) return false;
-
-    // Destructure the array into lat and lon variables
-    const [lat, lon] = latLonArray;
+    console.log("1")
 
     // Check if lat and lon are numbers
-    if (typeof lat !== "number" || typeof lon !== "number") return false;
+    if (typeof latLonArray[0] !== "number" || typeof latLonArray[1] !== "number") return false;
+    console.log("2")
 
     // Check the range of lat and lon values
-    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) return false;
+    if (latLonArray[0] < -90 || latLonArray[0] > 90 || latLonArray[1] < -180 || latLonArray[1] > 180) return false;
+    console.log("3")
 
     // If all checks pass, return true
     position = latLonArray;
@@ -478,8 +498,8 @@ function ProjectView(props) {
     console.log("appData", appData);
     if (Object.keys(appData.projectInView).length > 0) {
       console.log(appData.projectInView);
-      // isValidLatLon(appData.projectInView.metadata.gps);
-      isValidLatLon([48.8566, 2.3522]);
+      isValidLatLon(appData.projectInView.metadata.gps);
+      // isValidLatLon([48.8566, 2.3522]);
     } else {
       navigate("/platform/projects");
     }
@@ -522,7 +542,7 @@ function ProjectView(props) {
                 {/* main title */}
                 <p
                   className="
-                  font- md: w-full self-center text-center text-3xl lg:w-[800px]  lg:text-start lg:text-[80px] lg:leading-[95px]
+                  font- md: w-full self-center text-center text-2xl lg:w-[800px]  lg:text-start lg:text-6xl
                 "
                 >
                   {appData.projectInView.metadata.projectName}
@@ -543,52 +563,51 @@ function ProjectView(props) {
                 </div>
               </div>
               {/* right container - gallery */}
-            </div>
-          </div>
-
-          {/* map container */}
-          <div className="flex flex-col items-center justify-center w-full">
-            {/* map container */}
-            <MapContainer
-              center={latLong}
-              zoom={13}
-              style={{
-                height: "60vh",
-                width: "60%",
-                borderRadius: "40px",
-                marginTop: "50px",
-                marginBottom: "50px",
-              }}
-            >
-              <ChangeView center={mapCenter} />
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              <Marker position={latLong} icon={customIcon}>
-                <Tooltip
-                  permanent
-                  interactive
-                  direction="top"
-                  offset={[0, -40]}
+              {/* map container */}
+              <div className="flex flex-col items-center justify-center w-full">
+                {/* map container */}
+                <MapContainer
+                  center={latLong}
+                  zoom={13}
+                  style={{
+                    height: "30vh",
+                    width: "90%",
+                    borderRadius: "40px",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
                 >
-                  {appData.projectInView.metadata.projectName}
-                </Tooltip>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>
-            </MapContainer>
+                  <ChangeView center={mapCenter} />
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  <Marker position={latLong} icon={customIcon}>
+                    <Tooltip
+                      permanent
+                      interactive
+                      direction="top"
+                      offset={[0, -40]}
+                    >
+                      {appData.projectInView.metadata.projectName}
+                    </Tooltip>
+                    <Popup>
+                      A pretty CSS3 popup. <br /> Easily customizable.
+                    </Popup>
+                  </Marker>
+                </MapContainer>
 
-            <button
-              className="px-6 py-1 my-0 font-bold text-white capitalize border-0 rounded-full text-md lg:text-md w-fit bg-gGreen lg:px-10 lg:py-4"
-              onClick={() => {
-                console.log("button clicked position", position);
-                setMapCenter(latLong);
-              }}
-            >
-              Recenter
-            </button>
+                {/* <button
+                  className="px-6 py-0 my-0 text-xs font-bold text-white capitalize border-0 rounded-full w-fit bg-gGreen lg:px-6 lg:py-1"
+                  onClick={() => {
+                    console.log("button clicked position", position);
+                    setMapCenter(latLong);
+                  }}
+                >
+                  Recenter
+                </button> */}
+              </div>
+            </div>
           </div>
 
           {/* charts container */}

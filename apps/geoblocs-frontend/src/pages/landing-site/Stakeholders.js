@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import rightArrow from "../../assets/svg/right-arrow.svg";
@@ -14,6 +14,10 @@ import Scientists from "../../components/stakeholders/Scientists";
 function Stakeholders(props) {
   const navigate = useNavigate();
   const [section, setSection] = useState(0);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     // outer container

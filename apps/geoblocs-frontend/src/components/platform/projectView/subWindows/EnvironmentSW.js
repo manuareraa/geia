@@ -5,16 +5,30 @@ import backCircle from "../../../../assets/svg/back-circle.svg";
 function EnvironmentSW(props) {
   const [envCards, setEnvCards] = useState([]);
 
+  function extractIframeSrc(iframeString) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(iframeString, "text/html");
+    const iframeElement = doc.querySelector("iframe");
+
+    if (iframeElement) {
+      return iframeElement.getAttribute("src");
+    } else {
+      return null;
+    }
+  }
+
   const renderEnvCards = () => {
     let tempArray = [];
     setEnvCards([]);
     props.projectEnvDatas.forEach((envData, index) => {
+      console.log("link", envData.link);
+      const src = extractIframeSrc(envData.link);
       let card = (
         <iframe
-          width={envData.width}
-          height={envData.height}
+          width={envData.width || 800}
+          height={envData.height || 800}
           frameborder="0"
-          src={envData.link}
+          src={src}
         ></iframe>
       );
       tempArray.push(card);
@@ -39,7 +53,7 @@ function EnvironmentSW(props) {
           </p>
           <img
             src={backCircle}
-            className="w-8 lg:w-12 hover:cursor-pointer"
+            className="w-8 hover:cursor-pointer lg:w-12"
             onClick={() => {
               props.setSubWindow("default");
             }}

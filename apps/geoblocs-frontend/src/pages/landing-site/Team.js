@@ -22,7 +22,7 @@ function Team(props) {
         </p>
 
         <div className="flex flex-col items-center justify-center pt-12 pb-16 space-y-8 lg:flex-row lg:space-x-16 lg:space-y-0">
-          <p className="w-[85%] pb-6 text-center text-3xl  font-light md:w-[85%] lg:w-[40%]">
+          <p className="w-[85%] pb-6 text-center text-2xl  font-light md:w-[85%] lg:w-[40%]">
             The team behind Geoblocs is a network of individuals, institutions,
             companies, non profits and indigenous groups all with a passion to
             find ways to regenerate our biosphere. Because it is structured this
@@ -81,7 +81,6 @@ function Team(props) {
         <div className="flex flex-row items-center justify-center space-x-8">
           <div className="flex flex-col items-center justify-center space-y-8">
             <p className="text-3xl font-bold text-center">Morality</p>
-
             <p className="px-8 text-2xl font-light text-center">
               In the coming boom of biosphere reclamation, GEIA stands against
               the monoculture model of carbon sinks and corporate land banks.

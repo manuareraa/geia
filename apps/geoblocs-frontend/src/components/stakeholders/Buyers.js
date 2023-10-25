@@ -13,7 +13,7 @@ import imageFive from "../../assets/img/stakeholders/buyers/14.png";
 
 function Buyers(props) {
   return (
-    <div className="flex flex-col items-center justify-center w-full p-20 bg-gGreen/20">
+    <div className="flex flex-col items-center justify-center w-full p-20 bg-[#F9FAF6]">
       {/* title */}
       <p className="w-[100%] text-center text-[25px] md:w-[85%] md:text-[35px] lg:w-[1000px] lg:text-[45px]">
         By using <span className="font-bold text-gGreen">Geoblocs</span> you are
@@ -46,9 +46,9 @@ function Buyers(props) {
         </div>
         <div className="flex flex-col items-center pt-8 space-y-8 lg:flex-row lg:space-x-8 lg:space-y-0">
           <img src={imageTwo} className="w-[30%]"></img>
-          <div className="px-24">
-            <div className="rounded-lg bg-[#656565]/30 p-12 px-16">
-              <p className="text-3xl text-center text-white">
+          <div className="px-12">
+            <div className="rounded-2xl bg-[#656565]/30 p-12 px-12">
+              <p className="text-2xl text-center text-white">
                 When you purchase Geoblocs and store them in your wallet you can
                 access the project any time for up to date information on the
                 status of the regeneration from geospatial data and imagery to
@@ -87,7 +87,7 @@ function Buyers(props) {
             </p>
             <p className="text-3xl text-center px-28">
               By lowering the overall costs of running ecological projects,more
-              money rewards land stewards and is invested directlyinto
+              money rewards land stewards and is invested directly into
               environmental impact.
             </p>
           </div>
@@ -106,7 +106,7 @@ function Buyers(props) {
             </p>
             <p className="text-3xl text-center px-28">
               Ecological data is collected based on open source,scientifically
-              rigorous methodologies, and independentlyverified and stored on
+              rigorous methodologies, and independently verified and stored on
               Geoblocs Ledger - our decentralized,immutable database.
             </p>
           </div>
@@ -122,7 +122,7 @@ function Buyers(props) {
             </p>
             <p className="text-3xl text-center px-28">
               In addition to carbon sequestration, Geoblocs biosphere reset
-              tokensfocus on a broad set of ecological co-benefits such as
+              tokens focus on a broad set of ecological co-benefits such as
               soilhealth, water quality, and biodiversity, as well as the social
               and economic health of the project.
             </p>

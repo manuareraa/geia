@@ -3,7 +3,7 @@ import imageOne from "../../assets/img/stakeholders/scientists/11.png";
 
 function Scientists(props) {
   return (
-    <div className="flex flex-col items-center justify-center w-full p-20 bg-gGreen/20">
+    <div className="flex flex-col items-center justify-center w-full p-20 bg-[#F9FAF6]">
       {/* title */}
       <p className="text-[25px] md:text-[35px] lg:text-[45px] text-center lg:w-[1000px] md:w-[85%] w-[100%] font-bold">
         Follow the <span className=" text-gBlue">Science</span>
@@ -30,7 +30,7 @@ function Scientists(props) {
       <p className="font-medium lg:w-[800px] w-[100%] md:w-[85%]  text-center text-2xl py-12">
         GEIA, through it's platform <span className="text-gGreen">Geoblocs</span>, is bringing together specialists
         from a wide variety of disciplines and backgrounds from
-        satellitemonitoring platforms to university departments dedicated to the
+        satellite monitoring platforms to university departments dedicated to the
         observation and restoration of biodiversity.
       </p>
       <p className="font-medium lg:w-[800px] w-[100%] md:w-[85%]  text-center text-2xl py-12">
