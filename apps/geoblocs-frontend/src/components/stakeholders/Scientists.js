@@ -11,7 +11,7 @@ function Scientists(props) {
 
       {/* description */}
       <div className="grid items-center justify-center grid-cols-1 py-8 space-y-8 lg:grid-cols-2 lg:flex-row lg:space-x-8 lg:space-y-0">
-        <p className="py-12 text-3xl font-medium text-center">
+        <p className="py-12 text-2xl font-medium text-center">
           GEIA is building a global network of individuals, institutions and
           companies that are dedicated to a regenerative futureusing the latest
           in geospatial and on the ground analysis. This coupled with Geoblocs

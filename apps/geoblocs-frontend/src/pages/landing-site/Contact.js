@@ -6,7 +6,7 @@ import rightArrow from "../../assets/svg/right-arrow.svg";
 function Contact(props) {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col justify-center w-full h-screen contact-page-bg">
+    <div className="flex flex-col justify-center w-full h-screen pt-[20vh] contact-page-bg">
       {/* title container */}
       <div className="mx-60 flex flex-col items-center justify-center space-y-8 bg-[#656565]/80 p-24">
         {/* title */}

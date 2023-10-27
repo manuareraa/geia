@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../AppContext";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import logo from "../assets/img/full-logo.png";
+import logo from "../assets/img/full-logo-v2.png";
 import rightArrow from "../assets/svg/right-arrow.svg";
 import mobileMenu from "../assets/svg/mobile-menu.svg";
 import rightArrowG from "../assets/svg/right-arrow-g.svg";
@@ -19,7 +19,7 @@ function Navbar(props) {
 
           {/* logo container */}
           <div className="">
-            <img src={logo} className="w-40 lg:w-56" />
+            <img src={logo} className="w-48 lg:w-72" />
           </div>
 
           {/* second half for large screen */}

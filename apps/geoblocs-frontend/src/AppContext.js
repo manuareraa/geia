@@ -58,7 +58,7 @@ export const AppProvider = ({ children }) => {
   const getProjectCount = async () => {
     try {
       const response = await axios.get(
-        backendUrl + "/api/admin/projects/count"
+        backendUrl + "/api/admin/projects/count",
       );
       const count = response.data.count;
       setAppData((prevState) => {
@@ -144,7 +144,7 @@ export const AppProvider = ({ children }) => {
         }
       } else {
         toast.error(
-          "Error [AC100]: Error occurred while creating new account. Please try again."
+          "Error [AC100]: Error occurred while creating new account. Please try again.",
         );
         return false;
       }
@@ -179,7 +179,7 @@ export const AppProvider = ({ children }) => {
         }
       } else {
         console.error(
-          "Error [AC100]: Error occurred while creating new account. Please try again."
+          "Error [AC100]: Error occurred while creating new account. Please try again.",
         );
         return false;
       }
@@ -202,7 +202,7 @@ export const AppProvider = ({ children }) => {
           headers: {
             Authorization: "Bearer " + token,
           },
-        }
+        },
       );
       const user = response.data.user;
       toast.success("Logged in successfully");
@@ -218,7 +218,7 @@ export const AppProvider = ({ children }) => {
       } else if (user.role === "user") {
         console.log(
           "appData.afterLoginRedirectURL",
-          appData.afterLoginRedirectURL
+          appData.afterLoginRedirectURL,
         );
         if (appData.afterLoginRedirectURL !== null) {
           console.log("redirecting to", appData.afterLoginRedirectURL);
@@ -253,7 +253,7 @@ export const AppProvider = ({ children }) => {
           headers: {
             Authorization: "Bearer " + token,
           },
-        }
+        },
       );
       const user = response.data.user;
       setAppData((prevState) => {
@@ -303,7 +303,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           setAppData((prevState) => {
@@ -343,7 +343,7 @@ export const AppProvider = ({ children }) => {
             navigate("/");
           }
           toast.error(
-            "You are not authorized/authenticated to access this page"
+            "You are not authorized/authenticated to access this page",
           );
         }
       } else {
@@ -381,7 +381,7 @@ export const AppProvider = ({ children }) => {
     message,
     applicationID,
     applicantEmail,
-    status
+    status,
   ) => {
     try {
       getProjectCount();
@@ -399,7 +399,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           toast.success("Response sent successfully");
@@ -411,7 +411,7 @@ export const AppProvider = ({ children }) => {
           }
         } else {
           toast.error(
-            "Error [AC105]: Error occured while sending response to applicant"
+            "Error [AC105]: Error occured while sending response to applicant",
           );
           navigate("/admin/dashboard/applications");
         }
@@ -421,7 +421,7 @@ export const AppProvider = ({ children }) => {
     } catch (error) {
       console.log(
         "Error occurred while sending response to applicant: ",
-        error
+        error,
       );
     }
   };
@@ -490,14 +490,14 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           toast.success("Project created successfully");
           navigate("/admin/dashboard/applications");
         } else {
           toast.error(
-            "Error [AC107]: Error occured while creating new project"
+            "Error [AC107]: Error occured while creating new project",
           );
           navigate("/admin/dashboard/applications");
         }
@@ -559,7 +559,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           toast.success("Project created successfully");
@@ -567,7 +567,7 @@ export const AppProvider = ({ children }) => {
           return true;
         } else {
           toast.error(
-            "Error [AC107]: Error occured while creating new project"
+            "Error [AC107]: Error occured while creating new project",
           );
           navigate("/admin/dashboard/applications");
           return false;
@@ -592,7 +592,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           setAppData((prevState) => {
@@ -627,7 +627,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           toast.success("Project status changed successfully");
@@ -646,7 +646,7 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const uploadFilesToS3 = async (files, projectId, subfolder) => {
+  const uploadFilesToS3 = async (files, projectId, subfolder, ifPdf) => {
     const S3_BUCKET = process.env.REACT_APP_BUCKET;
     const REGION = process.env.REACT_APP_REGION;
     console.log("S3_BUCKET", S3_BUCKET);
@@ -680,11 +680,17 @@ export const AppProvider = ({ children }) => {
         Body: file,
       };
 
+      if (ifPdf && ifPdf === true) {
+        params.ContentType = "application/pdf";
+      }
+
+      console.log("params s3", params);
+
       const upload = s3
         .putObject(params)
         .on("httpUploadProgress", (evt) => {
           console.log(
-            "Uploading " + parseInt((evt.loaded * 100) / evt.total) + "%"
+            "Uploading " + parseInt((evt.loaded * 100) / evt.total) + "%",
           );
         })
         .promise();
@@ -697,7 +703,7 @@ export const AppProvider = ({ children }) => {
           "as",
           newFileName,
           "to",
-          fileUrl
+          fileUrl,
         );
         fileUrls.push(fileUrl);
       } catch (error) {
@@ -760,7 +766,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("Gallery updated successfully");
@@ -793,7 +799,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("Story updated successfully");
@@ -826,7 +832,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("Metadata updated successfully");
@@ -868,7 +874,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("Links updated successfully");
@@ -901,7 +907,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("Documents updated successfully");
@@ -934,7 +940,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("Sponsors updated successfully");
@@ -967,7 +973,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("Seasons updated successfully");
@@ -1000,7 +1006,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("conditions updated successfully");
@@ -1033,7 +1039,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("geoblocs data updated successfully");
@@ -1066,7 +1072,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("Monitors updated successfully");
@@ -1099,7 +1105,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("envData updated successfully");
@@ -1131,7 +1137,7 @@ export const AppProvider = ({ children }) => {
             params: {
               projectId: projectId,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("project retrieved successfully");
@@ -1165,7 +1171,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("updated new collection successfully");
@@ -1181,7 +1187,7 @@ export const AppProvider = ({ children }) => {
     } catch (error) {
       console.log(
         "Error occurred while creating new collection in DB: ",
-        error
+        error,
       );
       return false;
     }
@@ -1190,7 +1196,7 @@ export const AppProvider = ({ children }) => {
   const updateProjectsArrayInState = (projectId, projectData) => {
     // find a project in the appData.projects array and update it accordingly
     const projectIndex = appData.projects.findIndex(
-      (project) => project.projectId === projectId
+      (project) => project.projectId === projectId,
     );
     if (projectIndex !== -1) {
       let tempArray = appData.projects;
@@ -1221,7 +1227,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("updated  collection successfully");
@@ -1254,7 +1260,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("token id updated successfully");
@@ -1287,7 +1293,7 @@ export const AppProvider = ({ children }) => {
             headers: {
               Authorization: "Bearer " + token,
             },
-          }
+          },
         );
         if (response.data.status === "success") {
           // toast.success("token price updated successfully");
@@ -1326,7 +1332,7 @@ export const AppProvider = ({ children }) => {
         {
           userUUID: uuid,
           blockchainAcc: account,
-        }
+        },
       );
 
       if (response.data.status === "success") {
@@ -1357,7 +1363,7 @@ export const AppProvider = ({ children }) => {
         backendUrl + "/api/user/find-user-by-email",
         {
           email: email,
-        }
+        },
       );
       if (response.data.status === "success") {
         return response.data.user;
@@ -1388,6 +1394,35 @@ export const AppProvider = ({ children }) => {
       }
     } catch (error) {
       console.log("Error occurred while adding new transaction: ", error);
+      return false;
+    }
+  };
+
+  const deleteProject = async (projectId) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      if (token !== false) {
+        const response = await axios.post(
+          backendUrl + "/api/admin/delete-project-by-id",
+          {
+            projectId: projectId,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          },
+        );
+        if (response.data.status === "success") {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        console.log("Error occurred while deleting project: ", error);
+      }
+    } catch (error) {
+      console.log("Error occured while deleting project", error);
       return false;
     }
   };
@@ -1488,9 +1523,8 @@ export const AppProvider = ({ children }) => {
       tokenId: 1,
     };
 
-    const { collectionId, tokenId, amount } = await sdk.refungible.getBalance(
-      getBalanceArgs
-    );
+    const { collectionId, tokenId, amount } =
+      await sdk.refungible.getBalance(getBalanceArgs);
 
     console.log("Balance: ", collectionId, tokenId, amount);
 
@@ -1511,7 +1545,7 @@ export const AppProvider = ({ children }) => {
     tokenPrefix,
     projectId,
     geoblocsData,
-    totalSupply
+    totalSupply,
   ) => {
     console.log(
       "Creating new collection: ",
@@ -1520,7 +1554,7 @@ export const AppProvider = ({ children }) => {
       tokenPrefix,
       projectId,
       geoblocsData,
-      totalSupply
+      totalSupply,
     );
     try {
       const result =
@@ -1548,13 +1582,13 @@ export const AppProvider = ({ children }) => {
       geoblocsData.totalSupply = totalSupply;
       const updateResult = await updateProjectGeoblocsData(
         projectId,
-        geoblocsData
+        geoblocsData,
       );
       if (updateResult === true) {
         const newNftResult = await createNewNFT(
           projectId,
           collectionId,
-          totalSupply
+          totalSupply,
         );
         if (newNftResult === true) {
           const projectData = await getProjectById(projectId);
@@ -1599,7 +1633,7 @@ export const AppProvider = ({ children }) => {
     if (updateResult.status === "success") {
       const tokenProjectUpdateResult = await updateTokenIdInProject(
         projectId,
-        tokenId
+        tokenId,
       );
       if (tokenProjectUpdateResult.status === "success") {
         return true;
@@ -1616,7 +1650,7 @@ export const AppProvider = ({ children }) => {
   const getAllProjectsForUsers = async () => {
     try {
       const response = await axios.get(
-        backendUrl + "/api/user/get-all-projects"
+        backendUrl + "/api/user/get-all-projects",
       );
       if (response.data.status === "success") {
         setAppData((prevState) => {
@@ -1645,7 +1679,7 @@ export const AppProvider = ({ children }) => {
     amount,
     email,
     mode,
-    miscData
+    miscData,
   ) => {
     try {
       setLoading({
@@ -1666,7 +1700,7 @@ export const AppProvider = ({ children }) => {
       console.log(
         "4",
         process.env.REACT_APP_ADMIN_SEED,
-        process.env.REACT_APP_ADMIN_ADDRESS
+        process.env.REACT_APP_ADMIN_ADDRESS,
       );
       const options = {
         baseUrl: "https://rest.unique.network/opal/v1",
@@ -1769,6 +1803,8 @@ export const AppProvider = ({ children }) => {
         updateBlockchainAccInUser,
         checkUserExistence,
         createNewProjectByAdmin,
+        getProjectById,
+        deleteProject,
         // blockchain part
         createNewUniqueNetworkAcc,
         createNewNftCollection,

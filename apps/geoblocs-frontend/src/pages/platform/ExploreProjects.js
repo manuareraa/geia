@@ -16,9 +16,10 @@ function ExploreProjects(props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []); 
+  }, []);
 
   const renderProjectCards = async () => {
+    let recentCouter = 0;
     console.log("exec rendercard");
     let tempArrayForProjectCards = [];
     let tempArrayForRecentProjectCards = [];
@@ -30,7 +31,8 @@ function ExploreProjects(props) {
     console.log("recentProjects", recentProjects);
     recentProjects.forEach((project, index) => {
       console.log("project status", project.status, index);
-      if (project.status === "live" && index >= 2) {
+      if (project.status === "live" && recentCouter < 2) {
+        recentCouter = recentCouter + 1;
         console.log("adding new react");
         let projectCard = (
           <motion.div
@@ -56,14 +58,16 @@ function ExploreProjects(props) {
                 window.scrollTo(0, 0);
               }}
             >
-              <img
-                src={
-                  project.metadata.coverImage
-                    ? project.metadata.coverImage[0]
-                    : sampleOne
-                }
-                className="object-cover w-full h-48 rounded-2xl"
-              ></img>
+              <div className="h-48 rounded-2xl">
+                <img
+                  src={
+                    project.metadata.coverImage
+                      ? project.metadata.coverImage[0]
+                      : sampleOne
+                  }
+                  className="object-cover w-full h-48 rounded-2xl"
+                ></img>
+              </div>
               <div className="flex flex-col justify-between h-full">
                 <p className="px-2 text-lg font-bold">
                   {project.metadata.projectName}
@@ -110,14 +114,16 @@ function ExploreProjects(props) {
                 window.scrollTo(0, 0);
               }}
             >
-              <img
-                src={
-                  project.metadata.coverImage
-                    ? project.metadata.coverImage[0]
-                    : sampleOne
-                }
-                className="object-cover w-full h-48 rounded-2xl"
-              ></img>
+              <div className="h-48 rounded-2xl">
+                <img
+                  src={
+                    project.metadata.coverImage
+                      ? project.metadata.coverImage[0]
+                      : sampleOne
+                  }
+                  className="object-cover w-full h-48 rounded-2xl"
+                ></img>
+              </div>
               <div className="flex flex-col justify-between h-full">
                 <p className="px-2 text-lg font-bold">
                   {project.metadata.projectName}

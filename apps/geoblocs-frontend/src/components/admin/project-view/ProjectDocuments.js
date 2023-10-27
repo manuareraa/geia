@@ -30,9 +30,26 @@ function ProjectDocuments(props) {
     setDocuments([...documents, { label: "", url: "" }]);
   };
 
-  const removeDocument = (index) => {
+  const removeDocument = async (index) => {
     const updatedDocuments = documents.filter((_, i) => i !== index);
     setDocuments(updatedDocuments);
+
+    console.log("Removed documents", updatedDocuments)
+
+    // save function
+    const updateResult = await updateProjectDocuments(
+      projectId,
+      updatedDocuments,
+    );
+    if (updateResult === true) {
+      toast.success(
+        "Project Documents updated successfully.",
+      );
+    } else {
+      toast.error(
+        "Failed to update documents. Try again.",
+      );
+    }
   };
 
   return (
@@ -58,7 +75,7 @@ function ProjectDocuments(props) {
         {documents.length === 0 ? (
           <p className="text-2xl font-bold text-black/50">No Documents</p>
         ) : (
-          <div className="grid items-center grid-cols-1 gap-y-8 w-fit">
+          <div className="grid items-center grid-cols-1 w-fit gap-y-8">
             {documents.map((docElement, index) => {
               return (
                 <div
@@ -100,7 +117,8 @@ function ProjectDocuments(props) {
                         const fileUrls = await uploadFilesToS3(
                           tempImageArray,
                           projectId,
-                          "documents"
+                          "documents",
+                          true,
                         );
                         if (fileUrls.length > 0) {
                           toast.success("File uploaded successfully.");
@@ -114,11 +132,11 @@ function ProjectDocuments(props) {
 
                   {/* remove button */}
                   <button
-                    className="text-white capitalize border-0 w-fit btn bg-red focus:outline-none"
+                    className="text-white capitalize border-0 btn w-fit bg-red focus:outline-none"
                     onClick={async () => {
                       if (docElement.url !== "") {
                         const deleteResult = await deleteFileFromS3(
-                          docElement.url
+                          docElement.url,
                         );
                         if (deleteResult === true) {
                           toast.success("File deleted successfully.");
@@ -142,12 +160,12 @@ function ProjectDocuments(props) {
       {/* save button */}
       <div className="flex flex-col w-full pt-10">
         <button
-          className="self-center text-lg text-white capitalize border-2 w-fit btn bg-gGreen border-gGreen"
+          className="self-center text-lg text-white capitalize border-2 btn w-fit border-gGreen bg-gGreen"
           onClick={async () => {
             console.log(documents);
             const updateResult = await updateProjectDocuments(
               projectId,
-              documents
+              documents,
             );
             if (updateResult === true) {
               toast.success("Project Documents updated successfully.");

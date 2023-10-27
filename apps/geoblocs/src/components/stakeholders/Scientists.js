@@ -7,7 +7,7 @@ function Scientists(props) {
       <p className="text-[45px] text-center w-[1000px]">Follow Science </p>
 
       {/* description */}
-      <p className="font-light w-[800px] text-center text-lg py-12">
+      <p className="font-light w-[800px] text-center text-md py-12">
         GEIA is building a global network of individuals, institutions and
         companies that are dedicated to a regenerative futureusing the latest in
         geospatial and on the ground analysis. This coupled with Geoblocs NFTs

@@ -19,7 +19,7 @@ function Buyers(props) {
       {/* description */}
       <p className="font-light w-[800px] text-center text-lg py-12">
         Buy Geoblocs biosphere restoration tokens and support land stewards
-        around the world tosequester carbon, improve biodiversity, and more.
+        around the world to sequester carbon, improve biodiversity, and more.
       </p>
       <div className="divider"></div>
 

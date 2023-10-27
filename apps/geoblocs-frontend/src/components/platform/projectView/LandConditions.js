@@ -14,7 +14,7 @@ function LandConditions(props) {
           className="flex flex-row items-center w-full space-x-6"
           key={index}
         >
-          <p className="w-[15%]">{landCondition.label}</p>
+          <p className="w-[25%]">{landCondition.label}</p>
           <progress
             className="progress h-4 w-[100%]  bg-[#B2935B] text-gGreen lg:w-full"
             value={parseInt(landCondition.value)}
@@ -37,7 +37,7 @@ function LandConditions(props) {
   }, []);
 
   return (
-    <div className="items-center justify-center w-full pb-20 lg:px-80">
+    <div className="items-center justify-center w-full pb-20 lg:px-40">
       <div className="w-full items-center justify-center rounded-xl bg-[#B5BFA4] p-8">
         <div className="flex flex-col w-full space-y-0">
           <p className="text-xl font-semibold underline underline-offset-2 lg:text-3xl">

@@ -26,6 +26,7 @@ function ProjectView(props) {
     setAppData,
     checkForAuthentication,
     changeProjectLiveStatus,
+    deleteProject,
   } = useContext(AppContext);
   const navigate = useNavigate();
   const { projectId } = useParams();
@@ -87,9 +88,9 @@ function ProjectView(props) {
             {/* sub-body container */}
             <div className="flex flex-col items-center justify-center w-full space-y-16">
               {/* project status toggle bar */}
-              <div class="flex flex-row form-control space-x-8">
-                <label class="cursor-pointer label grid grid-cols-2 space-x-8">
-                  <span class="label-text font-bold text-lg">
+              <div class="form-control flex flex-row space-x-8">
+                <label class="label grid cursor-pointer grid-cols-2 space-x-8">
+                  <span class="label-text text-lg font-bold">
                     {appData.projectInView.status === "live" ? (
                       <p>
                         Project is{" "}
@@ -101,7 +102,7 @@ function ProjectView(props) {
                   </span>
                   <input
                     type="checkbox"
-                    class="toggle toggle-lg w-[87px] h-[55px] toggle-custom-color"
+                    class="toggle-custom-color toggle toggle-lg h-[55px] w-[87px]"
                     checked={
                       appData.projectInView.status === "live" ? true : false
                     }
@@ -110,7 +111,7 @@ function ProjectView(props) {
                         appData.projectInView.status === "live"
                           ? "not live"
                           : "live",
-                        projectId
+                        projectId,
                       );
                       setAppData((prevState) => {
                         return {
@@ -130,7 +131,7 @@ function ProjectView(props) {
               </div>
 
               {/* project metadata  */}
-              <div className="grid w-full lg:grid-cols-4 md:grid-cols-3 grid-rows- gap-y-12">
+              <div className="grid w-full grid-rows- gap-y-12 md:grid-cols-3 lg:grid-cols-4">
                 <div className="flex flex-col space-y-2">
                   <p className="text-xl font-bold">Application No.</p>
                   <p className="text-lg font-">{projectId}</p>
@@ -195,7 +196,7 @@ function ProjectView(props) {
               <div className="divider"></div>
 
               {/* geoblocs stats container */}
-              <div className="flex flex-col items-center justify-center space-y-8 lg:flex-row md:flex-row lg:space-x-28 md:space-x-12 lg:space-y-0 md:space-y-0">
+              <div className="flex flex-col items-center justify-center space-y-8 md:flex-row md:space-x-12 md:space-y-0 lg:flex-row lg:space-x-28 lg:space-y-0">
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <p className="text-xl font-bold">Geoblocs Purchased</p>
                   <p className="text-4xl">
@@ -246,7 +247,7 @@ function ProjectView(props) {
               <div className="divider"></div>
 
               {/* buttons container */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-x-8 gap-y-6">
+              <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
                 <button
                   className="h-full px-10 text-xl text-white capitalize btn bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
@@ -346,12 +347,30 @@ function ProjectView(props) {
                 >
                   Update Monitors
                 </button>
+
+                {/* remove button */}
+                <button
+                  className="h-full px-10 text-xl text-white capitalize border-0 btn bg-red hover:bg-gGreen/80"
+                  onClick={async () => {
+                    const response = await deleteProject(projectId);
+                    if (response === true) {
+                      toast.success("Project deleted successfully");
+                      navigate("/admin/dashboard/projects");
+                    } else {
+                      toast.error(
+                        "Error occured while deleting project. Please try again",
+                      );
+                    }
+                  }}
+                >
+                  Delete Project
+                </button>
               </div>
             </div>
 
             <dialog
               id="my_modal_1"
-              className="items-start w-full py-16 overflow-auto px-28 modal bg-gGreen/20"
+              className="items-start w-full py-16 overflow-auto modal bg-gGreen/20 px-28"
             >
               <div method="dialog" className="w-full p-12 bg-white rounded-3xl">
                 {/* body goes here */}
@@ -414,7 +433,7 @@ function ProjectView(props) {
                   {/* if there is a button in form, it will close the modal */}
 
                   <form method="dialog">
-                    <button className="text-lg capitalize border-2 text-gGreen btn border-gGreen bg-white/0 hover:border-2 hover:border-gGreen hover:bg-white">
+                    <button className="text-lg capitalize border-2 btn border-gGreen bg-white/0 text-gGreen hover:border-2 hover:border-gGreen hover:bg-white">
                       Close
                     </button>
                   </form>

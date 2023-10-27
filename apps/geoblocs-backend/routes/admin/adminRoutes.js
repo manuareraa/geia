@@ -120,6 +120,24 @@ router.get("/get-all-projects", authenticate, async (req, res) => {
   }
 });
 
+router.get("/get-project", authenticate, async (req, res) => {
+  console.log("GET /applications/projects/get-all-projects");
+  try {
+    if (req.role === "admin") {
+      const projects = await db
+        .collection("projects")
+        .find({ projectId: req.body.projectId })
+        .toArray();
+      res.status(200).json({ status: "success", projects: projects });
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
 router.post("/change-live-status", authenticate, async (req, res) => {
   console.log("POST /api/admin/change-live-status");
   try {
@@ -410,6 +428,32 @@ router.get("/get-project-by-id", authenticate, async (req, res) => {
         res.status(404).json({ status: "fail", message: "Project not found" });
       } else {
         res.status(200).json({ status: "success", project: projectData });
+      }
+    } else {
+      res.status(401).json({ status: "fail", message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log("Error occurred while fetching project data: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+router.post("/delete-project-by-id", authenticate, async (req, res) => {
+  console.log("GET /api/admin/get-project-by-id");
+  try {
+    if (req.role === "admin") {
+      const { projectId } = req.body; // Use req.query to get parameters from GET request
+      console.log("ProjectID", projectId);
+      const response = await db
+        .collection("projects")
+        .deleteOne({ projectId: projectId });
+        // .findOne({ projectId: projectId });
+
+      if (!response) {
+        res.status(404).json({ status: "fail", message: "Project not found" });
+      } else {
+        console.log("project deleted", projectId);
+        res.status(200).json({ status: "success" });
       }
     } else {
       res.status(401).json({ status: "fail", message: "Unauthorized" });

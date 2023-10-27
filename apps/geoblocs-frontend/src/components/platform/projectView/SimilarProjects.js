@@ -27,7 +27,7 @@ function SimilarProjects(props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1, delay: 0.1 }}
-              className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
+              className="flex h-full w-full max-w-[300px] flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
               onClick={() => {
                 setAppData((prevState) => {
                   return {
@@ -39,14 +39,16 @@ function SimilarProjects(props) {
                 window.scrollTo(0, 0);
               }}
             >
-              <img
-                src={
-                  project.metadata.coverImage
-                    ? project.metadata.coverImage[0]
-                    : sampleOne
-                }
-                className="object-cover w-full h-48 rounded-2xl"
-              ></img>
+              <div className="h-48 rounded-2xl">
+                <img
+                  src={
+                    project.metadata.coverImage
+                      ? project.metadata.coverImage[0]
+                      : sampleOne
+                  }
+                  className="object-cover w-full h-48 rounded-2xl"
+                ></img>
+              </div>
               <div className="flex flex-col justify-between h-full">
                 <p className="px-2 text-lg font-bold">
                   {project.metadata.projectName}
@@ -77,7 +79,7 @@ function SimilarProjects(props) {
   return (
     <>
       {projectCards.length > 0 ? (
-        <div className="grid self-center grid-cols-1 space-y-8 lg:w-full lg:grid-cols-4 lg:gap-x-8 lg:space-y-0 w-fit">
+        <div className="grid self-center grid-cols-1 space-y-8 w-fit lg:w-full lg:grid-cols-4 lg:gap-x-8 lg:space-y-0">
           <AnimatePresence>{projectCards}</AnimatePresence>
         </div>
       ) : (

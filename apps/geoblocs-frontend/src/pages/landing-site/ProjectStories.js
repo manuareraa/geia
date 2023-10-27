@@ -21,12 +21,12 @@ function ProjectStories(props) {
     setStoryCards([]);
     setRecentStoryCards([]);
     const recentProjects = appData.projects.sort(
-      (a, b) => b.createdOn - a.createdOn
+      (a, b) => b.createdOn - a.createdOn,
     );
 
     console.log("recentProjects", recentProjects);
     recentProjects.forEach((project) => {
-      if(tempArrayForRecentStoryCards.length === 2) return;
+      if (tempArrayForRecentStoryCards.length === 2) return;
       if (project.story.length !== 0) {
         let storyCard = (
           <motion.div
@@ -40,20 +40,22 @@ function ProjectStories(props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1, delay: 0.1 }}
-              className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-[100%] max-w-[300px]"
+              className="flex h-full w-[100%] max-w-[300px] flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
               onClick={() => {
                 setStoryInView(project.story);
                 window.my_modal_1.showModal();
               }}
             >
-              <img
-                src={
-                  project.metadata.coverImage
-                    ? project.metadata.coverImage[0]
-                    : sampleOne
-                }
-                className="object-cover w-full h-48 rounded-2xl"
-              ></img>
+              <div className="h-48 rounded-2xl">
+                <img
+                  src={
+                    project.metadata.coverImage
+                      ? project.metadata.coverImage[0]
+                      : sampleOne
+                  }
+                  className="object-cover w-full h-48 rounded-2xl"
+                ></img>
+              </div>
               <div className="flex flex-col justify-between h-full">
                 <p className="px-2 text-lg font-bold">
                   {project.story[0].content}
@@ -87,20 +89,22 @@ function ProjectStories(props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1, delay: 0.1 }}
-              className="h-full flex flex-col p-3 space-y-3 shadow-lg bg-gGray rounded-2xl hover:cursor-pointer lg:w-[100%] w-full max-w-[300px]"
+              className="flex h-full w-full max-w-[300px] flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
               onClick={() => {
                 setStoryInView(project.story);
                 window.my_modal_1.showModal();
               }}
             >
-              <img
-                src={
-                  project.metadata.coverImage
-                    ? project.metadata.coverImage[0]
-                    : sampleOne
-                }
-                className="object-cover w-full h-48 rounded-2xl"
-              ></img>
+              <div className="h-48 rounded-2xl">
+                <img
+                  src={
+                    project.metadata.coverImage
+                      ? project.metadata.coverImage[0]
+                      : sampleOne
+                  }
+                  className="object-cover w-full h-48 rounded-2xl"
+                ></img>
+              </div>
               <div className="flex flex-col justify-between h-full">
                 <p className="px-2 text-lg font-bold">
                   {project.story[0].content}
@@ -135,7 +139,7 @@ function ProjectStories(props) {
   return (
     <div className="flex flex-col justify-center w-full">
       {/* title container */}
-      <div className="flex flex-col items-start justify-between px-8 pt-36 lg:px-32 lg:flex-row lg:space-x-8">
+      <div className="flex flex-col items-start justify-between px-8 pt-36 lg:flex-row lg:space-x-8 lg:px-32">
         {/* left - title sub-container */}
         <div className="flex flex-col items-start space-y-4">
           {/* sub title */}
@@ -143,7 +147,7 @@ function ProjectStories(props) {
             Empowering Communities, Restoring Ecosystems
           </p>
           {/* main title */}
-          <p className="font- lg:text-[80px] text-[33px] md:text-[50px] lg:leading-[95px] md:leading-[70px] leading-[50px] ">
+          <p className="font- text-[33px] leading-[50px] md:text-[50px] md:leading-[70px] lg:text-[80px] lg:leading-[95px] ">
             Stories of <br></br>{" "}
             <span className="font-bold text-gGreen">Transformative</span>{" "}
             <br></br> Projects
@@ -151,13 +155,13 @@ function ProjectStories(props) {
         </div>
 
         {/* right - recent stories sub-container */}
-        <div className="flex flex-col self-center mt-16 space-y-4 lg:mt-0 lg:ml-12 lg:items-end">
+        <div className="flex flex-col self-center mt-16 space-y-4 lg:ml-12 lg:mt-0 lg:items-end">
           {recentStoryCards.length > 0 ? (
             <>
               <p className="text-xl font-bold text-center lg:text-3xl">
                 Recent Stories {recentStoryCards.length}
               </p>
-              <motion.div className="grid grid-cols-1 lg:grid-rows-1 lg:grid-cols-2 lg:gap-x-8 gap-y-8 lg:gap-y-0">
+              <motion.div className="grid grid-cols-1 gap-y-8 lg:grid-cols-2 lg:grid-rows-1 lg:gap-x-8 lg:gap-y-0">
                 <AnimatePresence>{recentStoryCards}</AnimatePresence>
               </motion.div>
             </>
@@ -175,7 +179,7 @@ function ProjectStories(props) {
         </div>
         {/* body */}
         {storyCards.length > 0 ? (
-          <div className="grid w-full grid-cols-1 lg:grid-cols-4 lg:gap-x-8 justify-items-center lg:justify-items-start gap-y-8 lg:gap-y-0">
+          <div className="grid w-full grid-cols-1 justify-items-center gap-y-8 lg:grid-cols-4 lg:justify-items-start lg:gap-x-8 lg:gap-y-0">
             <AnimatePresence>{storyCards}</AnimatePresence>
           </div>
         ) : (
@@ -206,7 +210,7 @@ function ProjectStories(props) {
       {/* // story view modal */}
       <dialog
         id="my_modal_1"
-        className="items-start w-full py-16 overflow-auto px-28 modal bg-gGreen/20"
+        className="items-start w-full py-16 overflow-auto modal bg-gGreen/20 px-28"
       >
         <div method="dialog" className="w-full p-12 bg-white rounded-3xl">
           {/* body goes here */}
@@ -218,7 +222,7 @@ function ProjectStories(props) {
                   className="text-lg text-white capitalize border-2 btn border-gGreen bg-gGreen hover:border-2 hover:border-gGreen hover:bg-gGreen"
                   onClick={() => {
                     toast.error(
-                      "This feature is not available yet. Please navigate to 'Platform' to view different project"
+                      "This feature is not available yet. Please navigate to 'Platform' to view different project",
                     );
                     // navigate(
                     //   "/platform/projects/view/" + storyInView[0]?.projectId
@@ -228,7 +232,7 @@ function ProjectStories(props) {
                   View Project
                 </button>
                 <form method="dialog">
-                  <button className="text-lg capitalize border-2 bg-gGreen text-gGreen btn border-gGreen bg-white/0 hover:border-2 hover:border-gGreen hover:bg-white">
+                  <button className="text-lg capitalize border-2 btn border-gGreen bg-gGreen bg-white/0 text-gGreen hover:border-2 hover:border-gGreen hover:bg-white">
                     Close
                   </button>
                 </form>
@@ -258,7 +262,7 @@ function ProjectStories(props) {
                         <img
                           src={block.file}
                           alt="Image"
-                          className="object-cover rounded-md w-44 h-44"
+                          className="object-cover rounded-md h-44 w-44"
                         />
                       ) : null}
                     </div>

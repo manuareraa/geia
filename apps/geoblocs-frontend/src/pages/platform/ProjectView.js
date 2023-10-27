@@ -56,6 +56,7 @@ function ProjectView(props) {
     updateBlockchainAccInUser,
     checkUserExistence,
     userRegisterQuietMode,
+    getProjectById,
   } = useContext(AppContext);
   const { projectId } = useParams();
   const [subWindow, setSubWindow] = useState("default");
@@ -66,19 +67,12 @@ function ProjectView(props) {
   const [redeemStatus, setRedeemStatus] = useState(false);
   const [redeeemInProcess, setRedeemInProcess] = useState(false);
   const [latLong, setLatLong] = useState([51.903614, -8.468399]);
-  const [mapCenter, setMapCenter] = useState(latLong);
+  const [mapCenter, setMapCenter] = useState([51.903614, -8.468399]);
 
   const ChangeView = ({ center }) => {
-    // console.log("executing change view");
+    console.log("executing change view", center);
     const map = useMap();
     map.setView(center, map.getZoom());
-    map.on("load", () => {
-      map.on("click", "circle", (e) => {
-        map.flyTo({
-          center: e.features[0].geometry.coordinates,
-        });
-      });
-    });
     return null;
   };
 
@@ -94,7 +88,7 @@ function ProjectView(props) {
   });
 
   function isValidLatLon(latLonArray) {
-    console.log("validating", latLonArray)
+    console.log("validating", latLonArray);
     try {
       // remove white space in the string
       latLonArray = latLonArray.replace(/\s/g, "");
@@ -109,19 +103,29 @@ function ProjectView(props) {
 
     // Check if the array has exactly two elements
     if (latLonArray.length !== 2) return false;
-    console.log("1")
+    console.log("1");
 
     // Check if lat and lon are numbers
-    if (typeof latLonArray[0] !== "number" || typeof latLonArray[1] !== "number") return false;
-    console.log("2")
+    if (
+      typeof latLonArray[0] !== "number" ||
+      typeof latLonArray[1] !== "number"
+    )
+      return false;
+    console.log("2");
 
     // Check the range of lat and lon values
-    if (latLonArray[0] < -90 || latLonArray[0] > 90 || latLonArray[1] < -180 || latLonArray[1] > 180) return false;
-    console.log("3")
+    if (
+      latLonArray[0] < -90 ||
+      latLonArray[0] > 90 ||
+      latLonArray[1] < -180 ||
+      latLonArray[1] > 180
+    )
+      return false;
+    console.log("3");
 
     // If all checks pass, return true
     position = latLonArray;
-    setLatLong(latLonArray);
+    // setLatLong(latLonArray);
     setMapCenter(latLonArray);
     console.log("all checks passed", position);
   }
@@ -496,12 +500,30 @@ function ProjectView(props) {
 
   useEffect(() => {
     console.log("appData", appData);
+    const getProjectDataFromDB = async () => {
+      console.log("Getting project data from DB", projectId);
+      const projectData = await getProjectById(projectId);
+      if (projectData.status !== "success") {
+        navigate("/platform/projects");
+        return false;
+      } else {
+        console.log("Project data >> ", projectData);
+        isValidLatLon(projectData.project.metadata.gps);
+        setAppData((prevState) => {
+          return {
+            ...prevState,
+            projectInView: projectData.project,
+          };
+        });
+        return true;
+      }
+    };
+
     if (Object.keys(appData.projectInView).length > 0) {
       console.log(appData.projectInView);
       isValidLatLon(appData.projectInView.metadata.gps);
-      // isValidLatLon([48.8566, 2.3522]);
     } else {
-      navigate("/platform/projects");
+      getProjectDataFromDB();
     }
   }, []);
 
@@ -532,7 +554,7 @@ function ProjectView(props) {
             </div>
             <div className="flex flex-col items-center justify-between px-8 lg:space-x-28 lg:px-32 2xl:flex-row">
               {/* left - title sub-container */}
-              <div className="flex flex-col space-y-4 lg:items-start">
+              <div className="flex w-[40%] flex-col space-y-4 lg:items-start">
                 {/* sub title */}
                 <div className="p-1 px-2 rounded-md bg-gGreen lg:p-2 lg:px-4">
                   <p className="text-sm font-bold text-center text-white lg:text-lg">
@@ -540,11 +562,7 @@ function ProjectView(props) {
                   </p>
                 </div>
                 {/* main title */}
-                <p
-                  className="
-                  font- md: w-full self-center text-center text-2xl lg:w-[800px]  lg:text-start lg:text-6xl
-                "
-                >
+                <p className="self-center w-full text-2xl text-center font- md: lg:text-start lg:text-6xl">
                   {appData.projectInView.metadata.projectName}
                 </p>
                 <div className="flex flex-row items-center space-x-2">
@@ -567,11 +585,11 @@ function ProjectView(props) {
               <div className="flex flex-col items-center justify-center w-full">
                 {/* map container */}
                 <MapContainer
-                  center={latLong}
+                  center={mapCenter}
                   zoom={13}
                   style={{
                     height: "30vh",
-                    width: "90%",
+                    width: "100%",
                     borderRadius: "40px",
                     marginTop: "10px",
                     marginBottom: "10px",
@@ -582,7 +600,7 @@ function ProjectView(props) {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   />
-                  <Marker position={latLong} icon={customIcon}>
+                  <Marker position={mapCenter} icon={customIcon}>
                     <Tooltip
                       permanent
                       interactive
