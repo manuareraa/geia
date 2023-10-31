@@ -26,7 +26,7 @@ function ProjectMetadata(props) {
       <div className="divider"></div>
       {/* body */}
       <div className="flex flex-col items-center justify-center w-full pt-8 pb-6 space-y-4">
-        <div className="grid items-center justify-center grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-x-20 gap-y-8">
+        <div className="grid items-center justify-center grid-cols-1 gap-x-20 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
           {/* Project Name */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
@@ -202,6 +202,50 @@ function ProjectMetadata(props) {
               />
             </div>
           </div>
+
+          {/* description */}
+          <div className="flex flex-row items-end space-x-2">
+            <img src={editIcon} alt="" className="w-6 h-6"></img>
+            <div className="flex flex-col space-y-">
+              <p className="text-xs font-light">Description</p>
+              <textarea
+                type="text"
+                placeholder="Project Description"
+                className="py-2 border-b-2 border-black/50 focus:outline-none"
+                value={projectMetadata.description || ""}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      description: e.target.value,
+                    };
+                  });
+                }}
+              />
+            </div>
+          </div>
+
+          {/* intervention type */}
+          <div className="flex flex-row items-end space-x-2">
+            <img src={editIcon} alt="" className="w-6 h-6"></img>
+            <div className="flex flex-col space-y-">
+              <p className="text-xs font-light">Intervention Type</p>
+              <input
+                type="text"
+                placeholder="Intervention Type"
+                className="py-2 border-b-2 border-black/50 focus:outline-none"
+                value={projectMetadata.interventionType || ""}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      interventionType: e.target.value,
+                    };
+                  });
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -243,7 +287,7 @@ function ProjectMetadata(props) {
         <img
           src={projectMetadata.coverImage[0]}
           alt=""
-          className="w-[350px] h-[200px] rounded-md"
+          className="h-[200px] w-[350px] rounded-md"
         ></img>
       ) : (
         <p className="text-lg">No Cover Image Uploaded</p>
@@ -251,12 +295,12 @@ function ProjectMetadata(props) {
       {/* save button */}
       <div className="flex flex-col w-full pt-10">
         <button
-          className="self-center text-lg text-white capitalize border-2 w-fit btn bg-gGreen border-gGreen"
+          className="self-center text-lg text-white capitalize border-2 btn w-fit border-gGreen bg-gGreen"
           onClick={async () => {
             console.log(projectMetadata);
             const updateResult = await updateProjectMetadata(
               projectId,
-              projectMetadata
+              projectMetadata,
             );
             if (updateResult === true) {
               toast.success("Metadata updated successfully.");

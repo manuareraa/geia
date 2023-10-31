@@ -51,8 +51,8 @@ function Home(props) {
             </p>
           </div>
           {/* hero description container */}
-          <div className="flex flex-col">
-            <p className="mx-auto text-center text-2xl font-bold text-white md:w-[80%] lg:w-[60%]">
+          <div className="flex flex-col items-center">
+            <p className="bg-[#303D0C]/60 text-center text-2xl font-bold text-white md:w-[80%] lg:w-[60%] p-6 rounded-2xl">
               Geoblocs blockchain utilizes geospatial technology along with on
               the ground monitoring to create verifiable regeneration projects
               around the world that focus on biodiversity, social impact and

@@ -16,7 +16,7 @@ import logo from "../../assets/img/full-logo.png";
 function LandStewards(props) {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center justify-center w-full p-20 bg-[#F9FAF6]">
+    <div className="flex flex-col items-center justify-center w-full lg:p-20 p-8 bg-[#F9FAF6]">
       {/* title */}
       <p className="text-[25px] md:text-[35px] lg:text-[45px] text-center lg:w-[1000px] md:w-[85%] w-[100%]">
         Let us pay for the regeneration work and you reap the benefits.
@@ -39,7 +39,7 @@ function LandStewards(props) {
           <p className="text-lg font-bold text-center underline">
             Get Paid to Restore Your Land
           </p>
-          <p className="font-medium w-[375px] text-center">
+          <p className="font-medium lg:w-[375px] text-center">
             Once the lands are restored all physical benefits go to the
             landowner in the form of produce and a healthy environment.
           </p>
@@ -51,7 +51,7 @@ function LandStewards(props) {
           <p className="text-lg font-bold text-center underline">
             Streamlined Process
           </p>
-          <p className="font-medium w-[375px] text-center">
+          <p className="font-medium lg:w-[375px] text-center">
             Registration, monitoring, reporting, verification and payment are
             streamlined to save you precious time.
           </p>
@@ -63,7 +63,7 @@ function LandStewards(props) {
           <p className="text-lg font-bold text-center underline">
             Efficiency through Technology
           </p>
-          <p className="font-medium w-[375px] text-center">
+          <p className="font-medium lg:w-[375px] text-center">
             Because most of the system is automated Geoblocs is very efficient
             at turning money into regeneration.
           </p>

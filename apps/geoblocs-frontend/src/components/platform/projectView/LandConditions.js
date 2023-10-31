@@ -37,7 +37,7 @@ function LandConditions(props) {
   }, []);
 
   return (
-    <div className="items-center justify-center w-full pb-20 lg:px-40">
+    <div className="items-center justify-center w-full px-2 pb-20 lg:px-40">
       <div className="w-full items-center justify-center rounded-xl bg-[#B5BFA4] p-8">
         <div className="flex flex-col w-full space-y-0">
           <p className="text-xl font-semibold underline underline-offset-2 lg:text-3xl">
@@ -47,8 +47,8 @@ function LandConditions(props) {
         </div>
 
         {landConditions.length > 0 ? (
-          <div className="flex flex-row items-center w-full">
-            <div className="flex flex-col w-full py-20 space-y-6">
+          <div className="flex flex-col items-center w-full lg:flex-row">
+            <div className="flex flex-col w-full py-12 space-y-6 lg:py-20">
               {landConditions}
             </div>
             <div className="flex flex-row items-center justify-center w-full">

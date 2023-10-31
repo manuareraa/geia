@@ -10,10 +10,11 @@ import imageTwo from "../../assets/img/stakeholders/buyers/15.png";
 import imageThree from "../../assets/img/stakeholders/buyers/12.png";
 import imageFour from "../../assets/img/stakeholders/buyers/13.png";
 import imageFive from "../../assets/img/stakeholders/buyers/14.png";
+import imageSix from "../../assets/img/stakeholders/buyers/16.png";
 
 function Buyers(props) {
   return (
-    <div className="flex flex-col items-center justify-center w-full p-20 bg-[#F9FAF6]">
+    <div className="flex w-full flex-col items-center justify-center bg-[#F9FAF6] lg:p-20 p-8">
       {/* title */}
       <p className="w-[100%] text-center text-[25px] md:w-[85%] md:text-[35px] lg:w-[1000px] lg:text-[45px]">
         By using <span className="font-bold text-gGreen">Geoblocs</span> you are
@@ -37,18 +38,18 @@ function Buyers(props) {
         <img src={imageOne} className="w-[55%]"></img>
       </div>
 
-      <div className="mx-44 my-20 flex flex-col items-center justify-center space-y-4 rounded-xl bg-[#B5BFA4] px-8 py-8">
-        <div className="mx-36">
-          <p className="text-4xl font-bold text-center">
-            <span className="text-4xl text-gGreen">Geoblocs</span> are stored in
+      <div className="lg:mx-[5%] my-20 flex flex-col items-center justify-center space-y-4 rounded-xl bg-[#B5BFA4] lg:px-8 py-8">
+        <div className="mx-4 lg:mx-36">
+          <p className="text-2xl font-bold text-center lg:text-4xl">
+            <span className="text-2xl lg:text-4xl text-gGreen">Geoblocs</span> are stored in
             a crypto wallet which can be accessed anytime, anywhere
           </p>
         </div>
         <div className="flex flex-col items-center pt-8 space-y-8 lg:flex-row lg:space-x-8 lg:space-y-0">
-          <img src={imageTwo} className="w-[30%]"></img>
-          <div className="px-12">
-            <div className="rounded-2xl bg-[#656565]/30 p-12 px-12">
-              <p className="text-2xl text-center text-white">
+          <img src={imageTwo} className="lg:w-[30%] w-[50%]"></img>
+          <div className="px-6">
+            <div className="rounded-2xl bg-[#656565]/30 lg:p-12 p-4 lg:px-12 px-6">
+              <p className="text-lg text-center text-white lg:text-2xl">
                 When you purchase Geoblocs and store them in your wallet you can
                 access the project any time for up to date information on the
                 status of the regeneration from geospatial data and imagery to
@@ -85,26 +86,26 @@ function Buyers(props) {
             <p className="text-xl font-bold text-center md:text-2xl lg:text-3xl">
               Maximize <span className="text-gGreen">Impact</span>
             </p>
-            <p className="text-3xl text-center px-28">
+            <p className="px-4 text-3xl text-center lg:px-28">
               By lowering the overall costs of running ecological projects,more
               money rewards land stewards and is invested directly into
               environmental impact.
             </p>
           </div>
-          <img src={imageThree} className="w-[50%]"></img>
+          <img src={imageThree} className="w-[90%]"></img>
         </div>
       </div>
 
       {/* promote trust and transparency */}
       <div className="flex flex-col items-center justify-center w-full py-16 space-y-2 lg:flex-row lg:space-x-8">
-        <img src={imageFour} className="w-[80%] h-[80%] object-contain"></img>
+        <img src={imageSix} className="h-[60%] w-[60%] object-contain"></img>
         <div className="flex flex-col items-center justify-center space-y-8 lg:flex-row lg:space-x-8 lg:space-y-8">
           <div className="flex flex-col space-y-8">
             <p className="text-xl font-bold text-center md:text-2xl lg:text-3xl">
               Promote <span className="text-gGreen">Trust</span> and
               Transparency
             </p>
-            <p className="text-3xl text-center px-28">
+            <p className="px-4 text-3xl text-center lg:px-28">
               Ecological data is collected based on open source,scientifically
               rigorous methodologies, and independently verified and stored on
               Geoblocs Ledger - our decentralized,immutable database.
@@ -120,7 +121,7 @@ function Buyers(props) {
             <p className="text-xl font-bold text-center md:text-2xl lg:text-3xl">
               Improve <span className="text-gGreen">Ecological</span> Health
             </p>
-            <p className="text-3xl text-center px-28">
+            <p className="px-4 text-3xl text-center lg:px-28">
               In addition to carbon sequestration, Geoblocs biosphere reset
               tokens focus on a broad set of ecological co-benefits such as
               soilhealth, water quality, and biodiversity, as well as the social
@@ -128,7 +129,7 @@ function Buyers(props) {
             </p>
           </div>
         </div>
-        <img src={imageFive} className="w-[50%]"></img>
+        <img src={imageFive} className="w-[90%]"></img>
       </div>
 
       {/* share your impact */}

@@ -43,6 +43,7 @@ import DocumentsSW from "../../components/platform/projectView/subWindows/Docume
 import LandConditions from "../../components/platform/projectView/LandConditions";
 import SimilarProjects from "../../components/platform/projectView/SimilarProjects";
 import Paypal from "../../components/Paypal";
+import geoIcon from "../../assets/img/geoblocs-small-icon.png";
 import "../../utils/TooltipStyles.css";
 
 function ProjectView(props) {
@@ -536,51 +537,75 @@ function ProjectView(props) {
       {Object.keys(appData.projectInView).length > 0 ? (
         <div className="flex flex-col justify-center w-full">
           {/* title container */}
-          <div className="flex flex-col pt-12">
-            {/* back button container */}
-            <div className="flex flex-row items-center justify-center px-8 mb-16 space-x-8 lg:justify-start lg:px-32">
-              <img
-                src={backCircle}
-                alt="Back"
-                className="w-8 hover:cursor-pointer lg:w-12"
-                onClick={() => navigate("/platform/projects")}
-              ></img>
-              <p
-                className="font-bold underline text-md md:text-md underline-offset-2 hover:cursor-pointer lg:text-lg"
-                onClick={() => navigate("/platform/projects")}
-              >
-                Back to explore projects
-              </p>
-            </div>
-            <div className="flex flex-col items-center justify-between px-8 lg:space-x-28 lg:px-32 2xl:flex-row">
-              {/* left - title sub-container */}
-              <div className="flex w-[40%] flex-col space-y-4 lg:items-start">
-                {/* sub title */}
-                <div className="p-1 px-2 rounded-md bg-gGreen lg:p-2 lg:px-4">
-                  <p className="text-sm font-bold text-center text-white lg:text-lg">
-                    Dashboard
-                  </p>
-                </div>
-                {/* main title */}
-                <p className="self-center w-full text-2xl text-center font- md: lg:text-start lg:text-6xl">
+          <div className="flex flex-col">
+            {/* top gray container */}
+            <div className="mb-16 flex w-full flex-col items-center justify-center lg:space-x-8 bg-[#A1AEB4] px-2 py-8 lg:flex-row lg:justify-between lg:px-16 space-y-10 lg:space-y-0">
+              {/* back button container */}
+              <div className="flex flex-row items-center space-x-4">
+                <img
+                  src={geoIcon}
+                  alt="Back"
+                  className="w-8 hover:cursor-pointer lg:w-12"
+                  onClick={() => navigate("/platform/projects")}
+                ></img>
+                <p
+                  className="font-bold underline text-md md:text-md underline-offset-2 hover:cursor-pointer lg:text-lg"
+                  onClick={() => navigate("/platform/projects")}
+                >
+                  Back to explore projects
+                </p>
+              </div>
+
+              {/* center container */}
+              <div className="px-2">
+                <p className="text-3xl font-bold text-center ">
                   {appData.projectInView.metadata.projectName}
                 </p>
-                <div className="flex flex-row items-center space-x-2">
+              </div>
+
+              {/* end container */}
+              <div className="flex flex-col space-y-2">
+                <div className="flex flex-row items-center justify-center space-x-2 lg:justify-start">
                   <img src={calendarIcon} className="w-4 lg:w-6"></img>
-                  <p className="text-sm text-center lg:text-left lg:text-lg">
-                    Started on {appData.projectInView.metadata.startedFrom}
+                  <p className="font-bold">
+                    Start Date:&nbsp;
+                    <span className="font-medium">
+                      {appData.projectInView.metadata.startedFrom}
+                    </span>
                   </p>
                 </div>
-                <div className="flex flex-row items-center justify-center space-x-8 lg:justify-left">
-                  <div className="flex flex-row items-center space-x-2">
-                    <img src={locationIcon} className="w-4 lg:w-6"></img>
-                    <p className="text-sm lg:text-lg">
+                <div className="flex flex-row items-center justify-center space-x-2 lg:justify-start">
+                  <img src={locationIcon} className="w-4 lg:w-6"></img>
+                  <p className="font-bold">
+                    Location:&nbsp;
+                    <span className="font-medium">
                       {appData.projectInView.metadata.location}
-                    </p>
-                  </div>
+                    </span>
+                  </p>
                 </div>
               </div>
-              {/* right container - gallery */}
+            </div>
+            <div className="flex flex-col items-center justify-between px-8 space-y-4 lg:flex-row lg:space-x-28 lg:px-32 2xl:flex-row lg:space-y-0">
+              {/* left - title sub-container */}
+              <div className="flex w-[60%] flex-col space-y-4 lg:items-start">
+                <div className="flex flex-col items-center justify-center space-y-2">
+                  <p className="text-xl font-bold">Project Description</p>
+                  <p className="text-lg text-center">
+                    {appData.projectInView.metadata.description || (
+                      <>
+                        The region's habitat is comprised of Cameroon Highlands
+                        forests. This region has no Intact Forest. The area has
+                        a predominantly equatorial climate with dry winters. It
+                        is part of the Tropical and Subtropical Moist Broadleaf
+                        Forests biome. The location is predominantly land area.
+                        Area of 3.24 ha located in a mountainous area.
+                      </>
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              {/* right container */}
               {/* map container */}
               <div className="flex flex-col items-center justify-center w-full">
                 {/* map container */}
@@ -625,29 +650,6 @@ function ProjectView(props) {
                   Recenter
                 </button> */}
               </div>
-            </div>
-          </div>
-
-          {/* charts container */}
-          <div className="flex flex-col items-center justify-center mt-20 space-x-0 space-y-16 lg:flex-row lg:space-y-0">
-            {/* project status chart */}
-            <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
-              <p className="text-2xl font-bold text-center">Project Status</p>
-              <StatusChart
-                completed={appData.projectInView.metadata.projectStatus}
-                inProgress={100 - appData.projectInView.metadata.projectStatus}
-              />
-            </div>
-
-            {/* geoblocs distribution chart */}
-            <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
-              <p className="text-2xl font-bold text-center">
-                Geoblocs Distribution
-              </p>
-              <GeoblocsChart
-                totalSupply={appData.projectInView.geoblocsData.totalSupply}
-                purchased={appData.projectInView.geoblocsData.purchased}
-              />
             </div>
           </div>
 
@@ -853,14 +855,37 @@ function ProjectView(props) {
             ) : null}
           </div>
 
+          {/* charts container */}
+          <div className="flex flex-col items-center justify-center mt-20 space-x-0 space-y-16 lg:flex-row lg:space-y-0">
+            {/* project status chart */}
+            <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
+              <p className="text-2xl font-bold text-center">Project Status</p>
+              <StatusChart
+                completed={appData.projectInView.metadata.projectStatus}
+                inProgress={100 - appData.projectInView.metadata.projectStatus}
+              />
+            </div>
+
+            {/* geoblocs distribution chart */}
+            <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
+              <p className="text-2xl font-bold text-center">
+                Geoblocs Distribution
+              </p>
+              <GeoblocsChart
+                totalSupply={appData.projectInView.geoblocsData.totalSupply}
+                purchased={appData.projectInView.geoblocsData.purchased}
+              />
+            </div>
+          </div>
+
           {/* gallery and green container */}
-          <div className="flex flex-row items-center justify-center w-full px-32 py-16 space-x-32">
+          <div className="flex flex-col items-center justify-center w-full px-4 lg:py-16 lg:px-32 lg:space-x-32 lg:flex-row">
             <Carousel imageUrls={appData.projectInView.gallery} />
 
             {/* green* container */}
-            <div className="grid items-center justify-center grid-cols-3 grid-rows-1 py-12 my-16 space-y-12 lg:grid-cols-1 lg:space-y-6">
+            <div className="grid items-center justify-center grid-cols-1 grid-rows-3 my-16 space-y-12 lg:py-12 lg:grid-cols-1 lg:space-y-6">
               <div className="flex flex-col items-center justify-center space-y-2 text-black">
-                <p className="text-2xl font-bold underline underline-offset-2">
+                <p className="text-2xl font-bold text-center underline underline-offset-2">
                   Ownership
                 </p>
                 <p className="text-2xl font-semibold capitalize">
@@ -868,7 +893,7 @@ function ProjectView(props) {
                 </p>
               </div>
               <div className="flex flex-col items-center justify-center space-y-2 text-black">
-                <p className="text-2xl font-bold underline underline-offset-2">
+                <p className="text-2xl font-bold text-center underline underline-offset-2">
                   Project Size
                 </p>
                 <p className="text-2xl font-semibold capitalize">
@@ -876,11 +901,11 @@ function ProjectView(props) {
                 </p>
               </div>
               <div className="flex flex-col items-center justify-center space-y-2 text-black">
-                <p className="text-2xl font-bold underline underline-offset-2">
+                <p className="text-2xl font-bold text-center underline underline-offset-2">
                   Intervention Type
                 </p>
                 <p className="text-2xl font-semibold capitalize">
-                  {appData.projectInView.seasons.length}
+                  {appData.projectInView.metadata.interventionType || null}
                 </p>
               </div>
             </div>
@@ -890,17 +915,21 @@ function ProjectView(props) {
             <>
               {/* 4 option container */}
               <div className="flex flex-col items-center justify-center py-12 pb-20 space-y-6 lg:flex-row lg:space-x-16 lg:space-y-0">
-                <div
-                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg bg-glGreen hover:cursor-pointer"
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.0 }}
+                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg shadow-lg button-3d bg-glGreen hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("sponsors");
                   }}
                 >
                   <p className="text-xl font-bold text-black">Sponsors</p>
                   <img src={sponsorsIcon} alt="Sponsors" className="w-40" />
-                </div>
-                <div
-                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg bg-glGreen hover:cursor-pointer"
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.0 }}
+                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg shadow-lg button-3d bg-glGreen hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("season");
                   }}
@@ -909,54 +938,64 @@ function ProjectView(props) {
                     Planting Season
                   </p>
                   <img src={seasonIcon} alt="Sponsors" className="w-40" />
-                </div>
-                <div
-                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg bg-glGreen hover:cursor-pointer"
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.0 }}
+                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg shadow-lg button-3d bg-glGreen hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("monitoring");
                   }}
                 >
                   <p className="text-xl font-bold text-black">Monitoring</p>
                   <img src={monitoringIcon} alt="Sponsors" className="w-40" />
-                </div>
-                <div
-                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg bg-glGreen hover:cursor-pointer"
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.0 }}
+                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg shadow-lg button-3d bg-glGreen hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("environment");
                   }}
                 >
                   <p className="text-xl font-bold text-black">Environment</p>
                   <img src={environmentIcon} alt="Sponsors" className="w-40" />
-                </div>
+                </motion.div>
               </div>
 
               {/* 3 button container */}
               <div className="flex flex-col items-center justify-center w-full space-x-0 space-y-6 pb-28 lg:flex-row lg:space-x-12 lg:space-y-0">
-                <button
-                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg btn h-fit w-80 bg-gGreen hover:bg-gGreen/80"
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.0 }}
+                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg shadow-lg button-3d btn h-fit w-80 bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setStoryInView(appData.projectInView.story);
                     window.my_modal_1.showModal();
                   }}
                 >
                   Project Story
-                </button>
-                <button
-                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg btn h-fit w-80 bg-gGreen hover:bg-gGreen/80"
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.0 }}
+                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg shadow-lg button-3d btn h-fit w-80 bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("links");
                   }}
                 >
                   Links
-                </button>
-                <button
-                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg btn h-fit w-80 bg-gGreen hover:bg-gGreen/80"
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.0 }}
+                  className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg shadow-lg button-3d btn h-fit w-80 bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     setSubWindow("documents");
                   }}
                 >
                   Documents
-                </button>
+                </motion.button>
               </div>
             </>
           ) : subWindow === "sponsors" ? (

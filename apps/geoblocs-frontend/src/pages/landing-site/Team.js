@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import rightArrow from "../../assets/svg/right-arrow.svg";
@@ -11,6 +11,11 @@ import imageFour from "../../assets/img/team/14.png";
 
 function Team(props) {
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
+
   return (
     // outer container
     <div className="flex flex-col justify-center w-full">
@@ -34,7 +39,7 @@ function Team(props) {
             GEIA who, like all other stakeholders works on a commission basis.
           </p>
 
-          <img src={imageOne} className="w-[40%]"></img>
+          <img src={imageOne} className="lg:w-[40%] w-[80%]"></img>
         </div>
 
         {/* title button */}
@@ -47,11 +52,11 @@ function Team(props) {
         </button>
       </div>
 
-      <div className="flex flex-col items-center justify-center w-full px-16 my-24 space-y-16">
+      <div className="flex flex-col items-center justify-center w-full px-4 my-24 space-y-16 lg:px-16">
         <p className="font- text-[50px]">Our Values</p>
 
         {/* transparency */}
-        <div className="flex flex-row items-center justify-center space-x-8">
+        <div className="flex flex-col items-center justify-center space-y-8 lg:space-y-0 lg:space-x-8 lg:flex-row">
           <div className="flex flex-col items-center justify-center space-y-8">
             <p className="text-3xl font-bold text-center">Transparency</p>
             <p className="px-8 text-2xl font-light text-center">
@@ -61,12 +66,12 @@ function Team(props) {
             </p>
           </div>
 
-          <img src={imageThree} className="w-[40%]"></img>
+          <img src={imageThree} className="lg:w-[40%] w-[80%]"></img>
         </div>
 
         {/* innovation */}
-        <div className="flex flex-row items-center justify-center space-x-8">
-          <img src={imageTwo} className="w-[40%]"></img>
+        <div className="flex flex-col-reverse items-center justify-center space-y-8 lg:space-y-0 lg:space-x-8 lg:flex-row">
+          <img src={imageTwo} className="lg:w-[40%] w-[80%] mt-8 lg:mt-0"></img>
           <div className="flex flex-col items-center justify-center space-y-8">
             <p className="text-3xl font-bold text-center">Innovation</p>
 
@@ -78,7 +83,7 @@ function Team(props) {
         </div>
 
         {/* morality */}
-        <div className="flex flex-row items-center justify-center space-x-8">
+        <div className="flex flex-col items-center justify-center space-y-8 lg:space-y-0 lg:space-x-8 lg:flex-row">
           <div className="flex flex-col items-center justify-center space-y-8">
             <p className="text-3xl font-bold text-center">Morality</p>
             <p className="px-8 text-2xl font-light text-center">
@@ -88,7 +93,7 @@ function Team(props) {
               Sustainable Development Goals in harmony.
             </p>
           </div>
-          <img src={imageFour} className="w-[40%]"></img>
+          <img src={imageFour} className="lg:w-[40%] w-[80%]"></img>
         </div>
       </div>
 

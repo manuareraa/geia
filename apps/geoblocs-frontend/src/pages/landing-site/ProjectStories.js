@@ -82,14 +82,14 @@ function ProjectStories(props) {
             key={1}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
-            className="w-[100%]"
+            // className="w-min-[40%]"
           >
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1, delay: 0.1 }}
-              className="flex h-full w-full max-w-[300px] flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
+              className="flex h-full w-full max-w-[300px] min-w-[300px] flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
               onClick={() => {
                 setStoryInView(project.story);
                 window.my_modal_1.showModal();
@@ -159,7 +159,7 @@ function ProjectStories(props) {
           {recentStoryCards.length > 0 ? (
             <>
               <p className="text-xl font-bold text-center lg:text-3xl">
-                Recent Stories {recentStoryCards.length}
+                Recent Stories
               </p>
               <motion.div className="grid grid-cols-1 gap-y-8 lg:grid-cols-2 lg:grid-rows-1 lg:gap-x-8 lg:gap-y-0">
                 <AnimatePresence>{recentStoryCards}</AnimatePresence>

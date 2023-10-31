@@ -46,7 +46,7 @@ function ExploreProjects(props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1, delay: 0.1 }}
-              className="flex h-full w-full max-w-[300px] flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
+              className="flex h-full w-full max-w-[300px] min-w-[300px] flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
               onClick={() => {
                 setAppData((prevState) => {
                   return {
@@ -95,14 +95,14 @@ function ExploreProjects(props) {
             key={index}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
-            className="w-[100%]"
+            // className="w-[100%]"
           >
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1, delay: 0.1 }}
-              className="max-w-[300px]w-[300px] flex h-full w-full flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
+              className="max-w-[300px] min-w-[300px] flex h-full w-full flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
               onClick={() => {
                 setAppData((prevState) => {
                   return {

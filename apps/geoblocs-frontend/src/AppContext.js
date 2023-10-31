@@ -460,6 +460,8 @@ export const AppProvider = ({ children }) => {
               locationAddress: "",
               projectStatus: 0,
               coverImage: "",
+              interventionType: "",
+              description: "",
             },
             applicationDetails: {
               applicationId: appData.applicationInView.applicationID,

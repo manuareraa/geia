@@ -3,7 +3,7 @@ import imageOne from "../../assets/img/stakeholders/scientists/11.png";
 
 function Scientists(props) {
   return (
-    <div className="flex flex-col items-center justify-center w-full p-20 bg-[#F9FAF6]">
+    <div className="flex flex-col items-center justify-center w-full lg:p-20 p-8 bg-[#F9FAF6]">
       {/* title */}
       <p className="text-[25px] md:text-[35px] lg:text-[45px] text-center lg:w-[1000px] md:w-[85%] w-[100%] font-bold">
         Follow the <span className=" text-gBlue">Science</span>
