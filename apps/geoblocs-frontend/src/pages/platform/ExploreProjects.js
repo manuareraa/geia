@@ -39,49 +39,42 @@ function ExploreProjects(props) {
             key={index}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
-            className="w-[100%]"
+            transition={{ duration: 0.1, delay: 0 }}
+            className="flex flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:max-h-[40%] lg:min-h-[40%] lg:min-w-[35%] lg:max-w-[35%]"
+            onClick={() => {
+              setAppData((prevState) => {
+                return {
+                  ...prevState,
+                  projectInView: project,
+                };
+              });
+              navigate("/platform/projects/view/" + project.projectId);
+              window.scrollTo(0, 0);
+            }}
           >
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1, delay: 0.1 }}
-              className="flex h-full w-full max-w-[300px] min-w-[300px] flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
-              onClick={() => {
-                setAppData((prevState) => {
-                  return {
-                    ...prevState,
-                    projectInView: project,
-                  };
-                });
-                navigate("/platform/projects/view/" + project.projectId);
-                window.scrollTo(0, 0);
-              }}
-            >
-              <div className="h-48 rounded-2xl">
-                <img
-                  src={
-                    project.metadata.coverImage
-                      ? project.metadata.coverImage[0]
-                      : sampleOne
-                  }
-                  className="object-cover w-full h-48 rounded-2xl"
-                ></img>
-              </div>
-              <div className="flex flex-col justify-between h-full">
-                <p className="px-2 text-lg font-bold">
-                  {project.metadata.projectName}
-                </p>
-                <p className="px-2 pt-3 text-sm font-light">
-                  {project.metadata.startedFrom}
-                  {/* {new Date(project.createdOn).toLocaleDateString("en-US", {
+            <div className="h-48 rounded-2xl">
+              <img
+                src={
+                  project.metadata.coverImage
+                    ? project.metadata.coverImage[0]
+                    : sampleOne
+                }
+                className="object-cover w-full h-48 rounded-2xl"
+              ></img>
+            </div>
+            <div className="flex flex-col h-full">
+              <p className="px-2 text-lg font-bold">
+                {project.metadata.projectName}
+              </p>
+              <p className="px-2 pt-3 text-sm font-light">
+                {project.metadata.startedFrom}
+                {/* {new Date(project.createdOn).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })} */}
-                </p>
-              </div>
-            </motion.div>
+              </p>
+            </div>
           </motion.div>
         );
         tempArrayForRecentProjectCards.push(projectCard);
@@ -95,49 +88,44 @@ function ExploreProjects(props) {
             key={index}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
-            // className="w-[100%]"
+            transition={{ duration: 0.1, delay: 0 }}
+            className="flex min-h-[38%] flex-col justify-between space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer lg:max-h-[100%] lg:min-h-[100%] lg:min-w-[20%] lg:max-w-[20%]"
+            onClick={() => {
+              setAppData((prevState) => {
+                return {
+                  ...prevState,
+                  projectInView: project,
+                };
+              });
+              navigate("/platform/projects/view/" + project.projectId);
+              window.scrollTo(0, 0);
+            }}
           >
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1, delay: 0.1 }}
-              className="max-w-[300px] min-w-[300px] flex h-full w-full flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
-              onClick={() => {
-                setAppData((prevState) => {
-                  return {
-                    ...prevState,
-                    projectInView: project,
-                  };
-                });
-                navigate("/platform/projects/view/" + project.projectId);
-                window.scrollTo(0, 0);
-              }}
-            >
-              <div className="h-48 rounded-2xl">
-                <img
-                  src={
-                    project.metadata.coverImage
-                      ? project.metadata.coverImage[0]
-                      : sampleOne
-                  }
-                  className="object-cover w-full h-48 rounded-2xl"
-                ></img>
-              </div>
-              <div className="flex flex-col justify-between h-full">
-                <p className="px-2 text-lg font-bold">
-                  {project.metadata.projectName}
-                </p>
-                <p className="px-2 pt-3 text-sm font-light">
-                  {project.metadata.startedFrom}
-                  {/* {new Date(project.createdOn).toLocaleDateString("en-US", {
+            {/* image container */}
+            <img
+              src={
+                project.metadata.coverImage
+                  ? project.metadata.coverImage[0]
+                  : sampleOne
+              }
+              // className="object-cover w-full rounded-2xl"
+              className="object-cover w-full h-48 rounded-2xl"
+            ></img>
+
+            {/* text container */}
+            <div className="flex flex-col">
+              <p className="px-2 text-lg font-bold">
+                {project.metadata.projectName}
+              </p>
+              <p className="px-2 pt-1 text-sm font-light">
+                {project.metadata.startedFrom}
+                {/* {new Date(project.createdOn).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })} */}
-                </p>
-              </div>
-            </motion.div>
+              </p>
+            </div>
           </motion.div>
         );
         tempArrayForProjectCards.push(projectCard);
@@ -180,9 +168,14 @@ function ExploreProjects(props) {
               <motion.div
                 className={
                   recentProjectCards.length === 1
-                    ? "grid grid-cols-1 grid-rows-1 gap-y-8 lg:grid-cols-1 lg:gap-x-8 lg:gap-y-0"
-                    : "grid grid-cols-1 grid-rows-1 gap-y-8 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-0"
+                    ? "flex w-fit flex-col justify-end lg:flex-row"
+                    : "flex w-fit flex-col justify-end space-y-4 lg:flex-row  lg:space-x-8"
                 }
+                // className={
+                //   recentProjectCards.length === 1
+                //     ? "grid grid-cols-1 grid-rows-1 gap-y-8 lg:grid-cols-1 lg:gap-x-8 lg:gap-y-0"
+                //     : "grid grid-cols-1 grid-rows-1 gap-y-8 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-0"
+                // }
               >
                 <AnimatePresence>{recentProjectCards}</AnimatePresence>
               </motion.div>
@@ -199,7 +192,7 @@ function ExploreProjects(props) {
         </div>
         {/* body */}
         {projectCards.length > 0 ? (
-          <div className="grid w-full grid-cols-1 justify-items-center gap-y-8 md:grid-cols-2 lg:grid-cols-4 lg:justify-items-start lg:gap-x-8 lg:gap-y-0">
+          <div className="flex flex-col w-full gap-x-8 gap-y-6 lg:flex-row lg:flex-wrap">
             <AnimatePresence>{projectCards}</AnimatePresence>
           </div>
         ) : (
@@ -212,7 +205,7 @@ function ExploreProjects(props) {
 
         {/* call for registration container */}
         <div className="flex flex-col mb-16 space-y-8 mt-44">
-          <p className="text-4xl font-bold text-center">
+          <p className="text-4xl font-bold text-center mt-28">
             Profit from Restoration: Earn while Healing the Land!
           </p>
           <div className="flex flex-col items-center justify-center">

@@ -539,7 +539,7 @@ function ProjectView(props) {
           {/* title container */}
           <div className="flex flex-col">
             {/* top gray container */}
-            <div className="mb-16 flex w-full flex-col items-center justify-center lg:space-x-8 bg-[#A1AEB4] px-2 py-8 lg:flex-row lg:justify-between lg:px-16 space-y-10 lg:space-y-0">
+            <div className="mb-16 flex w-full flex-col items-center justify-center space-y-10 bg-[#A1AEB4] px-2 py-8 lg:flex-row lg:justify-between lg:space-x-8 lg:space-y-0 lg:px-16">
               {/* back button container */}
               <div className="flex flex-row items-center space-x-4">
                 <img
@@ -585,7 +585,7 @@ function ProjectView(props) {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-between px-8 space-y-4 lg:flex-row lg:space-x-28 lg:px-32 2xl:flex-row lg:space-y-0">
+            <div className="flex flex-col items-center justify-between px-8 space-y-4 lg:flex-row lg:space-x-28 lg:space-y-0 lg:px-32 2xl:flex-row">
               {/* left - title sub-container */}
               <div className="flex w-[60%] flex-col space-y-4 lg:items-start">
                 <div className="flex flex-col items-center justify-center space-y-2">
@@ -613,9 +613,9 @@ function ProjectView(props) {
                   center={mapCenter}
                   zoom={13}
                   style={{
-                    height: "30vh",
+                    height: "50vh",
                     width: "100%",
-                    borderRadius: "40px",
+                    borderRadius: "10px",
                     marginTop: "10px",
                     marginBottom: "10px",
                   }}
@@ -856,34 +856,36 @@ function ProjectView(props) {
           </div>
 
           {/* charts container */}
-          <div className="flex flex-col items-center justify-center mt-20 space-x-0 space-y-16 lg:flex-row lg:space-y-0">
+          <div className="flex flex-col items-center justify-center my-10 space-x-0 space-y-16 lg:flex-row lg:space-y-0">
             {/* project status chart */}
             <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
-              <p className="text-2xl font-bold text-center">Project Status</p>
               <StatusChart
                 completed={appData.projectInView.metadata.projectStatus}
                 inProgress={100 - appData.projectInView.metadata.projectStatus}
               />
+              <p className="text-2xl font-bold text-center">
+                Project <span className="text-gBlue">Status</span>
+              </p>
             </div>
 
             {/* geoblocs distribution chart */}
             <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
-              <p className="text-2xl font-bold text-center">
-                Geoblocs Distribution
-              </p>
               <GeoblocsChart
                 totalSupply={appData.projectInView.geoblocsData.totalSupply}
                 purchased={appData.projectInView.geoblocsData.purchased}
               />
+              <p className="text-2xl font-bold text-center">
+                <span className="text-gGreen">Geoblocs</span> Distribution
+              </p>
             </div>
           </div>
 
           {/* gallery and green container */}
-          <div className="flex flex-col items-center justify-center w-full px-4 lg:py-16 lg:px-32 lg:space-x-32 lg:flex-row">
+          <div className="flex w-full flex-col items-center justify-center bg-[#A1AEB4] px-4 lg:flex-row lg:space-x-32 lg:px-32 lg:py-16">
             <Carousel imageUrls={appData.projectInView.gallery} />
 
             {/* green* container */}
-            <div className="grid items-center justify-center grid-cols-1 grid-rows-3 my-16 space-y-12 lg:py-12 lg:grid-cols-1 lg:space-y-6">
+            <div className="grid items-center justify-center grid-cols-1 grid-rows-3 my-16 space-y-12 lg:grid-cols-1 lg:space-y-6 lg:py-12">
               <div className="flex flex-col items-center justify-center space-y-2 text-black">
                 <p className="text-2xl font-bold text-center underline underline-offset-2">
                   Ownership
@@ -914,11 +916,11 @@ function ProjectView(props) {
           {subWindow === "default" ? (
             <>
               {/* 4 option container */}
-              <div className="flex flex-col items-center justify-center py-12 pb-20 space-y-6 lg:flex-row lg:space-x-16 lg:space-y-0">
+              <div className="flex flex-col items-center justify-center py-12 pb-20 mt-8 space-y-6 lg:flex-row lg:space-x-16 lg:space-y-0">
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}
-                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg shadow-lg button-3d bg-glGreen hover:cursor-pointer"
+                  className="button-3d flex flex-col items-center justify-center space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("sponsors");
                   }}
@@ -929,7 +931,7 @@ function ProjectView(props) {
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}
-                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg shadow-lg button-3d bg-glGreen hover:cursor-pointer"
+                  className="button-3d flex flex-col items-center justify-center space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("season");
                   }}
@@ -942,7 +944,7 @@ function ProjectView(props) {
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}
-                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg shadow-lg button-3d bg-glGreen hover:cursor-pointer"
+                  className="button-3d flex flex-col items-center justify-center space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("monitoring");
                   }}
@@ -953,7 +955,7 @@ function ProjectView(props) {
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}
-                  className="flex flex-col items-center justify-center p-4 py-6 space-y-4 rounded-lg shadow-lg button-3d bg-glGreen hover:cursor-pointer"
+                  className="button-3d flex flex-col items-center justify-center space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("environment");
                   }}

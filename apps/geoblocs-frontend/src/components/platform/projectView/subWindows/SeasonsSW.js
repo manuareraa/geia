@@ -51,7 +51,7 @@ function SeasonsSW(props) {
 
   return (
     <>
-      <div className="flex flex-col px-6 pb-16 lg:px-60">
+      <div className="flex flex-col px-6 pb-16 mt-20 lg:px-60">
         <div className="flex flex-col p-8 rounded-xl bg-glGreen">
           {/* title bar */}
           <div className="flex flex-row items-center justify-between">

@@ -34,7 +34,7 @@ function Home(props) {
               <img src={geiaLogo} alt="geia-logo" className="w-12 lg:w-20" />
             </div> */}
             {/* title */}
-            <p className="text-[33px] font-bold capitalize text-black lg:text-5xl">
+            <p className="text-[33px] font-bold capitalize text-black lg:text-5xl lg:mt-20">
               Bringing radical
             </p>
             <p className="text-[33px] font-bold capitalize text-gBlue lg:text-5xl">
@@ -52,7 +52,7 @@ function Home(props) {
           </div>
           {/* hero description container */}
           <div className="flex flex-col items-center">
-            <p className="bg-[#303D0C]/60 text-center text-2xl font-bold text-white md:w-[80%] lg:w-[60%] p-6 rounded-2xl">
+            <p className="bg-[#303D0C]/30 text-center text-2xl font-bold text-white md:w-[80%] lg:w-[60%] p-6 rounded-2xl">
               Geoblocs blockchain utilizes geospatial technology along with on
               the ground monitoring to create verifiable regeneration projects
               around the world that focus on biodiversity, social impact and

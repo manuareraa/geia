@@ -12,9 +12,9 @@ import imageFour from "../../assets/img/team/14.png";
 function Team(props) {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     // outer container
