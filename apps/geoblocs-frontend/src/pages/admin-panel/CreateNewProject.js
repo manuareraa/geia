@@ -55,12 +55,12 @@ function CreateNewProject(props) {
         <div className="grid w-full grid-cols-1 gap-4 px-4 mb-8 md:grid-cols-2 lg:grid-cols-3 md:px-8 lg:px-12 md:mb-12 lg:mb-16">
           {/* input fields */}
           {[
-            "Project Name",
-            "Project Location",
-            "Project Location Address",
-            "GPS Coordinates (Lat/Lon)",
-            "Ownership Status",
-            "Project Size",
+            "projectName",
+            "location",
+            "locationAddress",
+            "gps",
+            "ownership",
+            "size",
           ].map((label, index) => (
             <div className="flex flex-row items-end space-x-2" key={index}>
               <img src={editIcon} alt="" className="w-6 h-6"></img>
@@ -71,11 +71,11 @@ function CreateNewProject(props) {
                   placeholder={`Enter ${label}`}
                   className="flex-grow py-1 border-b-2 md:py-2 border-black/50 focus:outline-none"
                   // Assuming each form field has a corresponding value and setter in the formData state object
-                  value={formData[label.replace(/ /g, "").toLowerCase()]}
+                  value={formData[label.replace(/ /g, "")]}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      [label.replace(/ /g, "").toLowerCase()]: e.target.value,
+                      [label.replace(/ /g, "")]: e.target.value,
                     })
                   }
                 />
@@ -95,6 +95,7 @@ function CreateNewProject(props) {
               ) {
                 toast.error("Please fill all the required fields");
               } else {
+                console.log("success")
                 const newProjectResult = await createNewProjectByAdmin(
                   formData
                 );
