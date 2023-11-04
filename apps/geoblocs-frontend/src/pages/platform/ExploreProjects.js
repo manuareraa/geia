@@ -14,9 +14,9 @@ function ExploreProjects(props) {
   const [projectCards, setProjectCards] = useState([]);
   const [recentProjectCards, setRecentProjectCards] = useState([]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
 
   const renderProjectCards = async () => {
     let recentCouter = 0;
@@ -40,7 +40,7 @@ function ExploreProjects(props) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
             transition={{ duration: 0.1, delay: 0 }}
-            className="flex flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:max-h-[40%] lg:min-h-[40%] lg:min-w-[35%] lg:max-w-[35%]"
+            className="lg:space-y- flex flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:max-h-[45%] lg:min-h-[45%] lg:min-w-[45%] lg:max-w-[45%]"
             onClick={() => {
               setAppData((prevState) => {
                 return {
@@ -89,7 +89,7 @@ function ExploreProjects(props) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
             transition={{ duration: 0.1, delay: 0 }}
-            className="flex min-h-[38%] flex-col justify-between space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer lg:max-h-[100%] lg:min-h-[100%] lg:min-w-[20%] lg:max-w-[20%]"
+            className="flex max-h-[35%] min-h-[35%] flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer md:max-h-[35%] md:min-h-[35%] lg:max-h-[100%] lg:min-h-[100%] lg:min-w-[20%] lg:max-w-[20%] lg:justify-between"
             onClick={() => {
               setAppData((prevState) => {
                 return {
@@ -159,7 +159,7 @@ function ExploreProjects(props) {
         </div>
 
         {/* right - recent stories sub-container */}
-        <div className="flex flex-col items-end self-center mt-20 space-y-4 lg:ml-12 lg:mt-0 lg:self-start">
+        <div className="flex flex-col self-center mt-16 space-y-4 lg:ml-12 lg:mt-0 lg:items-end">
           {recentProjectCards.length > 0 ? (
             <>
               <p className="self-center mb-4 text-3xl font-bold text-center lg:mb-0 lg:self-end">
@@ -169,13 +169,8 @@ function ExploreProjects(props) {
                 className={
                   recentProjectCards.length === 1
                     ? "flex w-fit flex-col justify-end lg:flex-row"
-                    : "flex w-fit flex-col justify-end space-y-4 lg:flex-row  lg:space-x-8"
+                    : "flex w-fit flex-col justify-end space-y-4 lg:flex-row lg:space-x-8  lg:space-y-0"
                 }
-                // className={
-                //   recentProjectCards.length === 1
-                //     ? "grid grid-cols-1 grid-rows-1 gap-y-8 lg:grid-cols-1 lg:gap-x-8 lg:gap-y-0"
-                //     : "grid grid-cols-1 grid-rows-1 gap-y-8 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-0"
-                // }
               >
                 <AnimatePresence>{recentProjectCards}</AnimatePresence>
               </motion.div>
@@ -192,7 +187,7 @@ function ExploreProjects(props) {
         </div>
         {/* body */}
         {projectCards.length > 0 ? (
-          <div className="flex flex-col w-full gap-x-8 gap-y-6 lg:flex-row lg:flex-wrap">
+          <div className="flex flex-col gap-x-8 gap-y-6 lg:w-full lg:flex-row lg:flex-wrap">
             <AnimatePresence>{projectCards}</AnimatePresence>
           </div>
         ) : (

@@ -72,7 +72,7 @@ function Home(props) {
           </div>
 
           {/* powered by container */}
-          <div className="flex flex-row items-center justify-end w-full pt-10 mr-20 space-x-4">
+          <div className="flex flex-row items-center justify-end w-full mr-20 space-x-4 pt-">
             <p className="text-sm text-white lg:text-2xl">Powered By</p>
             <img src={geiaLogo} alt="geia-logo" className="w-15 lg:w-25" />
           </div>

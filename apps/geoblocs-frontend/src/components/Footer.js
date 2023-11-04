@@ -31,7 +31,7 @@ function Footer(props) {
             <img src={rightArrowG} className="w-4 text-gGreen" />
           </button>
           <p className="font-light text-white underline underline-offset-4">
-            hello@geoblocs.com
+            admin@geoblocs.com
           </p>
         </div>
       </div>

@@ -20,48 +20,41 @@ function SimilarProjects(props) {
             key={index}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
-            // className="w-[100%]"
+            transition={{ duration: 0.1, delay: 0 }}
+            className="lg:space-y- flex flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:max-h-[100%] lg:min-h-[100%] lg:min-w-[25%] lg:max-w-[25%]"
+            onClick={() => {
+              setAppData((prevState) => {
+                return {
+                  ...prevState,
+                  projectInView: project,
+                };
+              });
+              navigate("/platform/projects/view/" + project.projectId);
+              window.scrollTo(0, 0);
+            }}
           >
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1, delay: 0.1 }}
-              className="flex h-full w-full max-w-[300px] min-w-[300px] flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:w-[100%]"
-              onClick={() => {
-                setAppData((prevState) => {
-                  return {
-                    ...prevState,
-                    projectInView: project,
-                  };
-                });
-                navigate("/platform/projects/view/" + project.projectId);
-                window.scrollTo(0, 0);
-              }}
-            >
-              <div className="h-48 rounded-2xl">
-                <img
-                  src={
-                    project.metadata.coverImage
-                      ? project.metadata.coverImage[0]
-                      : sampleOne
-                  }
-                  className="object-cover w-full h-48 rounded-2xl"
-                ></img>
-              </div>
-              <div className="flex flex-col justify-between h-full">
-                <p className="px-2 text-lg font-bold">
-                  {project.metadata.projectName}
-                </p>
-                <p className="px-2 pt-3 text-sm font-light">
-                  {new Date(project.createdOn).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
-              </div>
-            </motion.div>
+            <div className="h-48 rounded-2xl">
+              <img
+                src={
+                  project.metadata.coverImage
+                    ? project.metadata.coverImage[0]
+                    : sampleOne
+                }
+                className="object-cover w-full h-48 rounded-2xl"
+              ></img>
+            </div>
+            <div className="flex flex-col justify-between h-full">
+              <p className="px-2 text-lg font-bold">
+                {project.metadata.projectName}
+              </p>
+              <p className="px-2 pt-3 text-sm font-light">
+                {new Date(project.createdOn).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
+            </div>
           </motion.div>
         );
         tempArrayForProjectCards.push(projectCard);
@@ -79,7 +72,7 @@ function SimilarProjects(props) {
   return (
     <>
       {projectCards.length > 0 ? (
-        <div className="grid self-center grid-cols-1 space-y-8 w-fit lg:w-full lg:grid-cols-4 lg:gap-x-8 lg:space-y-0">
+        <div className="flex flex-col gap-x-8 gap-y-6 md:w-fit lg:w-full lg:flex-row lg:flex-wrap md:self-center">
           <AnimatePresence>{projectCards}</AnimatePresence>
         </div>
       ) : (
