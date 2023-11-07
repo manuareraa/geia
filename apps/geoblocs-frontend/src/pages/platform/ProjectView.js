@@ -44,6 +44,10 @@ import LandConditions from "../../components/platform/projectView/LandConditions
 import SimilarProjects from "../../components/platform/projectView/SimilarProjects";
 import Paypal from "../../components/Paypal";
 import geoIcon from "../../assets/img/geoblocs-small-icon.png";
+import plantingimg from "../../assets/img/dashboard/plantingimg.png";
+import monitoringimg from "../../assets/img/dashboard/monitoringimg.png";
+import projectdataimg from "../../assets/img/dashboard/projectdataimg.png";
+import sponsorsimg from "../../assets/img/dashboard/sponsorsimg.png";
 import "../../utils/TooltipStyles.css";
 
 function ProjectView(props) {
@@ -920,18 +924,18 @@ function ProjectView(props) {
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}
-                  className="button-3d flex flex-col items-center justify-center space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
+                  className="button-3d flex h-full flex-col items-center justify-between space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("sponsors");
                   }}
                 >
                   <p className="text-xl font-bold text-black">Sponsors</p>
-                  <img src={sponsorsIcon} alt="Sponsors" className="w-40" />
+                  <img src={sponsorsimg} alt="Sponsors" className="w-40" />
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}
-                  className="button-3d flex flex-col items-center justify-center space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
+                  className="button-3d flex h-full flex-col items-center justify-between space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("season");
                   }}
@@ -939,29 +943,29 @@ function ProjectView(props) {
                   <p className="text-xl font-bold text-black">
                     Planting Season
                   </p>
-                  <img src={seasonIcon} alt="Sponsors" className="w-40" />
+                  <img src={plantingimg} alt="Sponsors" className="w-40" />
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}
-                  className="button-3d flex flex-col items-center justify-center space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
+                  className="button-3d flex h-full flex-col items-center justify-between space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("monitoring");
                   }}
                 >
                   <p className="text-xl font-bold text-black">Monitoring</p>
-                  <img src={monitoringIcon} alt="Sponsors" className="w-40" />
+                  <img src={monitoringimg} alt="Sponsors" className="w-40" />
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}
-                  className="button-3d flex flex-col items-center justify-center space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
+                  className="button-3d flex h-full flex-col items-center justify-between space-y-4 rounded-lg bg-[#B5BFA4] p-4 py-6 shadow-lg hover:cursor-pointer"
                   onClick={() => {
                     setSubWindow("environment");
                   }}
                 >
                   <p className="text-xl font-bold text-black">Environment</p>
-                  <img src={environmentIcon} alt="Sponsors" className="w-40" />
+                  <img src={projectdataimg} alt="Sponsors" className="w-40" />
                 </motion.div>
               </div>
 
@@ -1105,7 +1109,10 @@ function ProjectView(props) {
           </dialog>
 
           {/* land conditions bar */}
-          <LandConditions landConditions={appData.projectInView.conditions} />
+          <LandConditions
+            landConditions={appData.projectInView.conditions}
+            coverImage={appData.projectInView.metadata.baselineImage || null}
+          />
 
           {/* similar projects */}
           <div className="flex flex-col w-full px-16 pt-12 space-y-4 pb-28 lg:px-32">

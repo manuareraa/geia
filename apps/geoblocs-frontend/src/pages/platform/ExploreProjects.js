@@ -89,7 +89,7 @@ function ExploreProjects(props) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
             transition={{ duration: 0.1, delay: 0 }}
-            className="flex max-h-[35%] min-h-[35%] flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer md:max-h-[35%] md:min-h-[35%] lg:max-h-[100%] lg:min-h-[100%] lg:min-w-[20%] lg:max-w-[20%] lg:justify-between"
+            className="flex max-h-[20%] min-h-[20%] flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer md:max-h-[20%] md:min-h-[20%] lg:max-h-[50%] lg:min-h-[50%] lg:min-w-[20%] lg:max-w-[20%] lg:justify-between"
             onClick={() => {
               setAppData((prevState) => {
                 return {

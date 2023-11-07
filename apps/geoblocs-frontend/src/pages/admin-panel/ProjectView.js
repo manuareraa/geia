@@ -36,7 +36,7 @@ function ProjectView(props) {
   useEffect(() => {
     console.log(projectId);
     if (Object.keys(appData.projectInView).length === 0) {
-      navigate("/platform/projects");
+      navigate("/admin/dashboard");
     }
   }, [appData.projectInView]);
 

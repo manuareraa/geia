@@ -203,28 +203,6 @@ function ProjectMetadata(props) {
             </div>
           </div>
 
-          {/* description */}
-          <div className="flex flex-row items-end space-x-2">
-            <img src={editIcon} alt="" className="w-6 h-6"></img>
-            <div className="flex flex-col space-y-">
-              <p className="text-xs font-light">Description</p>
-              <textarea
-                type="text"
-                placeholder="Project Description"
-                className="py-2 border-b-2 border-black/50 focus:outline-none"
-                value={projectMetadata.description || ""}
-                onChange={(e) => {
-                  setProjectMetadata((prevState) => {
-                    return {
-                      ...prevState,
-                      description: e.target.value,
-                    };
-                  });
-                }}
-              />
-            </div>
-          </div>
-
           {/* intervention type */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
@@ -246,52 +224,134 @@ function ProjectMetadata(props) {
               />
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="flex flex-row col-span-3 space-x-4">
-        <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
-          {props.projectMetadata.coverImage?.length > 0
-            ? "Replace Cover Image"
-            : "Upload Cover Image"}
-          <input
-            type="file"
-            className="hidden"
-            onChange={(event) => {
-              // Handle the file upload here if needed
-              const selectedFiles = event.target.files;
-              // console.log(selectedFiles);
-              uploadFilesToS3(selectedFiles, projectId, "metadata")
-                .then((fileUrls) => {
-                  // console.log(
-                  //   "fileupload finished, updating gallery",
-                  //   fileUrls
-                  // );
+          {/* description */}
+          <div className="flex flex-row items-end space-x-2">
+            <img src={editIcon} alt="" className="w-6 h-6"></img>
+            <div className="flex flex-col space-y-">
+              <p className="text-xs font-light">Description</p>
+              <textarea
+                type="text"
+                placeholder="Project Description"
+                rows={10}
+                cols={40}
+                className="p-2 py-2 border-b-2 h-fit w-fit border-black/50 focus:outline-none"
+                value={projectMetadata.description || ""}
+                onChange={(e) => {
                   setProjectMetadata((prevState) => {
                     return {
                       ...prevState,
-                      coverImage: fileUrls,
+                      description: e.target.value,
                     };
                   });
-                })
-                .catch((error) => {
-                  console.log(error);
-                  toast.error("Failed to upload image. Try again later.");
-                });
-            }}
-          />
-        </label>
+                }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
-      {projectMetadata.coverImage?.length > 0 ? (
-        <img
-          src={projectMetadata.coverImage[0]}
-          alt=""
-          className="h-[200px] w-[350px] rounded-md"
-        ></img>
-      ) : (
-        <p className="text-lg">No Cover Image Uploaded</p>
-      )}
+      <div className="flex flex-row space-x-8">
+        {/* cover image container */}
+        <div className="flex flex-col space-y-4">
+          {/* upload cover image */}
+          <div className="flex flex-row col-span-3 space-x-4">
+            <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
+              {props.projectMetadata.coverImage?.length > 0
+                ? "Replace Cover Image"
+                : "Upload Cover Image"}
+              <input
+                type="file"
+                className="hidden"
+                onChange={(event) => {
+                  // Handle the file upload here if needed
+                  const selectedFiles = event.target.files;
+                  // console.log(selectedFiles);
+                  uploadFilesToS3(selectedFiles, projectId, "metadata")
+                    .then((fileUrls) => {
+                      // console.log(
+                      //   "fileupload finished, updating gallery",
+                      //   fileUrls
+                      // );
+                      setProjectMetadata((prevState) => {
+                        return {
+                          ...prevState,
+                          coverImage: fileUrls,
+                        };
+                      });
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                      toast.error("Failed to upload image. Try again later.");
+                    });
+                }}
+              />
+            </label>
+          </div>
+
+          {/* display cover image */}
+          {projectMetadata.coverImage?.length > 0 ? (
+            <img
+              src={projectMetadata.coverImage[0]}
+              alt=""
+              className="h-[200px] w-[350px] rounded-md"
+            ></img>
+          ) : (
+            <p className="text-lg">No Cover Image Uploaded</p>
+          )}
+        </div>
+
+        {/* baseline image container */}
+        <div className="flex flex-col space-y-4">
+          {/* upload baseline image */}
+          <div className="flex flex-row col-span-3 space-x-4">
+            <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
+              {props.projectMetadata.baselineImage?.length > 0
+                ? "Replace Baseline Image"
+                : "Upload Baseline Image"}
+              <input
+                type="file"
+                className="hidden"
+                onChange={(event) => {
+                  // Handle the file upload here if needed
+                  const selectedFiles = event.target.files;
+                  // console.log(selectedFiles);
+                  uploadFilesToS3(selectedFiles, projectId, "metadata")
+                    .then((fileUrls) => {
+                      // console.log(
+                      //   "fileupload finished, updating gallery",
+                      //   fileUrls
+                      // );
+                      setProjectMetadata((prevState) => {
+                        return {
+                          ...prevState,
+                          baselineImage: fileUrls,
+                        };
+                      });
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                      toast.error("Failed to upload image. Try again later.");
+                    });
+                }}
+              />
+            </label>
+          </div>
+
+          {/* display baseline image */}
+          {/* display cover image */}
+          {projectMetadata.baselineImage?.length > 0 ? (
+            <img
+              src={projectMetadata.baselineImage[0]}
+              alt=""
+              className="h-[200px] w-[350px] rounded-md"
+            ></img>
+          ) : (
+            <p className="text-lg">No Baseline Image Uploaded</p>
+          )}
+        </div>
+      </div>
+
       {/* save button */}
       <div className="flex flex-col w-full pt-10">
         <button

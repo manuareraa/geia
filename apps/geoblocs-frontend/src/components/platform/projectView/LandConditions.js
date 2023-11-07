@@ -52,7 +52,11 @@ function LandConditions(props) {
               {landConditions}
             </div>
             <div className="flex flex-row items-center justify-center w-full">
-              <img className="w-[70%]" src={lcImage} alt="" />
+              <img
+                className="w-[70%]"
+                src={props.coverImage || lcImage}
+                alt=""
+              />
             </div>
           </div>
         ) : (

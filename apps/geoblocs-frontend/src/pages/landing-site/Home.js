@@ -23,9 +23,9 @@ function Home(props) {
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* hero outer container */}
-      <div className="flex flex-col items-center justify-center w-full h-screen p-8 bg-home-image">
+      <div className="flex flex-col items-center justify-center w-full p-8 h-fit bg-home-image">
         {/* hero inner container */}
-        <div className="flex flex-col items-center justify-center pt-56 pb-20 space-y-12">
+        <div className="flex flex-col items-center justify-center pb-20 space-y-12 pt-44">
           {/* title container */}
           <div className="flex flex-col items-center justify-center pt-4 space-y-4 leading-none">
             {/* powered by container */}
@@ -34,7 +34,7 @@ function Home(props) {
               <img src={geiaLogo} alt="geia-logo" className="w-12 lg:w-20" />
             </div> */}
             {/* title */}
-            <p className="text-[33px] font-bold capitalize text-black lg:text-5xl lg:mt-20">
+            <p className="text-[33px] font-bold capitalize text-black lg:mt-20 lg:text-5xl">
               Bringing radical
             </p>
             <p className="text-[33px] font-bold capitalize text-gBlue lg:text-5xl">
@@ -44,7 +44,7 @@ function Home(props) {
               to biosphere regeneration
             </p>
             <p className="text-center text-[33px] font-bold text-black md:hidden lg:hidden lg:text-5xl">
-              biosphere
+              to biosphere
             </p>
             <p className="text-center text-[33px] font-bold text-black md:hidden lg:hidden lg:text-5xl">
               regeneration
@@ -52,7 +52,7 @@ function Home(props) {
           </div>
           {/* hero description container */}
           <div className="flex flex-col items-center">
-            <p className="bg-[#303D0C]/30 text-center text-2xl font-bold text-white md:w-[80%] lg:w-[60%] p-6 rounded-2xl">
+            <p className="rounded-2xl bg-[#303D0C]/30 p-6 text-center text-2xl font-bold text-white md:w-[80%] lg:w-[60%]">
               Geoblocs blockchain utilizes geospatial technology along with on
               the ground monitoring to create verifiable regeneration projects
               around the world that focus on biodiversity, social impact and
@@ -61,7 +61,13 @@ function Home(props) {
           </div>
 
           {/* hero button container */}
-          <div className="flex flex-col">
+          <div className="flex flex-col space-y-4">
+            {/* powered by container */}
+            <div className="flex flex-row items-center justify-center w-full mr-20 space-x-4 pt-">
+              <p className="text-sm text-white lg:text-2xl">Powered By</p>
+              <img src={geiaLogo} alt="geia-logo" className="w-15 lg:w-25" />
+            </div>
+
             <button
               className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
               onClick={() => navigate("/platform/projects")}
@@ -69,12 +75,6 @@ function Home(props) {
               <p>Explore Projects</p>
               <img src={rightArrow} className="w-4" />
             </button>
-          </div>
-
-          {/* powered by container */}
-          <div className="flex flex-row items-center justify-end w-full mr-20 space-x-4 pt-">
-            <p className="text-sm text-white lg:text-2xl">Powered By</p>
-            <img src={geiaLogo} alt="geia-logo" className="w-15 lg:w-25" />
           </div>
         </div>
       </div>

@@ -21,7 +21,7 @@ function SimilarProjects(props) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
             transition={{ duration: 0.1, delay: 0 }}
-            className="lg:space-y- flex flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:max-h-[100%] lg:min-h-[100%] lg:min-w-[25%] lg:max-w-[25%]"
+            className="lg:space-y- flex flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:max-h-[50%] lg:min-h-[50%] lg:min-w-[25%] lg:max-w-[25%]"
             onClick={() => {
               setAppData((prevState) => {
                 return {
