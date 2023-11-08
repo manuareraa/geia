@@ -41,7 +41,7 @@ function LandStewards(props) {
           </p>
           <p className="font-medium lg:w-[375px] text-center">
             Once the lands are restored all physical benefits go to the
-            landowner in the form of produce and a healthy environment.
+            landowner in the form of produce and a healthy environment
           </p>
         </div>
 
@@ -53,7 +53,7 @@ function LandStewards(props) {
           </p>
           <p className="font-medium lg:w-[375px] text-center">
             Registration, monitoring, reporting, verification and payment are
-            streamlined to save you precious time.
+            streamlined to save you precious time
           </p>
         </div>
 
@@ -65,7 +65,7 @@ function LandStewards(props) {
           </p>
           <p className="font-medium lg:w-[375px] text-center">
             Because most of the system is automated Geoblocs is very efficient
-            at turning money into regeneration.
+            at turning money into regeneration
           </p>
         </div>
       </div>

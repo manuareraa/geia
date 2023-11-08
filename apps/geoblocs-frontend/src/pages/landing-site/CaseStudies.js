@@ -15,27 +15,26 @@ function CaseStudies(props) {
       {/* title container */}
       <div className="flex flex-col items-center justify-center space-y-8 pt-36">
         {/* title */}
-        <p className="font- lg:text-[80px] text-[33px] md:text-[50px]">
+        <p className="font- text-[33px] md:text-[50px] lg:text-[80px]">
           <span className="text-gGreen">Case</span> Studies
         </p>
 
-        <div className="flex flex-col items-center justify-center py-8 space-y-16 lg:px-40 lg:space-x-12 lg:space-y-0 lg:flex-row">
-          <p className="font-light text-center w-[85%] text-3xl">
-            All our projects focus on an holistic approach because without a
-            symbiosis between the land and the people that rely on it no amount
-            of tree planting is going to help, so whether it,s a sacred forest
-            restoration in the Philippines using a mix of fmnr* and
-            agroforestry, or re-wilding in the west of Ireland we make sure that
-            long term viability is built in to every project.
-          </p>
-
-          <div className="flex flex-col items-center justify-center space-y-8">
-            <p className="text-xl font-bold text-center">
+        <div className="flex flex-col items-center justify-center py-8 space-y-16 lg:flex-row lg:space-x-12 lg:space-y-0 lg:px-40">
+          <div className="flex flex-col items-center justify-center px-8 space-y-8 lg:px-0">
+            <p className="text-3xl font-bold text-center ">
               Learn more about how we work
             </p>
-
-            <img src={imageOne} className="w-[60%]"></img>
+            <p className="lg:w-[85%] text-center lg:text-2xl text-xl font-light">
+              All our projects focus on an holistic approach because without a
+              symbiosis between the land and the people that rely on it no
+              amount of tree planting is going to help, so whether it's a sacred
+              forest restoration in the Philippines using a mix of fmnr* and
+              agroforestry, or re-wilding in the west of Ireland we make sure
+              that long term viability is built in to every project.
+            </p>
           </div>
+
+          <img src={imageOne} className="lg:w-[40%] w-[80%]"></img>
         </div>
 
         {/* title button */}

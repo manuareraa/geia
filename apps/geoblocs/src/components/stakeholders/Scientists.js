@@ -25,7 +25,7 @@ function Scientists(props) {
       </p>
       <p className="font-light w-[800px] text-center text-lg py-6">
         Earth observation science, landscape ecology and our ability to
-        understand complex ecological systemsare undergoing a technological
+        understand complex ecological system sare undergoing a technological
         revolution. GEIA is working with communities at the coalface of the
         regenerative movement to makeclimate science and its potential to
         leverage funding for re-gen projects available to the people and markets

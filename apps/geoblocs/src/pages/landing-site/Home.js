@@ -176,7 +176,7 @@ function Home(props) {
         <p className="text-3xl font-semibold text-center">Stay Updated</p>
         <p className="font-light text-center w-[600px]">
           Sign up to our newsletter to stay up to date with the latest news and
-          updates.
+          updates
         </p>
         <input
           type="text"

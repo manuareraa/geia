@@ -34,7 +34,7 @@ function ProjectStories(props) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
             transition={{ duration: 0.1, delay: 0 }}
-            className="lg:space-y- flex flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:max-h-[45%] lg:min-h-[45%] lg:min-w-[100%] lg:max-w-[100%]"
+            className="lg:space-y- flex flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:max-h-[45%] lg:min-h-[45%] lg:min-w-[45%] lg:max-w-[45%]"
             onClick={() => {
               setStoryInView(project.story);
               window.my_modal_1.showModal();
@@ -76,7 +76,7 @@ function ProjectStories(props) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
             transition={{ duration: 0.1, delay: 0 }}
-            className="flex max-h-[20%] min-h-[20%] flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer md:max-h-[20%] md:min-h-[20%] lg:max-h-[50%] lg:min-h-[50%] lg:min-w-[20%] lg:max-w-[20%] lg:justify-between"
+            className="flex max-h-[50%] min-h-[50%] flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer md:max-h-[20%] md:min-h-[20%] lg:max-h-[100%] lg:min-h-[100%] lg:min-w-[20%] lg:max-w-[20%] lg:justify-betwee"
             onClick={() => {
               setStoryInView(project.story);
               window.my_modal_1.showModal();

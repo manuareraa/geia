@@ -25,7 +25,7 @@ function Buyers(props) {
       {/* description */}
       <p className="w-[100%] py-12 text-center  text-xl md:w-[85%] lg:w-[800px]">
         Buy Geoblocs biosphere restoration tokens and support land stewards
-        around the world tosequester carbon, improve biodiversity, and more.
+        around the world tosequester carbon, improve biodiversity, and more
       </p>
 
       {/* container */}
@@ -50,7 +50,7 @@ function Buyers(props) {
           <img src={imageTwo} className="w-[50%] lg:w-[30%]"></img>
           <div className="px-6">
             <div className="rounded-2xl bg-[#656565]/30 p-4 px-6 lg:p-12 lg:px-12">
-              <p className="text-lg text-center text-white lg:text-2xl">
+              <p className="text-xl text-center text-white lg:text-2xl">
                 When you purchase Geoblocs and store them in your wallet you can
                 access the project any time for up to date information on the
                 status of the regeneration from geospatial data and imagery to
@@ -80,7 +80,7 @@ function Buyers(props) {
         </div>
       </div> */}
 
-      <div className="flex flex-col items-center justify-center space-y-">
+      <div className="flex flex-col items-center justify-center space-y-24 lg:space-y-0">
         {/* maximize impact */}
         <div className="flex flex-col items-center justify-center w-full space-y-2 py- lg:flex-row lg:space-x-8">
           <div className="flex flex-col items-center justify-center space-y-8 lg:flex-row lg:space-x-8 lg:space-y-8">
@@ -89,9 +89,9 @@ function Buyers(props) {
                 Maximize <span className="text-gGreen">Impact</span>
               </p>
               <p className="px-4 text-2xl text-center lg:px-28">
-                By lowering the overall costs of running ecological
-                projects,more money rewards land stewards and is invested
-                directly into environmental impact.
+                By lowering the overall costs of running ecological projects,
+                more money rewards land stewards and is invested directly into
+                environmental impact
               </p>
             </div>
             <img src={imageThree} className="w-[90%] lg:w-[45%]"></img>
@@ -99,18 +99,19 @@ function Buyers(props) {
         </div>
 
         {/* promote trust and transparency */}
-        <div className="flex flex-col items-center justify-center w-full space-y-2 py- lg:flex-row lg:space-x-8 lg:h-fit">
+        <div className="flex flex-col items-center justify-center w-full space-y-2 py- lg:h-fit lg:flex-row lg:space-x-8">
           <img src={imageSix} className="h-[60%] w-[60%] object-contain"></img>
-          <div className="flex flex-col items-center justify-center space-y-8 lg:flex-row lg:space-x-8 lg:space-y-">
+          <div className="flex flex-col items-center justify-center space-y-8 lg:space-y- lg:flex-row lg:space-x-8">
             <div className="flex flex-col space-y-8 ">
-              <p className="text-xl font-bold text-center md:text-2xl lg:text-3xl">
+              <p className="mt-4 text-xl font-bold text-center lg:mt-0 md:text-2xl lg:text-3xl">
                 Promote <span className="text-gGreen">Trust</span> and
                 Transparency
               </p>
               <p className="px-4 text-2xl text-center lg:px-28">
-                Ecological data is collected based on open source,scientifically
-                rigorous methodologies, and independently verified and stored on
-                Geoblocs Ledger - our decentralized,immutable database.
+                Ecological data is collected based on open source,
+                scientifically rigorous methodologies, and independently
+                verified and stored on Geoblocs database
+                {/* Geoblocs Ledger - our decentralized,immutable database. */}
               </p>
             </div>
           </div>
@@ -131,7 +132,7 @@ function Buyers(props) {
               </p>
             </div>
           </div>
-          <img src={imageFive} className="w-[90%] lg:h-[70%] lg:w-[70%]"></img>
+          <img src={imageFive} className="w-[90%] lg:h-[70%] lg:w-[70%] pt-4 lg:pt-0"></img>
         </div>
       </div>
 
@@ -139,10 +140,10 @@ function Buyers(props) {
       <div className="flex flex-col items-center justify-center w-full py-16 space-y-2 lg:flex-row lg:space-x-8">
         <div className="flex flex-col items-center justify-center space-y-8 lg:flex-row lg:space-x-8 lg:space-y-8">
           <div className="flex flex-col space-y-8">
-            <p className="text-xl font-bold text-center md:text-2xl lg:text-3xl">
+            <p className="text-2xl font-bold text-center md:text-2xl lg:text-3xl">
               Share your <span className="text-gGreen">Impact</span>
             </p>
-            <p className="text-3xl text-center">
+            <p className="text-2xl text-center lg:text-3xl ">
               With Geoblocs you can share your biosphere regeneration story to
               social media or various other promotional material to encourage
               others to join the fight against ecological destruction.

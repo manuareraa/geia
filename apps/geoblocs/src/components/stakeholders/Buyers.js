@@ -63,9 +63,10 @@ function Buyers(props) {
             Promote Trust and Transparency
           </p>
           <p className="text-center w-[1000px]">
-            Ecological data is collected based on open source,scientifically
+            Ecological data is collected based on open source, scientifically
             rigorous methodologies, and independentlyverified and stored on
-            Geoblocs Ledger - our decentralized,immutable database.
+            Geoblocs database.
+            {/* Ledger-our decentralized,immutable database. */}
           </p>
         </div>
       </div>

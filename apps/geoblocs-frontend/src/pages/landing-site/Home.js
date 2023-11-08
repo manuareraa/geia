@@ -23,7 +23,7 @@ function Home(props) {
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* hero outer container */}
-      <div className="flex flex-col items-center justify-center w-full p-8 h-fit bg-home-image">
+      <div className="flex flex-col items-center justify-center w-full p-8 bg-home-image h-fit">
         {/* hero inner container */}
         <div className="flex flex-col items-center justify-center pb-20 space-y-12 pt-44">
           {/* title container */}
@@ -40,23 +40,23 @@ function Home(props) {
             <p className="text-[33px] font-bold capitalize text-gBlue lg:text-5xl">
               transparency
             </p>
-            <p className="hidden text-center text-[33px]  font-bold capitalize text-black md:flex lg:flex lg:text-5xl">
-              to biosphere regeneration
+            <p className="hidden text-center text-[33px]  font-bold text-black md:flex lg:flex lg:text-5xl">
+              to Biosphere Regeneration
             </p>
             <p className="text-center text-[33px] font-bold text-black md:hidden lg:hidden lg:text-5xl">
-              to biosphere
+              to Biosphere
             </p>
             <p className="text-center text-[33px] font-bold text-black md:hidden lg:hidden lg:text-5xl">
-              regeneration
+              Regeneration
             </p>
           </div>
           {/* hero description container */}
           <div className="flex flex-col items-center">
             <p className="rounded-2xl bg-[#303D0C]/30 p-6 text-center text-2xl font-bold text-white md:w-[80%] lg:w-[60%]">
-              Geoblocs blockchain utilizes geospatial technology along with on
+              The Geoblocs platform utilises geospatial technology along with on
               the ground monitoring to create verifiable regeneration projects
-              around the world that focus on biodiversity, social impact and
-              local economics
+              around the world that focus on biodiversity, social impact, and
+              local economics.
             </p>
           </div>
 
@@ -123,8 +123,8 @@ function Home(props) {
             <p className="text-xl font-bold text-center">Decentralization</p>
             <p className="font-light text-center w-72">
               The Geoblocs system matches project supporters and land steward
-              stakeholders with the governance of a layer 1 blockchain dedicated
-              to ecological health and climate action.
+              stakeholders to ecological health and climate action with the help
+              of the Unique Network Parachain.
             </p>
           </div>
         </div>
@@ -153,9 +153,9 @@ function Home(props) {
         <p className="text-3xl font-semibold text-center">Join Us</p>
 
         <p className="w-[70%] text-center font-light md:w-[60%] lg:w-[800px]">
-          GeoBlocs Registry allows land stewards to leverage theirecosystem
+          Geoblocs Registry allows land stewards to leverage theirecosystem
           services to buyers around the world to get funding for land
-          regeneration.
+          regeneration
         </p>
 
         {/* outer container */}
@@ -168,7 +168,7 @@ function Home(props) {
             <p className="text-xl font-bold text-center">Register a Project</p>
             <p className="h-20 font-light text-center w-72">
               Send us information on your regeneration project to see if it
-              meets our criteria.
+              meets our criteria
             </p>
             <button
               className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
@@ -186,8 +186,8 @@ function Home(props) {
             </div>
             <p className="text-xl font-bold text-center">Purchase Geoblocs</p>
             <p className="h-20 font-light text-center w-72">
-              Seamlessly purchase, retire, and monitor via the project
-              dashboard.
+              Seamlessly purchase, retire and monitor via the project
+              dashboard
             </p>
             <button
               className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
@@ -205,10 +205,11 @@ function Home(props) {
         <div className="flex flex-col items-center justify-center space-y-8">
           <p className="text-3xl font-semibold text-center">Blockchain</p>
           <p className="w-[70%] text-center font-medium md:w-[60%] lg:w-[600px]">
-            The Geoblocs blockchain is a layer 1 blockchain that is dedicated to
-            ecological health and climate action. It is a proof of stake
-            blockchain that is secured by the validators and is governed by the
-            community.
+            Geoblocs, powered by Unique Network, is helping to revolutionize the
+            ecological landscape. Leveraging Unique Network's Polkadot-based
+            main parachain. Explore the endless possibilities of decentralized
+            technology with Geoblocs and benefit from the robust features of a
+            mature Layer 1 blockchain within the Polkadot ecosystem.
           </p>
         </div>
         <img src={uniqueLogo} className="w-[400px]" />
@@ -219,7 +220,7 @@ function Home(props) {
         <p className="text-3xl font-semibold text-center">Stay Updated</p>
         <p className="w-[70%] text-center font-light md:w-[60%] lg:w-[600px]">
           Sign up to our newsletter to stay up to date with the latest news and
-          updates.
+          updates
         </p>
         <input
           type="text"

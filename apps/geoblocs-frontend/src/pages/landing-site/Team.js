@@ -34,9 +34,9 @@ function Team(props) {
             way there are low overheads making it possible to use the funds to
             the greatest benefit as each part of the network is only being
             rewarded for work being carried out by them at that time. The entire
-            platform is run on the same principal from the IT people to the
+            platform is run on the same principle from the IT people to the
             people doing the work on the ground. Geoblocs is administered by
-            GEIA who, like all other stakeholders works on a commission basis.
+            GEIA who, like all other stakeholders, works on a commission basis.
           </p>
 
           <img src={imageOne} className="lg:w-[40%] w-[80%]"></img>

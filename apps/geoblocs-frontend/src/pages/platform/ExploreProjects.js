@@ -89,7 +89,7 @@ function ExploreProjects(props) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
             transition={{ duration: 0.1, delay: 0 }}
-            className="flex max-h-[20%] min-h-[20%] flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer md:max-h-[20%] md:min-h-[20%] lg:max-h-[50%] lg:min-h-[50%] lg:min-w-[20%] lg:max-w-[20%] lg:justify-between"
+            className="flex max-h-[20%] min-h-[20%] flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer md:max-h-[20%] md:min-h-[20%] lg:max-h-[50%] lg:min-h-[50%] lg:min-w-[20%] lg:max-w-[20%] lg:justify-betwee"
             onClick={() => {
               setAppData((prevState) => {
                 return {
@@ -113,17 +113,12 @@ function ExploreProjects(props) {
             ></img>
 
             {/* text container */}
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-start">
               <p className="px-2 text-lg font-bold">
                 {project.metadata.projectName}
               </p>
               <p className="px-2 pt-1 text-sm font-light">
                 {project.metadata.startedFrom}
-                {/* {new Date(project.createdOn).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })} */}
               </p>
             </div>
           </motion.div>

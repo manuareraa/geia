@@ -50,6 +50,9 @@ import projectdataimg from "../../assets/img/dashboard/projectdataimg.png";
 import sponsorsimg from "../../assets/img/dashboard/sponsorsimg.png";
 import "../../utils/TooltipStyles.css";
 
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import MapComponent from "../../components/platform/projectView/MapComponent";
+
 function ProjectView(props) {
   let position = [51.903614, -8.468399];
   const navigate = useNavigate();
@@ -536,6 +539,21 @@ function ProjectView(props) {
     console.log("formData", formData);
   }, [formData]);
 
+  const render = (status) => {
+    if (status === Status.FAILURE) {
+      console.log("error occured while rendering maps", status);
+    }
+    console.log("loading...");
+  };
+
+  const mapOptions = {
+    center: {
+      lat: position[0], // latitude
+      lng: position[1], // longitude
+    },
+    zoom: 4,
+  };
+
   return (
     <>
       {Object.keys(appData.projectInView).length > 0 ? (
@@ -612,8 +630,14 @@ function ProjectView(props) {
               {/* right container */}
               {/* map container */}
               <div className="flex flex-col items-center justify-center w-full">
+                <MapComponent
+                  lat={mapCenter[0]}
+                  lon={mapCenter[1]}
+                  label={appData.projectInView.metadata.projectName}
+                />
+
                 {/* map container */}
-                <MapContainer
+                {/* <MapContainer
                   center={mapCenter}
                   zoom={13}
                   style={{
@@ -642,7 +666,7 @@ function ProjectView(props) {
                       A pretty CSS3 popup. <br /> Easily customizable.
                     </Popup>
                   </Marker>
-                </MapContainer>
+                </MapContainer> */}
 
                 {/* <button
                   className="px-6 py-0 my-0 text-xs font-bold text-white capitalize border-0 rounded-full w-fit bg-gGreen lg:px-6 lg:py-1"
