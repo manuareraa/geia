@@ -14,9 +14,9 @@ function ExploreProjects(props) {
   const [projectCards, setProjectCards] = useState([]);
   const [recentProjectCards, setRecentProjectCards] = useState([]);
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const renderProjectCards = async () => {
     let recentCouter = 0;

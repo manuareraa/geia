@@ -754,14 +754,24 @@ function ProjectView(props) {
                         placeholder="Geoblocs to purchase"
                         className="h-10 w-[95%]  rounded-full bg-gGray px-6 py-2 text-center  text-sm text-black outline-none lg:h-12 lg:w-[400px] lg:px-8 lg:text-left lg:text-lg"
                         value={formData.quantity}
-                        onChange={(e) =>
-                          setFormData({ ...formData, quantity: e.target.value })
-                        }
+                        onChange={(e) => {
+                          console.log("formq", formData.quantity);
+                          setFormData((prevState) => {
+                            return {
+                              ...prevState,
+                              quantity: e.target.value,
+                              totalCost:
+                                e.target.value *
+                                appData.projectInView.geoblocsData
+                                  .pricePerGeobloc,
+                            };
+                          });
+                        }}
                       ></input>
                       <p className="font-bold text-md lg:text-xl">
                         {appData.projectInView.geoblocsData.pricePerGeobloc *
                           formData.quantity || 0}{" "}
-                        USD
+                        EUR
                       </p>
                       {/* <button className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen">
                         Proceed to Checkout
@@ -769,10 +779,7 @@ function ProjectView(props) {
                       {formData.quantity > 0 && formData.quantity <= 20 ? (
                         <Paypal
                           successCallback={onPaypalSuccess}
-                          price={
-                            appData.projectInView.geoblocsData.pricePerGeobloc *
-                              formData.quantity || 0
-                          }
+                          price={formData.totalCost || 0}
                         />
                       ) : (
                         <p>Please enter a quantity between 1 and 20</p>
@@ -830,9 +837,11 @@ function ProjectView(props) {
                             className="h-10 w-[95%]  rounded-full bg-gGray px-6 py-2 text-center  text-sm text-black outline-none lg:h-12 lg:w-[400px] lg:px-8 lg:text-left lg:text-lg"
                             value={formData.redeemEmail}
                             onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                redeemEmail: e.target.value,
+                              setFormData((prevState) => {
+                                return {
+                                  ...prevState,
+                                  redeemEmail: e.target.value,
+                                };
                               })
                             }
                           ></input>

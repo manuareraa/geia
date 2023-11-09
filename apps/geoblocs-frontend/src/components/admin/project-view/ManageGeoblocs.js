@@ -19,7 +19,7 @@ function ManageGeoblocs(props) {
   const [totalSupply, setTotalSupply] = useState("");
   const [excessAmount, setExcessAmount] = useState("");
   const [pricePerGeobloc, setPricePerGeobloc] = useState(
-    appData.projectInView.geoblocsData.pricePerGeobloc
+    appData.projectInView.geoblocsData.pricePerGeobloc,
   );
 
   // const test = async () => {
@@ -46,7 +46,7 @@ function ManageGeoblocs(props) {
       <div className="flex flex-col w-full space-y-4">
         <div className="flex flex-col items-center justify-center w-full space-y-8">
           {/* create geoblocs */}
-          <div className="grid items-center grid-cols-2 gap-x-8 w-fit">
+          <div className="grid items-center grid-cols-2 w-fit gap-x-8">
             <button
               className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen disabled:cursor-not-allowed"
               disabled={
@@ -71,7 +71,7 @@ function ManageGeoblocs(props) {
                     tickerSymbol,
                     props.projectId,
                     appData.projectInView.geoblocsData,
-                    totalSupply
+                    totalSupply,
                   );
                   createNewNftCollection(
                     tokenName,
@@ -79,7 +79,7 @@ function ManageGeoblocs(props) {
                     tickerSymbol,
                     props.projectId,
                     appData.projectInView.geoblocsData,
-                    totalSupply
+                    totalSupply,
                   );
                 }
               }}
@@ -170,7 +170,7 @@ function ManageGeoblocs(props) {
                     className="py-2 border-b-2 border-black/50 focus:outline-none disabled:cursor-not-allowed"
                     disabled={
                       parseInt(
-                        appData.projectInView.geoblocsData.totalSupply
+                        appData.projectInView.geoblocsData.totalSupply,
                       ) === 0 ||
                       appData.projectInView.geoblocsData.totalSupply === ""
                         ? false
@@ -178,7 +178,7 @@ function ManageGeoblocs(props) {
                     }
                     value={
                       parseInt(
-                        appData.projectInView.geoblocsData.totalSupply
+                        appData.projectInView.geoblocsData.totalSupply,
                       ) === 0 ||
                       appData.projectInView.geoblocsData.totalSupply === ""
                         ? totalSupply
@@ -192,7 +192,7 @@ function ManageGeoblocs(props) {
           </div>
 
           {/* increase supply */}
-          <div className="grid items-center grid-cols-2 gap-x-8 w-fit">
+          <div className="grid items-center grid-cols-2 w-fit gap-x-8">
             <button
               className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen"
               //   onClick={addNewCondition}
@@ -223,14 +223,15 @@ function ManageGeoblocs(props) {
           </div>
 
           {/* update price */}
-          <div className="grid items-center grid-cols-2 gap-x-8 w-fit">
+          <div className="grid items-center grid-cols-2 w-fit gap-x-8">
             <button
               className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen"
               onClick={async () => {
-                if (parseInt(pricePerGeobloc) > 0) {
+                console.log("PPG", parseInt(pricePerGeobloc), pricePerGeobloc);
+                if (parseFloat(pricePerGeobloc) > 0) {
                   const updateResult = await updateTokenPrice(
                     props.projectId,
-                    parseInt(pricePerGeobloc)
+                    parseFloat(pricePerGeobloc),
                   );
                   if (updateResult === true) {
                     toast.success("Price updated successfully ");
@@ -260,7 +261,10 @@ function ManageGeoblocs(props) {
                       : false
                   }
                   value={pricePerGeobloc}
-                  onChange={(e) => setPricePerGeobloc(e.target.value)}
+                  onChange={(e) => {
+                    console.log("updating PPG", e.target.value);
+                    setPricePerGeobloc(e.target.value);
+                  }}
                 />
               </div>
             </div>
@@ -272,7 +276,7 @@ function ManageGeoblocs(props) {
           </p>
 
           {/* geoblocs stats container */}
-          <div className="grid items-center justify-center grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-x-36">
+          <div className="grid items-center justify-center grid-cols-1 gap-x-36 md:grid-cols-2 lg:grid-cols-3">
             <div className="flex flex-col items-center justify-center space-y-4">
               <p className="text-xl font-bold">Geoblocs Purchased</p>
               <p className="text-4xl">
@@ -295,7 +299,7 @@ function ManageGeoblocs(props) {
           </div>
 
           {/* geoblocs charts container */}
-          <div className="flex flex-col items-center justify-center w-full space-y-6 lg:flex-row focus:outline-none">
+          <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none lg:flex-row">
             <GeoblocsChart
               totalSupply={appData.projectInView.geoblocsData.totalSupply}
               purchased={appData.projectInView.geoblocsData.purchased}

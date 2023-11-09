@@ -31,9 +31,9 @@ function Paypal(props) {
       .create({
         purchase_units: [
           {
-            description: "Sunflower",
+            description: "Geoblocs",
             amount: {
-              currency_code: "USD",
+              currency_code: "EUR",
               value: props.price,
             },
           },
