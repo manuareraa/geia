@@ -95,7 +95,7 @@ function LandStewards(props) {
           <img src={register} className="w-8 mt-[140px] lg:mt-32 lg:w-16"></img>
 
           {/* Establish Baseline */}
-          <div className="flex flex-row items-center justify-start pt-2 space-x-3 lg:pt-0">
+          <div className="flex flex-row items-center justify-start pt-2 space-x-3 lg:pt-0 md:pt-7">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-bold text-right lg:text-xl">
                 Establish Baseline
@@ -116,10 +116,10 @@ function LandStewards(props) {
           </div>
 
           {/* create geoblocs */}
-          <img src={logo} className="pt-2 lg:pt-0 lg:mt-32 w-36 lg:w-48"></img>
+          <img src={logo} className="pt-2 lg:pt-0 lg:mt-32 w-36 lg:w-48 md:pt-4"></img>
 
           {/* sell geoblocs */}
-          <div className="flex flex-row items-center justify-start pt-10 space-x-3 lg:pt-0">
+          <div className="flex flex-row items-center justify-start pt-10 space-x-3 lg:pt-0 md:pt-11">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-bold text-right lg:text-xl">
                 Sell Geoblocs
@@ -136,11 +136,11 @@ function LandStewards(props) {
           {/* management */}
           <img
             src={management}
-            className="w-8 mt-[140px] lg:mt-32 lg:w-16 lg:pt-0 pt-10"
+            className="w-8 mt-[140px] lg:mt-32 lg:w-16 lg:pt-0 pt-10 md:pt-14"
           ></img>
 
           {/* monitor */}
-          <div className="flex flex-row items-center justify-start space-x-3 pt-7 lg:pt-0">
+          <div className="flex flex-row items-center justify-start space-x-3 pt-7 lg:pt-0 md:pt-6">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-bold text-right lg:text-xl">Monitor</p>
               <div className="flex flex-col items-end space-y-1 lg:items-start lg:flex-row lg:space-x-2 lg:space-y-0">
@@ -165,7 +165,7 @@ function LandStewards(props) {
 
         <div className="flex flex-col items-start lg:space-y-36 space-y-28">
           {/* Register Project */}
-          <div className="flex flex-row items-center justify-start space-x-3 lg:mt-32 mt-[115px]">
+          <div className="flex flex-row items-center justify-start space-x-3 lg:mt-26 mt-[115px] md:pt-4 pt-4">
             <p className="text-3xl font-bold leading-none lg:text-6xl">1</p>
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-bold text-left lg:text-xl">
@@ -182,11 +182,11 @@ function LandStewards(props) {
           {/* Establish Baseline */}
           <img
             src={baseline}
-            className="w-8 mt-[140px] lg:mt-32 lg:w-16 lg:pt-0 pt-8"
+            className="w-8 mt-[140px] lg:mt-32 lg:w-16 lg:pt-0 pt-12 md:pt-12"
           ></img>
 
           {/* create geoblocs */}
-          <div className="flex flex-row items-center justify-start mt-32 space-x-3 pt-11 lg:pt-0">
+          <div className="flex flex-row items-center justify-start mt-32 space-x-3 pt-14 lg:pt-0 md:pt-14">
             <p className="text-3xl font-bold leading-none lg:text-6xl">3</p>
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-bold text-left lg:text-xl">
@@ -203,11 +203,11 @@ function LandStewards(props) {
           {/* sell geoblocs */}
           <img
             src={sell}
-            className="w-8 mt-[140px] lg:mt-32 lg:w-16 lg:pt-0 pt-11"
+            className="w-8 mt-[140px] lg:mt-32 lg:w-16 lg:pt-0 pt-14 md:pt-14"
           ></img>
 
           {/* management */}
-          <div className="flex flex-row items-center justify-start pt-1 space-x-3 lg:mt-32 lg:pt-0">
+          <div className="flex flex-row items-center justify-start pt-4 space-x-3 lg:mt-32 lg:pt-0 md:pt-6">
             <p className="text-3xl font-bold leading-none lg:text-6xl">5</p>
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-bold text-left lg:text-xl">
@@ -230,7 +230,7 @@ function LandStewards(props) {
           {/* monitor */}
           <img
             src={monitor}
-            className="w-8 mt-[140px] lg:mt-32 lg:w-16 lg:pt-0 pt-2"
+            className="w-8 mt-[140px] lg:mt-32 lg:w-16 lg:pt-0 pt-4 md:pt-6"
           ></img>
 
           {/* end */}

@@ -54,7 +54,7 @@ function MonitorsSW(props) {
           </div>
           <div className="divider"></div>
           {monitorCards.length > 0 ? (
-            <div className="grid grid-cols-1 lg:grid-cols-4">{monitorCards}</div>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-y-4 lg:gap-y-0 lg:gap-x-4">{monitorCards}</div>
           ) : (
             <p className="text-2xl font-bold text-center">No Monitors</p>
           )}

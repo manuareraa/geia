@@ -206,6 +206,17 @@ function App() {
           }
         />
         <Route
+          path="/platform/projects/view/:projectId/redeem/qr/:qrcode"
+          element={
+            <Transition
+              trigger={location.pathname.startsWith("/platform/projects/view/")}
+              isExiting={isExiting}
+            >
+              <UserProjectView />
+            </Transition>
+          }
+        />
+        <Route
           path="/new-application"
           element={
             <Transition

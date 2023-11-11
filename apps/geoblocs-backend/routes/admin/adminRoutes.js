@@ -414,29 +414,67 @@ router.post("/update-geoblocs-data", authenticate, async (req, res) => {
   }
 });
 
-router.get("/get-project-by-id", authenticate, async (req, res) => {
+router.get("/get-project-by-id", async (req, res) => {
   console.log("GET /api/admin/get-project-by-id");
   try {
-    if (req.role === "admin") {
-      const { projectId } = req.query; // Use req.query to get parameters from GET request
-      console.log("ProjectID", projectId);
-      const projectData = await db
-        .collection("projects")
-        .findOne({ projectId: projectId });
+    const { projectId } = req.query; // Use req.query to get parameters from GET request
+    console.log("ProjectID", projectId);
+    const projectData = await db
+      .collection("projects")
+      .findOne({ projectId: projectId });
 
-      if (!projectData) {
-        res.status(404).json({ status: "fail", message: "Project not found" });
-      } else {
-        res.status(200).json({ status: "success", project: projectData });
-      }
+    if (!projectData) {
+      res.status(404).json({ status: "fail", message: "Project not found" });
     } else {
-      res.status(401).json({ status: "fail", message: "Unauthorized" });
+      res.status(200).json({ status: "success", project: projectData });
     }
   } catch (error) {
     console.log("Error occurred while fetching project data: ", error);
     res.status(500).json({ status: "fail", message: error.message });
   }
 });
+
+router.get("/get-project-token-details", async (req, res) => {
+  console.log("GET /api/admin/get-project-token-details");
+  try {
+    const { projectId } = req.query; // Use req.query to get parameters from GET request
+    console.log("ProjectID", projectId);
+    const projectData = await db
+      .collection("miniLedger")
+      .findOne({ projectId: projectId });
+
+    if (!projectData) {
+      res.status(404).json({ status: "fail", message: "Project not found" });
+    } else {
+      res.status(200).json({ status: "success", project: projectData });
+    }
+  } catch (error) {
+    console.log("Error occurred while fetching project data: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
+// an endpoint to update the project token details. It will just replace the entire document
+router.post("/update-project-token-details", async (req, res) => {
+  console.log("POST /api/admin/update-project-token-details", req.body.tokenDetails);
+  try {
+    const { projectId, tokenDetails } = req.body;
+
+    // Destructure to remove _id from tokenDetails, if it exists
+    const { _id, ...updatedTokenDetails } = tokenDetails;
+
+    // Using updateOne with $set operator
+    await db
+      .collection("miniLedger")
+      .updateOne({ projectId: projectId }, { $set: updatedTokenDetails }, { upsert: true });
+
+    res.status(200).json({ status: "success" });
+  } catch (error) {
+    console.log("Error occurred while updating project token details: ", error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
 
 router.post("/delete-project-by-id", authenticate, async (req, res) => {
   console.log("GET /api/admin/get-project-by-id");
@@ -447,7 +485,7 @@ router.post("/delete-project-by-id", authenticate, async (req, res) => {
       const response = await db
         .collection("projects")
         .deleteOne({ projectId: projectId });
-        // .findOne({ projectId: projectId });
+      // .findOne({ projectId: projectId });
 
       if (!response) {
         res.status(404).json({ status: "fail", message: "Project not found" });

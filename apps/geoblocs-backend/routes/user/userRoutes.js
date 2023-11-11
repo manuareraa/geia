@@ -6,6 +6,7 @@ const { authenticate } = require("../../middlewares/auth");
 const { mongoose } = require("../../utils/db/db");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+const axios = require("axios");
 
 const db = mongoose.connection;
 const collectionName = "users";

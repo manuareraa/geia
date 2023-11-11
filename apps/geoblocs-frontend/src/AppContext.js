@@ -1128,28 +1128,66 @@ export const AppProvider = ({ children }) => {
 
   const getProjectById = async (projectId) => {
     try {
-      const token = getTokenFromLocalStorage();
-      if (token !== false) {
-        const response = await axios.get(
-          backendUrl + "/api/admin/get-project-by-id",
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-            params: {
-              projectId: projectId,
-            },
+      const response = await axios.get(
+        backendUrl + "/api/admin/get-project-by-id",
+        {
+          params: {
+            projectId: projectId,
           },
-        );
-        if (response.data.status === "success") {
-          // toast.success("project retrieved successfully");
-          return response.data;
-        } else {
-          toast.error("Error [AC118]: project data fetch error");
-          return false;
-        }
+        },
+      );
+      if (response.data.status === "success") {
+        // toast.success("project retrieved successfully");
+        return response.data;
       } else {
-        toast.error("Error [AC119]: Token not found");
+        toast.error("Error [AC118]: project data fetch by id error");
+        console.log("project data fetch by id error", error);
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while fetching project data: ", error);
+      return false;
+    }
+  };
+
+  const getProjectTokenDetails = async (projectId) => {
+    try {
+      const response = await axios.get(
+        backendUrl + "/api/admin/get-project-token-details",
+        {
+          params: {
+            projectId: projectId,
+          },
+        },
+      );
+      if (response.data.status === "success") {
+        // toast.success("project retrieved successfully");
+        return response.data;
+      } else {
+        toast.error("Error [AC118]: token data data fetch error");
+        console.log("token data data fetch error", error);
+        return false;
+      }
+    } catch (error) {
+      console.log("Error occurred while fetching project data: ", error);
+      return false;
+    }
+  };
+
+  const updateProjectTokenDetails = async (projectId, tokenDetails) => {
+    try {
+      const response = await axios.post(
+        backendUrl + "/api/admin/update-project-token-details",
+        {
+          projectId: projectId,
+          tokenDetails: tokenDetails,
+        },
+      );
+      if (response.data.status === "success") {
+        // toast.success("project retrieved successfully");
+        return response.data;
+      } else {
+        toast.error("Error [AC118]: token details update error");
         return false;
       }
     } catch (error) {
@@ -1807,6 +1845,8 @@ export const AppProvider = ({ children }) => {
         createNewProjectByAdmin,
         getProjectById,
         deleteProject,
+        getProjectTokenDetails,
+        updateProjectTokenDetails,
         // blockchain part
         createNewUniqueNetworkAcc,
         createNewNftCollection,

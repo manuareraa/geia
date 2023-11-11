@@ -52,6 +52,7 @@ import "../../utils/TooltipStyles.css";
 
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import MapComponent from "../../components/platform/projectView/MapComponent";
+import { qrCodes } from "../../utils/qrcodes";
 
 function ProjectView(props) {
   let position = [51.903614, -8.468399];
@@ -65,8 +66,10 @@ function ProjectView(props) {
     checkUserExistence,
     userRegisterQuietMode,
     getProjectById,
+    getProjectTokenDetails,
+    updateProjectTokenDetails,
   } = useContext(AppContext);
-  const { projectId } = useParams();
+  const { projectId, qrcode } = useParams();
   const [subWindow, setSubWindow] = useState("default");
   const [storyInView, setStoryInView] = useState([]);
   const [formData, setFormData] = useState({});
@@ -76,6 +79,10 @@ function ProjectView(props) {
   const [redeeemInProcess, setRedeemInProcess] = useState(false);
   const [latLong, setLatLong] = useState([51.903614, -8.468399]);
   const [mapCenter, setMapCenter] = useState([51.903614, -8.468399]);
+  const [redeemEnabled, setRedeemEnabled] = useState(false);
+  const [buyEnabled, setBuyEnabled] = useState(false);
+  const [tokenBalDetails, setTokenBalDetails] = useState({});
+  const [checkoutEnabled, setCheckoutEnabled] = useState(true);
 
   const ChangeView = ({ center }) => {
     console.log("executing change view", center);
@@ -182,8 +189,13 @@ function ProjectView(props) {
           );
           if (transferResult === true) {
             toast.success("Geoblocs Redeemed");
+            console.log("RDM 1");
             setRedeemStatus(true);
             setRedeemInProcess(false);
+            setRedeemEnabled(false);
+            localStorage.setItem("geoblocsr", "asdfghjkl");
+            updateTokenBalance(projectId, tokenBalDetails, 1, "redeem", qrcode);
+            navigate("/platform/projects/view/" + projectId);
             return true;
           } else {
             toast.error("Cannot redeem at the moment. Please try again.");
@@ -216,8 +228,19 @@ function ProjectView(props) {
               );
               if (transferResult === true) {
                 toast.success("Geoblocs Redeemed");
+                console.log("RDM 2");
                 setRedeemStatus(true);
                 setRedeemInProcess(false);
+                setRedeemEnabled(false);
+                localStorage.setItem("geoblocsr", "asdfghjkl");
+                updateTokenBalance(
+                  projectId,
+                  tokenBalDetails,
+                  1,
+                  "redeem",
+                  qrcode,
+                );
+                navigate("/platform/projects/view/" + projectId);
                 return true;
               } else {
                 toast.error("Cannot redeem at the moment. Please try again.");
@@ -227,7 +250,7 @@ function ProjectView(props) {
             toast.error("Cannot redeem at the moment. Please try again.");
           }
         }
-        toast.success("Geoblocs Redeemed");
+        // toast.success("Geoblocs Redeemed");
       } else {
         // if not logged in or if it is the admin (do nothing)
 
@@ -253,8 +276,19 @@ function ProjectView(props) {
             );
             if (transferResult === true) {
               toast.success("Geoblocs Redeemed");
+              console.log("RDM 5");
               setRedeemStatus(true);
               setRedeemInProcess(false);
+              setRedeemEnabled(false);
+              localStorage.setItem("geoblocsr", "asdfghjkl");
+              updateTokenBalance(
+                projectId,
+                tokenBalDetails,
+                1,
+                "redeem",
+                qrcode,
+              );
+              navigate("/platform/projects/view/" + projectId);
               return true;
             } else {
               toast.error("Cannot redeem at the moment. Please try again.");
@@ -287,8 +321,19 @@ function ProjectView(props) {
                 );
                 if (transferResult === true) {
                   toast.success("Geoblocs Redeemed");
+                  console.log("RDM 3");
                   setRedeemInProcess(false);
                   setRedeemStatus(true);
+                  setRedeemEnabled(false);
+                  localStorage.setItem("geoblocsr", "asdfghjkl");
+                  updateTokenBalance(
+                    projectId,
+                    tokenBalDetails,
+                    1,
+                    "redeem",
+                    qrcode,
+                  );
+                  navigate("/platform/projects/view/" + projectId);
                 } else {
                   toast.error("Cannot redeem at the moment. Please try again.");
                 }
@@ -324,8 +369,19 @@ function ProjectView(props) {
             );
             if (transferResult === true) {
               toast.success("Geoblocs Redeemed");
+              console.log("RDM 4");
               setRedeemInProcess(false);
               setRedeemStatus(true);
+              setRedeemEnabled(false);
+              localStorage.setItem("geoblocsr", "asdfghjkl");
+              updateTokenBalance(
+                projectId,
+                tokenBalDetails,
+                1,
+                "redeem",
+                qrcode,
+              );
+              navigate("/platform/projects/view/" + projectId);
             } else {
               toast.error("Cannot redeem at the moment. Please try again.");
             }
@@ -359,6 +415,18 @@ function ProjectView(props) {
           toast.success("Geoblocs Purchased");
           setBuyContainerView(false);
           setRedeemContainerView(false);
+          toast.success("Please wait for the page to reload...");
+          await updateTokenBalance(
+            projectId,
+            tokenBalDetails,
+            parseInt(formData.quantity),
+            "buy",
+            qrcode,
+          );
+          // reload the page after 3 seconds
+          setTimeout(() => {
+            // window.location.reload();
+          }, 3000);
         } else {
           toast.error("Cannot purchase at the moment. Please try again.");
         }
@@ -392,6 +460,18 @@ function ProjectView(props) {
               toast.success("Geoblocs Purchased");
               setBuyContainerView(false);
               setRedeemContainerView(false);
+              toast.success("Please wait for the page to reload...");
+              await updateTokenBalance(
+                projectId,
+                tokenBalDetails,
+                parseInt(formData.quantity),
+                "buy",
+                qrcode,
+              );
+              // reload the page after 3 seconds
+              setTimeout(() => {
+                // window.location.reload();
+              }, 3000);
             } else {
               toast.error("Cannot purchase at the moment. Please try again.");
             }
@@ -400,7 +480,7 @@ function ProjectView(props) {
           toast.error("Cannot redeem at the moment. Please try again.");
         }
       }
-      toast.success("Geoblocs Redeemed");
+      // toast.success("Geoblocs Redeemed");
     } else {
       // if not logged in or if it is the admin (do nothing)
 
@@ -428,6 +508,18 @@ function ProjectView(props) {
             toast.success("Geoblocs Purchased");
             setBuyContainerView(false);
             setRedeemContainerView(false);
+            toast.success("Please wait for the page to reload...");
+            await updateTokenBalance(
+              projectId,
+              tokenBalDetails,
+              parseInt(formData.quantity),
+              "buy",
+              qrcode,
+            );
+            // reload the page after 3 seconds
+            setTimeout(() => {
+              // window.location.reload();
+            }, 3000);
           } else {
             toast.error("Cannot purchase at the moment. Please try again.");
           }
@@ -461,6 +553,18 @@ function ProjectView(props) {
                 toast.success("Geoblocs Purchased");
                 setBuyContainerView(false);
                 setRedeemContainerView(false);
+                toast.success("Please wait for the page to reload...");
+                await updateTokenBalance(
+                  projectId,
+                  tokenBalDetails,
+                  parseInt(formData.quantity),
+                  "buy",
+                  qrcode,
+                );
+                // reload the page after 3 seconds
+                setTimeout(() => {
+                  // window.location.reload();
+                }, 3000);
               } else {
                 toast.error("Cannot purchase at the moment. Please try again.");
               }
@@ -498,6 +602,18 @@ function ProjectView(props) {
             toast.success("Geoblocs Purchased");
             setBuyContainerView(false);
             setRedeemContainerView(false);
+            toast.success("Please wait for the page to reload...");
+            await updateTokenBalance(
+              projectId,
+              tokenBalDetails,
+              parseInt(formData.quantity),
+              "buy",
+              qrcode,
+            );
+            // reload the page after 3 seconds
+            setTimeout(() => {
+              // window.location.reload();
+            }, 3000);
           } else {
             toast.error("Cannot purchase at the moment. Please try again.");
           }
@@ -506,16 +622,112 @@ function ProjectView(props) {
     }
   };
 
+  const checkSponsorId = (projectId, sponsorId) => {
+    const project = qrCodes[projectId];
+    if (project) {
+      return project.includes(sponsorId);
+    }
+    return false;
+  };
+
+  const checkAndVerifyBalance = async (projectId, type) => {
+    console.log("CAVTB", type);
+    let data = await getProjectTokenDetails(projectId);
+    data = data.project;
+    console.log("tokendata", data);
+    setTokenBalDetails(data);
+    if (type === "buy") {
+      const bal = data.currentBalance - (data.reserved - data.redeemed);
+      console.log("bala", bal);
+      if (bal > 0) {
+        setBuyEnabled(true);
+      }
+    } else {
+      const sponsorData = data.sponsors.filter((sponsor) => {
+        return sponsor.sponsorId === qrcode;
+      });
+      if (sponsorData.length > 0) {
+        const sponsor = sponsorData[0];
+        if (sponsor.tokenBalance > 0) {
+          setRedeemEnabled(true);
+        }
+      }
+    }
+  };
+
+  const updateTokenBalance = async (
+    projectId,
+    tokenDetails,
+    deduct,
+    type,
+    sponsorId,
+  ) => {
+    console.log("UTB");
+    let tempTokDet = tokenDetails;
+    deduct = parseInt(deduct);
+    if (type === "buy") {
+      console.log("inparam", projectId, tokenDetails, deduct, type, sponsorId);
+      tempTokDet.currentBalance = tempTokDet.currentBalance - deduct;
+      console.log(
+        "tempTokDet",
+        tempTokDet.bought,
+        deduct,
+        tempTokDet.bought + deduct,
+        tempTokDet.bought - deduct,
+      );
+      tempTokDet.bought = tempTokDet.bought + deduct;
+      console.log("tempTokDet", tempTokDet);
+    } else if (type === "redeem") {
+      tempTokDet.currentBalance = tempTokDet.currentBalance - deduct;
+      tempTokDet.redeemed = tempTokDet.redeemed + deduct;
+      const sponsorData = tempTokDet.sponsors.filter((sponsor) => {
+        return sponsor.sponsorId === sponsorId;
+      });
+      const remArray = tempTokDet.sponsors.filter((sponsor) => {
+        return sponsor.sponsorId !== sponsorId;
+      });
+      console.log("sponsorData", sponsorData, sponsorId);
+      sponsorData[0].tokensRedeemed = sponsorData[0].tokensRedeemed + deduct;
+      sponsorData[0].tokenBalance =
+        sponsorData[0].tokensSponsored - sponsorData[0].tokensRedeemed;
+      remArray.push(sponsorData[0]);
+      tempTokDet.sponsors = [...remArray];
+      console.log("tempTokDet", tempTokDet, remArray, sponsorData);
+    }
+    const result = await updateProjectTokenDetails(projectId, tempTokDet);
+    console.log("UTB result", result);
+  };
+
   useEffect(() => {
+    // qrcode handler
+    console.log("qrcode", qrcode, qrCodes);
+    if (qrcode !== undefined) {
+      if (checkSponsorId(projectId, qrcode) === true) {
+        console.log("Valid QRCODE Found**");
+        const localRedeemStatus = localStorage.getItem("geoblocsr");
+        if (localRedeemStatus !== "asdfghjkl") {
+          checkAndVerifyBalance(projectId, "redeem");
+        }
+      } else {
+        console.log("Invalid QRCODE Found**");
+      }
+    } else {
+      console.log("No QRCODE Found**");
+    }
+
+    // projectdata handler
     console.log("appData", appData);
     const getProjectDataFromDB = async () => {
       console.log("Getting project data from DB", projectId);
       const projectData = await getProjectById(projectId);
+      console.log("getprojectbyid ::", projectData);
       if (projectData.status !== "success") {
         navigate("/platform/projects");
         return false;
       } else {
         console.log("Project data >> ", projectData);
+        // buy only handler
+        checkAndVerifyBalance(projectId, "buy");
         isValidLatLon(projectData.project.metadata.gps);
         setAppData((prevState) => {
           return {
@@ -527,8 +739,10 @@ function ProjectView(props) {
       }
     };
 
+    // in view project handler
     if (Object.keys(appData.projectInView).length > 0) {
       console.log(appData.projectInView);
+      checkAndVerifyBalance(projectId, "buy");
       isValidLatLon(appData.projectInView.metadata.gps);
     } else {
       getProjectDataFromDB();
@@ -686,11 +900,16 @@ function ProjectView(props) {
             {/* buy geoblocs button */}
             <div className="flex flex-col items-center justify-center space-y-2">
               <button
-                className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
+                className={
+                  buyEnabled === true
+                    ? "text-md w-fit rounded-full border-0 bg-gGreen px-8 py-2 font-bold capitalize text-white lg:px-10 lg:py-4 lg:text-xl"
+                    : "text-md disabled w-fit rounded-full border-0 bg-gGreen/40 px-8 py-2 font-bold capitalize text-white disabled:cursor-not-allowed lg:px-10 lg:py-4 lg:text-xl"
+                }
                 onClick={() => {
                   setBuyContainerView(!buyContainerView);
                   setRedeemContainerView(false);
                 }}
+                disabled={buyEnabled === true ? false : true}
               >
                 Buy Geoblocs
               </button>
@@ -730,11 +949,16 @@ function ProjectView(props) {
             {/* redeem geoblocs button */}
             <div className="flex flex-col items-center justify-center space-y-2">
               <button
-                className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
+                className={
+                  redeemEnabled === true
+                    ? "text-md w-fit rounded-full border-0 bg-gGreen px-8 py-2 font-bold capitalize text-white lg:px-10 lg:py-4 lg:text-xl"
+                    : "text-md disabled w-fit rounded-full border-0 bg-gGreen/40 px-8 py-2 font-bold capitalize text-white disabled:cursor-not-allowed lg:px-10 lg:py-4 lg:text-xl"
+                }
                 onClick={() => {
                   setRedeemContainerView(!redeemContainerView);
                   setBuyContainerView(false);
                 }}
+                disabled={redeemEnabled === true ? false : true}
               >
                 Redeem Geoblocs
               </button>
@@ -746,13 +970,14 @@ function ProjectView(props) {
                   {appData.loginMode !== "user" ? (
                     <div className="flex flex-col items-center justify-center space-y-4">
                       <p>
-                        ${appData.projectInView.geoblocsData.pricePerGeobloc}{" "}
+                        €{appData.projectInView.geoblocsData.pricePerGeobloc}{" "}
                         per Geobloc
                       </p>
                       <input
                         type="text"
                         placeholder="Geoblocs to purchase"
-                        className="h-10 w-[95%]  rounded-full bg-gGray px-6 py-2 text-center  text-sm text-black outline-none lg:h-12 lg:w-[400px] lg:px-8 lg:text-left lg:text-lg"
+                        disabled={checkoutEnabled === true ? false : true}
+                        className="h-10 w-[95%]  rounded-full bg-gGray px-6 py-2 text-center  text-sm text-black outline-none disabled:bg-gGray/40 lg:h-12 lg:w-[400px] lg:px-8 lg:text-left lg:text-lg"
                         value={formData.quantity}
                         onChange={(e) => {
                           console.log("formq", formData.quantity);
@@ -777,10 +1002,29 @@ function ProjectView(props) {
                         Proceed to Checkout
                       </button> */}
                       {formData.quantity > 0 && formData.quantity <= 20 ? (
-                        <Paypal
-                          successCallback={onPaypalSuccess}
-                          price={formData.totalCost || 0}
-                        />
+                        <>
+                          {checkoutEnabled === true ? (
+                            <button
+                              className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
+                              onClick={() => setCheckoutEnabled(false)}
+                            >
+                              Checkout
+                            </button>
+                          ) : (
+                            <div className="flex flex-col items-center justify-center w-full">
+                              <Paypal
+                                successCallback={onPaypalSuccess}
+                                price={formData.totalCost || 0}
+                              />
+                              <button
+                                className="px-8 font-bold text-white capitalize border-0 rounded-full text-md lg:text-md btn-sm w-fit bg-gGreen lg:px-10"
+                                onClick={() => setCheckoutEnabled(true)}
+                              >
+                                Edit Quantity
+                              </button>
+                            </div>
+                          )}
+                        </>
                       ) : (
                         <p>Please enter a quantity between 1 and 20</p>
                       )}
