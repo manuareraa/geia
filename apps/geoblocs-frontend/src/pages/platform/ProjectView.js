@@ -637,19 +637,27 @@ function ProjectView(props) {
     console.log("tokendata", data);
     setTokenBalDetails(data);
     if (type === "buy") {
-      const bal = data.currentBalance - (data.reserved - data.redeemed);
-      console.log("bala", bal);
-      if (bal > 0) {
-        setBuyEnabled(true);
+      if (data !== undefined) {
+        const bal = data.currentBalance - (data.reserved - data.redeemed);
+        console.log("bala", bal);
+        if (bal > 0) {
+          setBuyEnabled(true);
+        }
+      } else {
+        setBuyEnabled(false);
       }
     } else {
-      const sponsorData = data.sponsors.filter((sponsor) => {
-        return sponsor.sponsorId === qrcode;
-      });
-      if (sponsorData.length > 0) {
-        const sponsor = sponsorData[0];
-        if (sponsor.tokenBalance > 0) {
-          setRedeemEnabled(true);
+      if (data !== undefined) {
+        const sponsorData = data.sponsors.filter((sponsor) => {
+          return sponsor.sponsorId === qrcode;
+        });
+        if (sponsorData.length > 0) {
+          const sponsor = sponsorData[0];
+          if (sponsor.tokenBalance > 0) {
+            setRedeemEnabled(true);
+          }
+        } else {
+          setRedeemEnabled(false);
         }
       }
     }
