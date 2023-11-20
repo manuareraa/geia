@@ -53,7 +53,7 @@ function App() {
     );
 
     const options = {
-      baseUrl: "https://rest.unique.network/opal/v1",
+      baseUrl: process.env.REACT_APP_BLOCKCHAIN_URL,
       signer: signer,
     };
     const sdk = new Sdk(options);

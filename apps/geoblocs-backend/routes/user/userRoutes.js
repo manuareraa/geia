@@ -166,19 +166,16 @@ router.post("/add-txn", async (req, res) => {
         if (parseInt(geoblocsData.collectionId) > 0) {
           console.log("Fetching for ", projectId, geoblocsData.collectionId);
 
-          const response = await axios.get(
-            "https://rest.unique.network/opal/v1/refungible/tokens/balance",
-            {
-              params: {
-                collectionId: parseInt(geoblocsData.collectionId),
-                tokenId: 1,
-                address: "5HW5Li9YDaG9v1yQZ83DbQWT92brzkVjBunCZpZ9zynnUaxB",
-              },
-              headers: {
-                Accept: "application/json",
-              },
-            }
-          );
+          const response = await axios.get(process.env.BLOCKCHAIN_URL, {
+            params: {
+              collectionId: parseInt(geoblocsData.collectionId),
+              tokenId: 1,
+              address: "5HW5Li9YDaG9v1yQZ83DbQWT92brzkVjBunCZpZ9zynnUaxB",
+            },
+            headers: {
+              Accept: "application/json",
+            },
+          });
 
           const balance = response.data.amount;
           const purchasedCount =

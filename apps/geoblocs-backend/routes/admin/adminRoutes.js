@@ -621,7 +621,7 @@ const updatePurchasedGeoblocs = async (projectId, purchasedCount) => {
 //         console.log("Fetching for ", projectId, geoblocsData.collectionId);
 
 //         const response = await axios.get(
-//           "https://rest.unique.network/opal/v1/refungible/tokens/balance",
+//           process.env.BLOCKCHAIN_URL,
 //           {
 //             params: {
 //               collectionId: parseInt(geoblocsData.collectionId),
@@ -645,11 +645,11 @@ const updatePurchasedGeoblocs = async (projectId, purchasedCount) => {
 //           balance,
 //           purchasedCount
 //         );
-//         await updatePurchasedGeoblocs(projectId, purchasedCount);
+//         // await updatePurchasedGeoblocs(projectId, purchasedCount);
 //       }
 //     }
 //   } catch (error) {
-//     console.error("Error in periodic API request and data update:");
+//     console.error("Error in periodic API request and data update:", error);
 //   }
 // }, 5000);
 

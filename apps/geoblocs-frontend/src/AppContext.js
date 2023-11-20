@@ -1472,6 +1472,7 @@ export const AppProvider = ({ children }) => {
   // ==============================
 
   const createNewUniqueNetworkAcc = async (name) => {
+    console.log("Generating New Account....");
     try {
       await waitReady(); // Wait for the WASM interface to initialize
 
@@ -1481,6 +1482,8 @@ export const AppProvider = ({ children }) => {
           name: name,
         },
       });
+
+      console.log("NEW ACC: ", account);
 
       return account;
     } catch (error) {
@@ -1499,8 +1502,13 @@ export const AppProvider = ({ children }) => {
 
       const signer = provider.addSeed(appData.userProfile.blockchainAcc.seed);
 
+      console.log(
+        "Initiating blockchain connection with URL >",
+        process.env.REACT_APP_BLOCKCHAIN_URL,
+      );
+
       const options = {
-        baseUrl: "https://rest.unique.network/opal/v1",
+        baseUrl: process.env.REACT_APP_BLOCKCHAIN_URL,
         signer: signer,
       };
 
@@ -1557,16 +1565,23 @@ export const AppProvider = ({ children }) => {
 
     // console.log("Total Pieces: ", amount);
 
-    const getBalanceArgs = {
-      address: "5HW5Li9YDaG9v1yQZ83DbQWT92brzkVjBunCZpZ9zynnUaxB",
-      collectionId: 2030,
-      tokenId: 1,
-    };
+    try {
+      const getBalanceArgs = {
+        address: "5HW5Li9YDaG9v1yQZ83DbQWT92brzkVjBunCZpZ9zynnUaxB",
+        collectionId: 2030,
+        tokenId: 1,
+      };
 
-    const { collectionId, tokenId, amount } =
-      await sdk.refungible.getBalance(getBalanceArgs);
+      const { collectionId, tokenId, amount } =
+        await sdk.refungible.getBalance(getBalanceArgs);
 
-    console.log("Balance: ", collectionId, tokenId, amount);
+      // split the below console log into 3 parts
+      console.log("Balance1: ", collectionId);
+      console.log("Balance2: ", tokenId);
+      console.log("Balance3: ", amount);
+    } catch (error) {
+      console.log("Error getting balance: ", error);
+    }
 
     // ====================
     return balance;
@@ -1743,7 +1758,7 @@ export const AppProvider = ({ children }) => {
         process.env.REACT_APP_ADMIN_ADDRESS,
       );
       const options = {
-        baseUrl: "https://rest.unique.network/opal/v1",
+        baseUrl: process.env.REACT_APP_BLOCKCHAIN_URL,
         signer: signer,
       };
       console.log("5");
@@ -1806,6 +1821,10 @@ export const AppProvider = ({ children }) => {
     }
     getAllProjectsForUsers();
   }, [appData.userProfile]);
+
+  // useEffect(async () => {
+  //   await createNewUniqueNetworkAcc("Geoblocs Mainnet Treasury - 1");
+  // }, []);
 
   return (
     <AppContext.Provider
