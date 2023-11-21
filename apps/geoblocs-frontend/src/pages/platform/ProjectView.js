@@ -1002,8 +1002,10 @@ function ProjectView(props) {
                         }}
                       ></input>
                       <p className="font-bold text-md lg:text-xl">
-                        {appData.projectInView.geoblocsData.pricePerGeobloc *
-                          formData.quantity || 0}{" "}
+                        {(
+                          appData.projectInView.geoblocsData.pricePerGeobloc *
+                          formData.quantity
+                        ).toFixed(3) || 0}{" "}
                         EUR
                       </p>
                       {/* <button className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen">
