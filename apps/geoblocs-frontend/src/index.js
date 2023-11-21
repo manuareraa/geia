@@ -5,6 +5,12 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+// override console.log statements if the REACT_APP_ENVIRONMENT variable is set to production
+if (process.env.REACT_APP_ENVIRONMENT === "production") {
+  console.log = () => {};
+}
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
