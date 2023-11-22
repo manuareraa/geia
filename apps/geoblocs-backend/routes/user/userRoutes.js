@@ -7,6 +7,8 @@ const { mongoose } = require("../../utils/db/db");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const axios = require("axios");
+const fs = require("fs");
+const imgB64 = require("../../assets/imgB64");
 
 const db = mongoose.connection;
 const collectionName = "users";
@@ -137,8 +139,24 @@ router.post("/add-txn", async (req, res) => {
       const mailOptions = {
         from: "geoblocs@gmail.com",
         to: req.body.email,
+        // to: "manuareraa@gmail.com",
         subject: subject,
-        text: "Hello, Thank you for purchasing Geoblocs. Please visit - https://wallet.unique.network/ and use your below private key to import you wallet.",
+        text: "Your Geoblocs transaction was successful!",
+        html: `
+    <p>Hi there,</p>
+
+    <p><img src="https://gcdnb.pbrd.co/images/kXyRnM6YOL2d.png" alt="Inline Image" height="300px"></p>
+
+    <p>Heartfelt thanks for purchasing Geoblocs and joining our cause to heal our planet. Your support is pivotal in combating environmental degradation alongside its broader societal and economic impacts.</p>
+
+    <p>Geoblocs, as fragments of a project-specific NFTs, hold invaluable project insights accessible via their metadata. This data serves as a compass, allowing you to track the project's impactful journey on its dedicated dashboard.</p>
+
+    <p>Your contribution not only aids in restoring our precious lands but also champions the resolution of wider societal and economic challenges intertwined with environmental concerns.</p>
+
+    <p>Your dedication to making a positive impact through your support is truly inspiring and deeply appreciated.</p>
+
+    <p>With gratitude,</p>
+  `,
       };
 
       try {
@@ -170,7 +188,7 @@ router.post("/add-txn", async (req, res) => {
             params: {
               collectionId: parseInt(geoblocsData.collectionId),
               tokenId: 1,
-              address: "5HW5Li9YDaG9v1yQZ83DbQWT92brzkVjBunCZpZ9zynnUaxB",
+              address: "5HWGGcEa2Qm6u6PS4DxUfctQuW9Ddpgo5NCqCF6JyVXF1KZM",
             },
             headers: {
               Accept: "application/json",
@@ -195,7 +213,8 @@ router.post("/add-txn", async (req, res) => {
       console.error("Error in periodic API request and data update:", error);
     }
 
-    res.status(200).json({ status: "success", txn: newTxn });
+    // res.status(200).json({ status: "success", txn: newTxn });
+    res.status(200).json({ status: "success" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: "fail", message: error.message });
