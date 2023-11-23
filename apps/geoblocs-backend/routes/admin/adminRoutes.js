@@ -456,7 +456,10 @@ router.get("/get-project-token-details", async (req, res) => {
 
 // an endpoint to update the project token details. It will just replace the entire document
 router.post("/update-project-token-details", async (req, res) => {
-  console.log("POST /api/admin/update-project-token-details", req.body.tokenDetails);
+  console.log(
+    "POST /api/admin/update-project-token-details",
+    req.body.tokenDetails
+  );
   try {
     const { projectId, tokenDetails } = req.body;
 
@@ -466,7 +469,11 @@ router.post("/update-project-token-details", async (req, res) => {
     // Using updateOne with $set operator
     await db
       .collection("miniLedger")
-      .updateOne({ projectId: projectId }, { $set: updatedTokenDetails }, { upsert: true });
+      .updateOne(
+        { projectId: projectId },
+        { $set: updatedTokenDetails },
+        { upsert: true }
+      );
 
     res.status(200).json({ status: "success" });
   } catch (error) {
@@ -474,7 +481,6 @@ router.post("/update-project-token-details", async (req, res) => {
     res.status(500).json({ status: "fail", message: error.message });
   }
 });
-
 
 router.post("/delete-project-by-id", authenticate, async (req, res) => {
   console.log("GET /api/admin/get-project-by-id");
@@ -621,12 +627,12 @@ const updatePurchasedGeoblocs = async (projectId, purchasedCount) => {
 //         console.log("Fetching for ", projectId, geoblocsData.collectionId);
 
 //         const response = await axios.get(
-//           process.env.BLOCKCHAIN_URL,
+//           process.env.BLOCKCHAIN_URL + "/refungible/tokens/balance",
 //           {
 //             params: {
 //               collectionId: parseInt(geoblocsData.collectionId),
 //               tokenId: 1,
-//               address: "5HW5Li9YDaG9v1yQZ83DbQWT92brzkVjBunCZpZ9zynnUaxB",
+//               address: "5HWGGcEa2Qm6u6PS4DxUfctQuW9Ddpgo5NCqCF6JyVXF1KZM",
 //             },
 //             headers: {
 //               Accept: "application/json",
@@ -645,7 +651,7 @@ const updatePurchasedGeoblocs = async (projectId, purchasedCount) => {
 //           balance,
 //           purchasedCount
 //         );
-//         // await updatePurchasedGeoblocs(projectId, purchasedCount);
+//         await updatePurchasedGeoblocs(projectId, purchasedCount);
 //       }
 //     }
 //   } catch (error) {

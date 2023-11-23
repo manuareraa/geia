@@ -184,16 +184,19 @@ router.post("/add-txn", async (req, res) => {
         if (parseInt(geoblocsData.collectionId) > 0) {
           console.log("Fetching for ", projectId, geoblocsData.collectionId);
 
-          const response = await axios.get(process.env.BLOCKCHAIN_URL, {
-            params: {
-              collectionId: parseInt(geoblocsData.collectionId),
-              tokenId: 1,
-              address: "5HWGGcEa2Qm6u6PS4DxUfctQuW9Ddpgo5NCqCF6JyVXF1KZM",
-            },
-            headers: {
-              Accept: "application/json",
-            },
-          });
+          const response = await axios.get(
+            process.env.BLOCKCHAIN_URL + "/refungible/tokens/balance",
+            {
+              params: {
+                collectionId: parseInt(geoblocsData.collectionId),
+                tokenId: 1,
+                address: "5HWGGcEa2Qm6u6PS4DxUfctQuW9Ddpgo5NCqCF6JyVXF1KZM",
+              },
+              headers: {
+                Accept: "application/json",
+              },
+            }
+          );
 
           const balance = response.data.amount;
           const purchasedCount =

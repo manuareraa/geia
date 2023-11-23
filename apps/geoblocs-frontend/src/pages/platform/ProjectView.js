@@ -394,13 +394,16 @@ function ProjectView(props) {
   const onPaypalSuccess = async (details, data) => {
     console.log("details", details);
     console.log("data", data);
+
     // if logged in
     if (appData.loginMode === "user") {
+      console.log("User is logged in");
       // if an address already exists
       if (
         appData.userProfile.blockchainAcc &&
         appData.userProfile.blockchainAcc.seed
       ) {
+        console.log("User has an existing address");
         const transferResult = await transferToken(
           projectId,
           appData.userProfile.blockchainAcc.keyfile.address,
@@ -412,6 +415,7 @@ function ProjectView(props) {
           { ...details, ...data },
         );
         if (transferResult === true) {
+          console.log("Token transfer successful");
           toast.success("Geoblocs Purchased");
           setBuyContainerView(false);
           setRedeemContainerView(false);
@@ -425,12 +429,15 @@ function ProjectView(props) {
           );
           // reload the page after 3 seconds
           setTimeout(() => {
-            // window.location.reload();
+            console.log("Reloading page...");
+            window.location.reload();
           }, 3000);
         } else {
+          console.log("Token transfer failed");
           toast.error("Cannot purchase at the moment. Please try again.");
         }
       } else {
+        console.log("User does not have an existing address");
         // if an address does not exist before
         // create the account
         const accCreationResult = await createNewUniqueNetworkAcc(
@@ -438,6 +445,7 @@ function ProjectView(props) {
         );
 
         if (accCreationResult !== false) {
+          console.log("Blockchain account created");
           // update the profile in the database and appData
           const profileUpdateResult = await updateBlockchainAccInUser(
             appData.userProfile.uuid,
@@ -445,6 +453,7 @@ function ProjectView(props) {
           );
 
           if (profileUpdateResult === true) {
+            console.log("Profile updated with new blockchain account");
             // transfer the tokens
             const transferResult = await transferToken(
               projectId,
@@ -457,6 +466,7 @@ function ProjectView(props) {
               { ...details, ...data },
             );
             if (transferResult === true) {
+              console.log("Token transfer successful");
               toast.success("Geoblocs Purchased");
               setBuyContainerView(false);
               setRedeemContainerView(false);
@@ -470,29 +480,35 @@ function ProjectView(props) {
               );
               // reload the page after 3 seconds
               setTimeout(() => {
-                // window.location.reload();
+                console.log("Reloading page...");
+                window.location.reload();
               }, 3000);
             } else {
+              console.log("Token transfer failed");
               toast.error("Cannot purchase at the moment. Please try again.");
             }
           }
         } else {
+          console.log("Blockchain account creation failed");
           toast.error("Cannot redeem at the moment. Please try again.");
         }
       }
       // toast.success("Geoblocs Redeemed");
     } else {
+      console.log("User is not logged in or is the admin");
       // if not logged in or if it is the admin (do nothing)
 
-      // check if the user actuall exists
+      // check if the user actually exists
       const checkUser = await checkUserExistence(details.payer.email_address);
 
       // if exists
       if (checkUser !== false) {
+        console.log("User exists");
         if (
           checkUser.blockchainAcc &&
           checkUser.blockchainAcc.keyfile.address
         ) {
+          console.log("User has an existing address");
           // get the address and transfer
           const transferResult = await transferToken(
             projectId,
@@ -505,6 +521,7 @@ function ProjectView(props) {
             { ...details, ...data },
           );
           if (transferResult === true) {
+            console.log("Token transfer successful");
             toast.success("Geoblocs Purchased");
             setBuyContainerView(false);
             setRedeemContainerView(false);
@@ -518,19 +535,22 @@ function ProjectView(props) {
             );
             // reload the page after 3 seconds
             setTimeout(() => {
-              // window.location.reload();
+              console.log("Reloading page...");
+              window.location.reload();
             }, 3000);
           } else {
+            console.log("Token transfer failed");
             toast.error("Cannot purchase at the moment. Please try again.");
           }
         } else {
-          // if user exists but does not have a blockchain account
+          console.log("User exists but does not have a blockchain account");
           const accCreationResult = await createNewUniqueNetworkAcc(
             details.payer.email_address,
           );
 
           console.log("accCreationResult", accCreationResult, checkUser);
           if (accCreationResult !== false) {
+            console.log("Blockchain account created");
             // update the profile in the database and appData
             const profileUpdateResult = await updateBlockchainAccInUser(
               checkUser.uuid,
@@ -538,6 +558,7 @@ function ProjectView(props) {
             );
 
             if (profileUpdateResult === true) {
+              console.log("Profile updated with new blockchain account");
               // transfer the tokens
               const transferResult = await transferToken(
                 projectId,
@@ -550,6 +571,7 @@ function ProjectView(props) {
                 { ...details, ...data },
               );
               if (transferResult === true) {
+                console.log("Token transfer successful");
                 toast.success("Geoblocs Purchased");
                 setBuyContainerView(false);
                 setRedeemContainerView(false);
@@ -563,17 +585,21 @@ function ProjectView(props) {
                 );
                 // reload the page after 3 seconds
                 setTimeout(() => {
-                  // window.location.reload();
+                  console.log("Reloading page...");
+                  window.location.reload();
                 }, 3000);
               } else {
+                console.log("Token transfer failed");
                 toast.error("Cannot purchase at the moment. Please try again.");
               }
             }
           } else {
+            console.log("Blockchain account creation failed");
             toast.error("Cannot redeem at the moment. Please try again.");
           }
         }
       } else {
+        console.log("User does not exist");
         // if user does not exist
 
         // generate a 12 character random alpha numeric password
@@ -586,6 +612,7 @@ function ProjectView(props) {
         );
 
         if (createUser !== false) {
+          console.log("User registered");
           const { email, password, role, blockchainAcc } = createUser;
           // transfer the tokens
           const transferResult = await transferToken(
@@ -599,6 +626,7 @@ function ProjectView(props) {
             { ...details, ...data },
           );
           if (transferResult === true) {
+            console.log("Token transfer successful");
             toast.success("Geoblocs Purchased");
             setBuyContainerView(false);
             setRedeemContainerView(false);
@@ -612,9 +640,11 @@ function ProjectView(props) {
             );
             // reload the page after 3 seconds
             setTimeout(() => {
-              // window.location.reload();
+              console.log("Reloading page...");
+              window.location.reload();
             }, 3000);
           } else {
+            console.log("Token transfer failed");
             toast.error("Cannot purchase at the moment. Please try again.");
           }
         }
