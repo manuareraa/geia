@@ -59,6 +59,7 @@ function Paypal(props) {
   //capture likely error
   const onError = (data, actions) => {
     toast.error("An Error occured with your payment. Please try again.");
+    alert("An Error occured with your payment. Please try again." + data);
     console.log("Paypal Error: ", data);
   };
 

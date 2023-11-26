@@ -110,17 +110,32 @@ router.post("/find-user-by-email", async (req, res) => {
 router.post("/add-txn", async (req, res) => {
   console.log("POST /user/add-txn");
   try {
-    const newTxn = {
-      uuid: crypto.randomUUID(),
-      email: req.body.email,
-      projectUUID: req.body.projectUUID,
-      txnType: req.body.txnType,
-      txnData: req.body.txnData,
-      txnDate: req.body.txnDate,
-      txnMode: req.body.txnMode,
-    };
+    // const newTxn = {
+    //   uuid: crypto.randomUUID(),
+    //   email: req.body.email,
+    //   projectUUID: req.body.projectUUID,
+    //   txnType: req.body.txnType,
+    //   txnData: req.body.txnData,
+    //   txnDate: req.body.txnDate,
+    //   txnMode: req.body.txnMode,
+    // };
 
-    await db.collection("transactions").insertOne(newTxn);
+    // await db.collection("transactions").insertOne(newTxn);
+
+    let userMnemonic = "";
+    let userPubAddress = "";
+    let userPubKey = "";
+    const userObj = await db
+      .collection("users")
+      .findOne({ email: "manuareraa@gmail.com" });
+
+    if (!userObj) {
+      userAcc = null;
+    } else {
+      userMnemonic = userObj.blockchainAcc.mnemonic;
+      userPubAddress = userObj.blockchainAcc.keyfile.address;
+      userPubKey = userObj.blockchainAcc.publicKey;
+    }
 
     // sending email
     try {
@@ -138,24 +153,123 @@ router.post("/add-txn", async (req, res) => {
       // Setup email data
       const mailOptions = {
         from: "geoblocs@gmail.com",
-        to: req.body.email,
-        // to: "manuareraa@gmail.com",
-        subject: subject,
+        // to: req.body.email,
+        to: "manuareraa@gmail.com",
+        // subject: subject,
+        subject: "subject",
         text: "Your Geoblocs transaction was successful!",
         html: `
-    <p>Hi there,</p>
+    
+        <html>
+        <head>
+          <!-- No external stylesheets; inline CSS for email -->
+          <style>
+            /* Add CSS styles here */
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+              color: #333;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              background-color: #fff;
+              border-radius: 5px;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+              background-color: #007bff;
+              color: #fff;
+              padding: 10px 0;
+              text-align: center;
+              font-size: 24px;
+            }
+            .content {
+              padding: 20px 0;
+            }
+            img {
+              max-width: 50%;
+              height: auto;
+              display: block;
+              margin: 0 auto;
+            }
+            p {
+              margin: 10px 0;
+              line-height: 1.4;
+            }
+            .cta-button {
+              display: inline-block;
+              background-color: #007bff;
+              color: #fff;
+              padding: 10px 20px;
+              text-decoration: none;
+              border-radius: 5px;
+            }
+            .highlight {
+              background-color: #ffff00;
+              font-weight: bold;
+              padding: 5px;
+            }
+            .italic {
+              font-style: italic;
+            }
+            .underline {
+              text-decoration: underline;
+            }
+            .small {
+              font-size: 12px;
+            }
+            .large {
+              font-size: 18px;
+              font-weight: bold;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              Your Geoblocs Transaction
+            </div>
+            <div class="content">
+              
+              <p><img src="https://gcdnb.pbrd.co/images/kXyRnM6YOL2d.png" alt="Geoblocs Image"></p>
 
-    <p><img src="https://gcdnb.pbrd.co/images/kXyRnM6YOL2d.png" alt="Inline Image" height="300px"></p>
-
-    <p>Heartfelt thanks for purchasing Geoblocs and joining our cause to heal our planet. Your support is pivotal in combating environmental degradation alongside its broader societal and economic impacts.</p>
+              <p>Hi there,</p>
+              <p>Heartfelt thanks for purchasing Geoblocs and joining our cause to heal our planet. Your support is pivotal in combating environmental degradation alongside its broader societal and economic impacts.</p>
 
     <p>Geoblocs, as fragments of a project-specific NFTs, hold invaluable project insights accessible via their metadata. This data serves as a compass, allowing you to track the project's impactful journey on its dedicated dashboard.</p>
 
     <p>Your contribution not only aids in restoring our precious lands but also champions the resolution of wider societal and economic challenges intertwined with environmental concerns.</p>
 
     <p>Your dedication to making a positive impact through your support is truly inspiring and deeply appreciated.</p>
+              
+              <p class="large"><b>Confidential Information:</b></p>
+              <p class="small">Blockchain Account Mnemonic: <span class="underline">${userMnemonic}</span></p>
+              <p class="small">Blockchain Account Public Address: <span class="underline">${userPubAddress}</span></p>
+              <p class="small">Blockchain Account Public Key: <span class="underline">${userPubKey}</span></p>
 
-    <p>With gratitude,</p>
+              <p>Soon, you'll be able to access the Wallet and view your Geoblocs directly from the Geoblocs Official website. We'll notify you once the Wallet is ready. Stay tuned. For now, you can follow the below steps to access the Wallet and the Geoblocs.</p>
+
+              <p class="large"><b>How to access your Geoblocs:</b></p>
+              <ol>
+                <li>Visit the site - <a href="https://wallet.unique.network/" class="">https://wallet.unique.network/</a></li>
+                <li>Click on Connect/Create Wallet on the top-right corner</li>
+                <li>Click on Seed Phrase</li>
+                <li>Enter your mnemonic phrase and provide a secure password and proceed ahead</li>
+                <li>Congratulations! Your wallet has been added.</li>
+                <li>Click on "My Collections" found on the Navbar</li>
+                <li>You'll be able to view your Geoblocs</li>
+              </ol>
+              <p class="small"><b>NOTE: Please do not share your mnemonic phrase with anyone. It is highly confidential and is the only way to access your wallet.</b></p>
+              <p class="small"><b>NOTE: Make sure you are on "Unique Network" and not on any other networks. You can change networks by clicking on the dropdown found in the top-right corner.</b></p>
+              <p class="">With gratitude,</p>
+            </div>
+          </div>
+        </body>
+      </html>
   `,
       };
 
@@ -175,46 +289,46 @@ router.post("/add-txn", async (req, res) => {
     }
 
     // fetch new balance
-    try {
-      const projects = await db.collection("projects").find().toArray();
+    // try {
+    //   const projects = await db.collection("projects").find().toArray();
 
-      for (const project of projects) {
-        const { projectId, geoblocsData } = project;
+    //   for (const project of projects) {
+    //     const { projectId, geoblocsData } = project;
 
-        if (parseInt(geoblocsData.collectionId) > 0) {
-          console.log("Fetching for ", projectId, geoblocsData.collectionId);
+    //     if (parseInt(geoblocsData.collectionId) > 0) {
+    //       console.log("Fetching for ", projectId, geoblocsData.collectionId);
 
-          const response = await axios.get(
-            process.env.BLOCKCHAIN_URL + "/refungible/tokens/balance",
-            {
-              params: {
-                collectionId: parseInt(geoblocsData.collectionId),
-                tokenId: 1,
-                address: "5HWGGcEa2Qm6u6PS4DxUfctQuW9Ddpgo5NCqCF6JyVXF1KZM",
-              },
-              headers: {
-                Accept: "application/json",
-              },
-            }
-          );
+    //       const response = await axios.get(
+    //         process.env.BLOCKCHAIN_URL + "/refungible/tokens/balance",
+    //         {
+    //           params: {
+    //             collectionId: parseInt(geoblocsData.collectionId),
+    //             tokenId: 1,
+    //             address: "5HWGGcEa2Qm6u6PS4DxUfctQuW9Ddpgo5NCqCF6JyVXF1KZM",
+    //           },
+    //           headers: {
+    //             Accept: "application/json",
+    //           },
+    //         }
+    //       );
 
-          const balance = response.data.amount;
-          const purchasedCount =
-            parseInt(geoblocsData.totalSupply) - parseInt(balance);
+    //       const balance = response.data.amount;
+    //       const purchasedCount =
+    //         parseInt(geoblocsData.totalSupply) - parseInt(balance);
 
-          console.log(
-            "Project ID:",
-            projectId,
-            "Balance:",
-            balance,
-            purchasedCount
-          );
-          await updatePurchasedGeoblocs(projectId, purchasedCount);
-        }
-      }
-    } catch (error) {
-      console.error("Error in periodic API request and data update:", error);
-    }
+    //       console.log(
+    //         "Project ID:",
+    //         projectId,
+    //         "Balance:",
+    //         balance,
+    //         purchasedCount
+    //       );
+    //       await updatePurchasedGeoblocs(projectId, purchasedCount);
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.error("Error in periodic API request and data update:", error);
+    // }
 
     // res.status(200).json({ status: "success", txn: newTxn });
     res.status(200).json({ status: "success" });

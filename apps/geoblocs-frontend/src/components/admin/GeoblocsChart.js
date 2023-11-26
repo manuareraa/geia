@@ -71,10 +71,10 @@ export default function GeoblocsChart(props) {
         <text
           x={cx}
           y={cy}
-          dy={18}
+          dy={12}
           textAnchor="middle"
           fill={fill}
-          className="text-5xl font-bold"
+          className="text-3xl font-bold"
         >
           {formatNumber(payload.value)}
         </text>
@@ -96,14 +96,19 @@ export default function GeoblocsChart(props) {
           outerRadius={outerRadius + 10}
           fill={fill}
         />
-        <path
+        {/* <path
           d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
           stroke={fill}
           fill="none"
           className="hidden lg:block"
         />
-        <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" 
-        className="hidden lg:block"
+        <circle
+          cx={ex}
+          cy={ey}
+          r={2}
+          fill={fill}
+          stroke="none"
+          className="hidden lg:block"
         />
         <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
@@ -131,7 +136,7 @@ export default function GeoblocsChart(props) {
           className="hidden lg:block"
         >
           {`(${(percent * 100).toFixed(2)}%)`}
-        </text>
+        </text> */}
       </g>
     );
   };
@@ -140,19 +145,19 @@ export default function GeoblocsChart(props) {
     (_, index) => {
       setActiveIndex(index);
     },
-    [setActiveIndex]
+    [setActiveIndex],
   );
 
   return (
-    <PieChart width={800} height={400}>
+    <PieChart width={400} height={270}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
         data={data}
-        cx={400}
-        cy={200}
-        innerRadius={70}
-        outerRadius={140}
+        cx={200}
+        cy={130}
+        innerRadius={60}
+        outerRadius={100}
         fill="#0172AD"
         dataKey="value"
         onMouseEnter={onPieEnter}

@@ -38,10 +38,10 @@ export default function StatusChart(props) {
         <text
           x={cx}
           y={cy}
-          dy={18}
+          dy={10}
           textAnchor="middle"
           fill={fill}
-          className="text-5xl font-black"
+          className="text-3xl font-black"
         >
           {payload.value}%
         </text>
@@ -63,7 +63,7 @@ export default function StatusChart(props) {
           outerRadius={outerRadius + 10}
           fill={fill}
         />
-        <path
+        {/* <path
           d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
           stroke={fill}
           fill="none"
@@ -76,14 +76,14 @@ export default function StatusChart(props) {
           fill={fill}
           stroke="none"
           className="hidden lg:block"
-        />
+        /> */}
         {/* <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
           y={ey}
           textAnchor={textAnchor}
           fill="#333"
         >{`Status`}</text> */}
-        <text
+        {/* <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
           y={ey}
           dy={18}
@@ -101,7 +101,7 @@ export default function StatusChart(props) {
           className="hidden lg:block"
         >
           {name}
-        </text>
+        </text> */}
       </g>
     );
   };
@@ -115,15 +115,15 @@ export default function StatusChart(props) {
   );
 
   return (
-    <PieChart width={800} height={400}>
+    <PieChart width={400} height={270}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
         data={data}
-        cx={400}
-        cy={200}
-        innerRadius={80}
-        outerRadius={140}
+        cx={200}
+        cy={130}
+        innerRadius={60}
+        outerRadius={100}
         fill="#000000"
         dataKey="value"
         onMouseEnter={onPieEnter}

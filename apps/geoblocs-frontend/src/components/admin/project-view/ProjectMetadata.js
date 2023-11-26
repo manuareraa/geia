@@ -251,6 +251,7 @@ function ProjectMetadata(props) {
         </div>
       </div>
 
+      {/* baseline image */}
       <div className="flex flex-row space-x-8">
         {/* cover image container */}
         <div className="flex flex-col space-y-4">
@@ -348,6 +349,58 @@ function ProjectMetadata(props) {
             ></img>
           ) : (
             <p className="text-lg">No Baseline Image Uploaded</p>
+          )}
+        </div>
+      </div>
+
+      {/* nft image */}
+      <div className="flex flex-row space-x-8">
+        {/* nft image container */}
+        <div className="flex flex-col space-y-4">
+          {/* upload cover image */}
+          <div className="flex flex-row col-span-3 space-x-4">
+            <label className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen">
+              {props.projectMetadata.nftImage?.length > 0
+                ? "Replace NFT Image"
+                : "Upload NFT Image"}
+              <input
+                type="file"
+                className="hidden"
+                onChange={(event) => {
+                  // Handle the file upload here if needed
+                  const selectedFiles = event.target.files;
+                  // console.log(selectedFiles);
+                  uploadFilesToS3(selectedFiles, projectId, "metadata")
+                    .then((fileUrls) => {
+                      // console.log(
+                      //   "fileupload finished, updating gallery",
+                      //   fileUrls
+                      // );
+                      setProjectMetadata((prevState) => {
+                        return {
+                          ...prevState,
+                          nftImage: fileUrls,
+                        };
+                      });
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                      toast.error("Failed to upload image. Try again later.");
+                    });
+                }}
+              />
+            </label>
+          </div>
+
+          {/* display NFT image */}
+          {projectMetadata.nftImage?.length > 0 ? (
+            <img
+              src={projectMetadata.nftImage[0]}
+              alt=""
+              className="h-[200px] w-[350px] rounded-md"
+            ></img>
+          ) : (
+            <p className="text-lg">No NFT Image Uploaded</p>
           )}
         </div>
       </div>
