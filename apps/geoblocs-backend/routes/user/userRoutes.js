@@ -110,24 +110,25 @@ router.post("/find-user-by-email", async (req, res) => {
 router.post("/add-txn", async (req, res) => {
   console.log("POST /user/add-txn");
   try {
-    // const newTxn = {
-    //   uuid: crypto.randomUUID(),
-    //   email: req.body.email,
-    //   projectUUID: req.body.projectUUID,
-    //   txnType: req.body.txnType,
-    //   txnData: req.body.txnData,
-    //   txnDate: req.body.txnDate,
-    //   txnMode: req.body.txnMode,
-    // };
+    const newTxn = {
+      uuid: crypto.randomUUID(),
+      email: req.body.email,
+      projectUUID: req.body.projectUUID,
+      txnType: req.body.txnType,
+      txnData: req.body.txnData,
+      txnDate: req.body.txnDate,
+      txnMode: req.body.txnMode,
+    };
 
-    // await db.collection("transactions").insertOne(newTxn);
+    await db.collection("transactions").insertOne(newTxn);
 
     let userMnemonic = "";
     let userPubAddress = "";
     let userPubKey = "";
     const userObj = await db
       .collection("users")
-      .findOne({ email: "manuareraa@gmail.com" });
+      // .findOne({ email: "manuareraa@gmail.com" });
+      .findOne({ email: req.body.email });
 
     if (!userObj) {
       userAcc = null;
@@ -153,10 +154,10 @@ router.post("/add-txn", async (req, res) => {
       // Setup email data
       const mailOptions = {
         from: "geoblocs@gmail.com",
-        // to: req.body.email,
-        to: "manuareraa@gmail.com",
-        // subject: subject,
-        subject: "subject",
+        to: req.body.email,
+        // to: "manuareraa@gmail.com",
+        subject: subject,
+        // subject: "subject",
         text: "Your Geoblocs transaction was successful!",
         html: `
     
@@ -289,49 +290,49 @@ router.post("/add-txn", async (req, res) => {
     }
 
     // fetch new balance
-    // try {
-    //   const projects = await db.collection("projects").find().toArray();
+    try {
+      const projects = await db.collection("projects").find().toArray();
 
-    //   for (const project of projects) {
-    //     const { projectId, geoblocsData } = project;
+      for (const project of projects) {
+        const { projectId, geoblocsData } = project;
 
-    //     if (parseInt(geoblocsData.collectionId) > 0) {
-    //       console.log("Fetching for ", projectId, geoblocsData.collectionId);
+        if (parseInt(geoblocsData.collectionId) > 0) {
+          console.log("Fetching for ", projectId, geoblocsData.collectionId);
 
-    //       const response = await axios.get(
-    //         process.env.BLOCKCHAIN_URL + "/refungible/tokens/balance",
-    //         {
-    //           params: {
-    //             collectionId: parseInt(geoblocsData.collectionId),
-    //             tokenId: 1,
-    //             address: "5HWGGcEa2Qm6u6PS4DxUfctQuW9Ddpgo5NCqCF6JyVXF1KZM",
-    //           },
-    //           headers: {
-    //             Accept: "application/json",
-    //           },
-    //         }
-    //       );
+          const response = await axios.get(
+            process.env.BLOCKCHAIN_URL + "/refungible/tokens/balance",
+            {
+              params: {
+                collectionId: parseInt(geoblocsData.collectionId),
+                tokenId: 1,
+                address: "5HWGGcEa2Qm6u6PS4DxUfctQuW9Ddpgo5NCqCF6JyVXF1KZM",
+              },
+              headers: {
+                Accept: "application/json",
+              },
+            }
+          );
 
-    //       const balance = response.data.amount;
-    //       const purchasedCount =
-    //         parseInt(geoblocsData.totalSupply) - parseInt(balance);
+          const balance = response.data.amount;
+          const purchasedCount =
+            parseInt(geoblocsData.totalSupply) - parseInt(balance);
 
-    //       console.log(
-    //         "Project ID:",
-    //         projectId,
-    //         "Balance:",
-    //         balance,
-    //         purchasedCount
-    //       );
-    //       await updatePurchasedGeoblocs(projectId, purchasedCount);
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.error("Error in periodic API request and data update:", error);
-    // }
+          console.log(
+            "Project ID:",
+            projectId,
+            "Balance:",
+            balance,
+            purchasedCount
+          );
+          await updatePurchasedGeoblocs(projectId, purchasedCount);
+        }
+      }
+    } catch (error) {
+      console.error("Error in periodic API request and data update:", error);
+    }
 
-    // res.status(200).json({ status: "success", txn: newTxn });
-    res.status(200).json({ status: "success" });
+    res.status(200).json({ status: "success", txn: newTxn });
+    // res.status(200).json({ status: "success" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: "fail", message: error.message });
