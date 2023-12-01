@@ -190,6 +190,22 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const addNewSubscriber = async (email) => {
+    try {
+      const response = await axios.post(backendUrl + "/api/user/add-subscriber", {
+        email: email,
+      });
+      const newSubscriber = response.data;
+      console.log("New subscriber created: ", newSubscriber);
+      toast.success("Subscribed successfully");
+      return true;
+    } catch (error) {
+      toast.error("Error [AC101]: Error occurred while creating new subscriber");
+      console.log("Error occurred while creating new subscriber: ", error);
+      return false;
+    }
+  };
+
   const getUserDataByUUID = async (uuid, token) => {
     try {
       const response = await axios.get(
@@ -1866,6 +1882,7 @@ export const AppProvider = ({ children }) => {
         deleteProject,
         getProjectTokenDetails,
         updateProjectTokenDetails,
+        addNewSubscriber,
         // blockchain part
         createNewUniqueNetworkAcc,
         createNewNftCollection,

@@ -106,6 +106,23 @@ router.post("/find-user-by-email", async (req, res) => {
   }
 });
 
+router.post("/add-subscriber", async (req, res) => {
+  console.log("POST /user/add-subscriber");
+  try {
+    const newSubscriber = {
+      uuid: crypto.randomUUID(),
+      email: req.body.email,
+    };
+
+    await db.collection("subscribers").insertOne(newSubscriber);
+
+    res.status(200).json({ status: "success", subscriber: newSubscriber });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+});
+
 // add a new txn document into the "transactions" collections
 router.post("/add-txn", async (req, res) => {
   console.log("POST /user/add-txn");

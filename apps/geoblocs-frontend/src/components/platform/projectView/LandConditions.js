@@ -15,14 +15,14 @@ function LandConditions(props) {
           key={index}
         >
           <div className="w-[40%] p-1 px-2 bg-[#B5BFA4]">
-            <p className="font-bold">{landCondition.label}</p>
+            <p className="font-bold capitalize">{landCondition.label}</p>
           </div>
           {/* <progress
             className="progress h-4 w-[100%]  bg-[#B2935B] text-gGreen lg:w-full"
             value={parseInt(landCondition.value)}
             max="100"
           ></progress> */}
-          <p className="w-full font-bold">
+          <p className="w-full font-bold capitalize">
             {landCondition.value}
           </p>
         </div>

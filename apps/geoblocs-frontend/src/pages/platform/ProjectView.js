@@ -886,8 +886,8 @@ function ProjectView(props) {
                 </div>
 
                 {/* green* container - ownership / size / intervention */}
-                <div className="grid items-center justify-center grid-cols-1 grid-rows-3 my-4 space-y-4 lg:gap-y- w-fit lg:grid-cols-1 lg:py-2">
-                  <div className="flex flex-row items-center space-x-4 text-black">
+                <div className="grid items-center justify-center w-full grid-cols-1 grid-rows-3 my-4 lg:gap-y- gap-y-4 lg:w-full lg:grid-cols-1 lg:py-2">
+                  <div className="flex flex-row items-center w-full py-2 space-x-4 text-black border-2 border-gGray">
                     <img className="w-8" src={ownershipIcon}></img>
                     <p className="text-xl font-bold underline underline-offset-2">
                       Ownership
@@ -896,7 +896,7 @@ function ProjectView(props) {
                       {appData.projectInView.metadata.ownership}
                     </p>
                   </div>
-                  <div className="flex flex-row items-center space-x-4 text-black">
+                  <div className="flex flex-row items-center w-full py-2 space-x-4 text-black border-2 border-gGray">
                     <img className="w-8" src={sizeIcon}></img>
                     <p className="text-xl font-bold underline underline-offset-2">
                       Project Size
@@ -905,7 +905,7 @@ function ProjectView(props) {
                       {appData.projectInView.metadata.size} Ha
                     </p>
                   </div>
-                  <div className="flex flex-row items-center space-x-4 text-black">
+                  <div className="flex flex-row items-center w-full py-2 space-x-4 text-black border-2 border-gGray">
                     <img className="w-8" src={interventionIcon}></img>
                     <p className="text-xl font-bold underline underline-offset-2">
                       Intervention Type
@@ -1027,8 +1027,9 @@ function ProjectView(props) {
                   {appData.loginMode !== "user" ? (
                     <div className="flex flex-col items-center justify-center space-y-4">
                       <p>
-                        €&nbsp;{appData.projectInView.geoblocsData.pricePerGeobloc}{" "}
-                        per Geobloc
+                        €&nbsp;
+                        {appData.projectInView.geoblocsData.pricePerGeobloc} per
+                        Geobloc
                       </p>
                       <input
                         type="text"
@@ -1261,7 +1262,7 @@ function ProjectView(props) {
           {subWindow === "default" ? (
             <>
               {/* 4 option container */}
-              <div className="flex flex-col items-center justify-center py-12 pb-20 mt-8 space-y-6 lg:flex-row lg:space-x-16 lg:space-y-0 lg:mt-0 lg:pt-0">
+              <div className="flex flex-col items-center justify-center py-12 pb-20 mt-8 space-y-6 lg:mt-0 lg:flex-row lg:space-x-16 lg:space-y-0 lg:pt-0">
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}
@@ -1311,7 +1312,7 @@ function ProjectView(props) {
               </div>
 
               {/* 3 button container */}
-              <div className="flex flex-col items-center justify-center w-full space-x-0 space-y-6 pb-28 lg:pb-20 lg:flex-row lg:space-x-12 lg:space-y-0">
+              <div className="flex flex-col items-center justify-center w-full space-x-0 space-y-6 pb-28 lg:flex-row lg:space-x-12 lg:space-y-0 lg:pb-20">
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../AppContext";
 
-import geiaLogo from "../../assets/img/geia-high-res.png";
+import geiaLogo from "../../assets/img/geia-high-res.old.png";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import communityCentric from "../../assets/svg/community-centric-v2.svg";
 import radicalTransparency from "../../assets/svg/radical-transparency-v2.svg";
@@ -17,15 +18,32 @@ import insta from "../../assets/svg/insta.svg";
 import linkedin from "../../assets/svg/linkedin.svg";
 import rightArrowG from "../../assets/svg/right-arrow-g.svg";
 import Footer from "../../components/Footer";
+import toast from "react-hot-toast";
 
 function Home(props) {
   const navigate = useNavigate();
+  const { addNewSubscriber } = useContext(AppContext);
+  const [subscriberEmail, setSubscriberEmail] = useState("");
+
+  const addNewSubscriberLocal = async () => {
+    if (subscriberEmail === "") {
+      toast.error("Please enter your email");
+      return;
+    }
+    const response = await addNewSubscriber(subscriberEmail);
+    if (response === true) {
+      setSubscriberEmail("");
+    } else {
+      toast.error("Something went wrong");
+    }
+  };
+  
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* hero outer container */}
-      <div className="flex flex-col items-center justify-center w-full p-8 bg-home-image h-fit">
+      <div className="flex flex-col items-center justify-center w-full h-screen p-8 bg-home-image">
         {/* hero inner container */}
-        <div className="flex flex-col items-center justify-center pb-20 space-y-12 pt-44">
+        <div className="flex flex-col items-center justify-center pt-20 pb-20 space-y-12">
           {/* title container */}
           <div className="flex flex-col items-center justify-center pt-4 space-y-4 leading-none">
             {/* powered by container */}
@@ -186,8 +204,7 @@ function Home(props) {
             </div>
             <p className="text-xl font-bold text-center">Purchase Geoblocs</p>
             <p className="h-20 font-light text-center w-72">
-              Seamlessly purchase, retire and monitor via the project
-              dashboard
+              Seamlessly purchase, retire and monitor via the project dashboard
             </p>
             <button
               className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
@@ -226,8 +243,15 @@ function Home(props) {
           type="text"
           placeholder="Enter your email"
           className="h-12 w-[70%] rounded-full bg-gGray px-8 py-2  text-black outline-none md:w-[60%] lg:w-[400px]"
+          value={subscriberEmail}
+          onChange={(e) => setSubscriberEmail(e.target.value)}
         ></input>
-        <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70">
+        <button
+          className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+          onClick={() => {
+            addNewSubscriberLocal();
+          }}
+        >
           <p>Subscribe</p>
           <img src={rightArrow} className="w-4" />
         </button>
