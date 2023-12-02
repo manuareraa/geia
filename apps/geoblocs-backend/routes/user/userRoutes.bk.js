@@ -263,9 +263,26 @@ router.post("/add-txn", async (req, res) => {
     <p>Your contribution not only aids in restoring our precious lands but also champions the resolution of wider societal and economic challenges intertwined with environmental concerns.</p>
 
     <p>Your dedication to making a positive impact through your support is truly inspiring and deeply appreciated.</p>
+              
+              <p class="large"><b>Confidential Information:</b></p>
+              <p class="small">Blockchain Account Mnemonic: <span class="underline">${userMnemonic}</span></p>
+              <p class="small">Blockchain Account Public Address: <span class="underline">${userPubAddress}</span></p>
+              <p class="small">Blockchain Account Public Key: <span class="underline">${userPubKey}</span></p>
 
-              <p>Soon, you'll be able to access the Wallet and view your Geoblocs directly from the Geoblocs Official website. We'll notify you once the Wallet is ready. Stay tuned. 
+              <p>Soon, you'll be able to access the Wallet and view your Geoblocs directly from the Geoblocs Official website. We'll notify you once the Wallet is ready. Stay tuned. For now, you can follow the below steps to access the Wallet and the Geoblocs.</p>
 
+              <p class="large"><b>How to access your Geoblocs:</b></p>
+              <ol>
+                <li>Visit the site - <a href="https://wallet.unique.network/" class="">https://wallet.unique.network/</a></li>
+                <li>Click on Connect/Create Wallet on the top-right corner</li>
+                <li>Click on Seed Phrase</li>
+                <li>Enter your mnemonic phrase and provide a secure password and proceed ahead</li>
+                <li>Congratulations! Your wallet has been added.</li>
+                <li>Click on "My Collections" found on the Navbar</li>
+                <li>You'll be able to view your Geoblocs</li>
+              </ol>
+              <p class="small"><b>NOTE: Please do not share your mnemonic phrase with anyone. It is highly confidential and is the only way to access your wallet.</b></p>
+              <p class="small"><b>NOTE: Make sure you are on "Unique Network" and not on any other networks. You can change networks by clicking on the dropdown found in the top-right corner.</b></p>
               <p class="">With gratitude,</p>
             </div>
           </div>
