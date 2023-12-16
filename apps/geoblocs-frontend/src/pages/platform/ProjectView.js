@@ -817,7 +817,7 @@ function ProjectView(props) {
           {/* title container */}
           <div className="flex flex-col">
             {/* top gray container */}
-            <div className="mb-16 flex w-full flex-col items-center justify-center space-y-10 bg-[#A1AEB4] px-2 py-8 lg:flex-row lg:justify-between lg:space-x-8 lg:space-y-0 lg:px-16">
+            <div className="mb-16 flex w-full flex-col items-center justify-center space-y-10 bg-[#B5BFA4] px-2 py-8 lg:flex-row lg:justify-between lg:space-x-8 lg:space-y-0 lg:px-16">
               {/* back button container */}
               <div className="flex flex-row items-center space-x-4">
                 <img
@@ -874,7 +874,7 @@ function ProjectView(props) {
                   <div className="flex flex-col items-center justify-center space-y-2">
                     <p className="text-2xl font-bold">
                       Project&nbsp;
-                      <span className="text-gGreen">description</span>
+                      <span className="text-gGreen">Description</span>
                     </p>
                     <p className="text-lg text-center">
                       {textTrimmer(
@@ -889,28 +889,28 @@ function ProjectView(props) {
                 <div className="grid items-center justify-center w-full grid-cols-1 grid-rows-3 my-4 lg:gap-y- gap-y-4 lg:w-full lg:grid-cols-1 lg:py-2">
                   <div className="flex flex-row items-center w-full py-2 space-x-4 text-black border-2 border-gGray">
                     <img className="w-8" src={ownershipIcon}></img>
-                    <p className="text-xl font-bold underline underline-offset-2">
+                    <p className="text-xl font-bold text-gGreen">
                       Ownership
                     </p>
-                    <p className="text-xl font-semibold capitalize">
+                    <p className="text-xl capitalize">
                       {appData.projectInView.metadata.ownership}
                     </p>
                   </div>
                   <div className="flex flex-row items-center w-full py-2 space-x-4 text-black border-2 border-gGray">
                     <img className="w-8" src={sizeIcon}></img>
-                    <p className="text-xl font-bold underline underline-offset-2">
+                    <p className="text-xl font-bold text-gGreen">
                       Project Size
                     </p>
-                    <p className="text-xl font-semibold capitalize">
+                    <p className="text-xl capitalize">
                       {appData.projectInView.metadata.size} Ha
                     </p>
                   </div>
                   <div className="flex flex-row items-center w-full py-2 space-x-4 text-black border-2 border-gGray">
                     <img className="w-8" src={interventionIcon}></img>
-                    <p className="text-xl font-bold underline underline-offset-2">
-                      Intervention Type
+                    <p className="text-xl font-bold text-gGreen">
+                      Intervention
                     </p>
-                    <p className="text-xl font-semibold capitalize">
+                    <p className="text-xl capitalize">
                       {appData.projectInView.metadata.interventionType || null}
                     </p>
                   </div>
@@ -1306,7 +1306,7 @@ function ProjectView(props) {
                     setSubWindow("environment");
                   }}
                 >
-                  <p className="text-xl font-bold text-black">Environment</p>
+                  <p className="text-xl font-bold text-black">Project Data</p>
                   <img src={projectdataimg} alt="Sponsors" className="w-40" />
                 </motion.div>
               </div>
