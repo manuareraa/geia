@@ -39,7 +39,7 @@ function Footer(props) {
             />
           </div>
           <p className="w-full font-light text-center text-white lg:text-start">
-            © 2022 GeoBlocs.com
+            © 2023 GeoBlocs.com
           </p>
         </div>
 

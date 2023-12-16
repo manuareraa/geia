@@ -29,12 +29,12 @@ function Team(props) {
         <div className="flex flex-col items-center justify-center pt-12 pb-16 space-y-8 lg:flex-row lg:space-x-16 lg:space-y-0">
           <p className="w-[85%] pb-6 text-center text-2xl  font-light md:w-[85%] lg:w-[40%]">
             The team behind Geoblocs is a network of individuals, institutions,
-            companies, non profits and indigenous groups all with a passion to
+            companies, non profits, and indigenous groups all with a passion to
             find ways to regenerate our biosphere. Because it is structured this
-            way there are low overheads making it possible to use the funds to
-            the greatest benefit as each part of the network is only being
-            rewarded for work being carried out by them at that time. The entire
-            platform is run on the same principle from the IT people to the
+            way, there are low overheads making it possible to use the funds to
+            the greatest benefit, as each part of the network is only being
+            rewarded for work being carried out by them, at that time. The entire
+            platform is run on the same principle from the IT people, to the
             people doing the work on the ground. Geoblocs is administered by
             GEIA who, like all other stakeholders, works on a commission basis.
           </p>
@@ -61,7 +61,7 @@ function Team(props) {
             <p className="text-3xl font-bold text-center">Transparency</p>
             <p className="px-8 text-2xl font-light text-center">
               The Geoblocs system aims to be completely transparent at every
-              step of the process ensuring that the maximum benefit is achieved
+              step of the process ensuring that the maximum benefit is achieved,
               and that all stakeholders adhere to the methodology.
             </p>
           </div>
@@ -88,7 +88,7 @@ function Team(props) {
             <p className="text-3xl font-bold text-center">Morality</p>
             <p className="px-8 text-2xl font-light text-center">
               In the coming boom of biosphere reclamation, GEIA stands against
-              the monoculture model of carbon sinks and corporate land banks.
+              the monoculture model of carbon sinks, and corporate land banks.
               Our projects support people and the land, addressing all of the UN
               Sustainable Development Goals in harmony.
             </p>

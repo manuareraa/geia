@@ -26,11 +26,14 @@ function CaseStudies(props) {
             </p>
             <p className="lg:w-[85%] text-center lg:text-2xl text-xl font-light">
               All our projects focus on an holistic approach because without a
-              symbiosis between the land and the people that rely on it no
-              amount of tree planting is going to help, so whether it's a sacred
-              forest restoration in the Philippines using a mix of fmnr* and
-              agroforestry, or re-wilding in the west of Ireland we make sure
+              symbiosis between the land and the people that rely on it, no
+              amount of tree planting is going to help. So whether it's a sacred
+              forest restoration in the Philippines using a mix of FMNR* and
+              agroforestry, or re-wilding in the west of Ireland, we make sure
               that long term viability is built in to every project.
+            </p>
+            <p className="text-m">
+              *Farmer Managed Natural Regeneration
             </p>
           </div>
 
