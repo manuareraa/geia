@@ -38,41 +38,41 @@ function Stakeholders(props) {
         </button>
 
         {/* trio select container */}
-        <div className="flex flex-row items-end justify-center px-2 mt-40 space-x-0 lg:w-full lg:space-x-44 lg:px-8">
+        <div className="flex flex-row justify-center px-2 mt-40 space-x-0 lg:w-full lg:space-x-44 lg:px-8">
           <div
             className={
               section === 0
-                ? "flex flex-col items-center justify-center space-y-8 rounded-xl bg-white/60 px-6 py-16 hover:cursor-pointer lg:px-24"
-                : "flex flex-col items-center justify-center space-y-8 rounded-xl px-6 py-16 hover:cursor-pointer hover:bg-white/60 lg:px-24"
+                ? "flex flex-col items-center justify-center space-y-8 rounded-xl bg-white/80 px-6 py-16 hover:cursor-pointer lg:px-24"
+                : "flex flex-col items-center justify-center space-y-8 rounded-xl bg-white/40 px-6 py-16 hover:cursor-pointer hover:bg-white/80 lg:px-24"
             }
             onClick={() => setSection(0)}
           >
             <img src={buyers} className="w-20 lg:w-44" />
-            <p className="font-bold text-md lg:text-xl">Buyers</p>
+            <p className="font-bold text-md lg:text-l">Buyers</p>
           </div>
           <div
             className={
               section === 1
-                ? "flex flex-col items-center justify-center space-y-8 rounded-xl bg-white/60 px-6 py-16 hover:cursor-pointer lg:px-24"
-                : "flex flex-col items-center justify-center space-y-8 rounded-xl px-6 py-16 hover:cursor-pointer hover:bg-white/60 lg:px-24"
+                ? "flex flex-col items-center justify-center space-y-8 rounded-xl bg-white/80 px-6 py-16 hover:cursor-pointer lg:px-24"
+                : "flex flex-col items-center justify-center space-y-8 rounded-xl bg-white/40 px-6 py-16 hover:cursor-pointer hover:bg-white/80 lg:px-24"
             }
             onClick={() => setSection(1)}
           >
             <img src={stewards} className="w-20 lg:w-44" />
-            <p className="font-bold text-center text-md lg:text-xl">
+            <p className="font-bold text-center text-md lg:text-l">
               Land Stewards
             </p>
           </div>
           <div
             className={
               section === 2
-                ? "flex flex-col items-center justify-center space-y-8 rounded-xl bg-white/60 px-6 py-16 hover:cursor-pointer lg:px-24"
-                : "flex flex-col items-center justify-center space-y-8 rounded-xl px-6 py-16 hover:cursor-pointer hover:bg-white/60 lg:px-24"
+                ? "flex flex-col items-center justify-center space-y-8 rounded-xl bg-white/80 px-6 py-16 hover:cursor-pointer lg:px-24"
+                : "flex flex-col items-center justify-center space-y-8 rounded-xl bg-white/40 px-6 py-16 hover:cursor-pointer hover:bg-white/80 lg:px-24"
             }
             onClick={() => setSection(2)}
           >
             <img src={scientists} className="w-20 lg:w-44" />
-            <p className="font-bold text-md lg:text-xl">Network</p>
+            <p className="font-bold text-md lg:text-l">Network</p>
           </div>
         </div>
       </div>

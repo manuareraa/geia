@@ -82,7 +82,7 @@ function Home(props) {
           <div className="flex flex-col space-y-4">
             {/* powered by container */}
             <div className="flex flex-row items-center justify-center w-full mr-20 space-x-4 pt-">
-              <p className="text-sm text-white lg:text-2xl">Powered By</p>
+              <p className="text-sm text-white lg:text-2xl">Powered by</p>
               <img src={geiaLogo} alt="geia-logo" className="w-15 lg:w-25" />
             </div>
 
@@ -161,7 +161,7 @@ function Home(props) {
           <p className="w-[70%] text-center font-medium text-white md:w-[400px] lg:w-[400px]">
             Instead of focusing on just carbon, Geoblocs fund communities to
             implement regenerative land use practices, restore ecosystems and
-            reverses climate change.
+            reverse climate change.
           </p>
         </div>
       </div>
@@ -171,7 +171,7 @@ function Home(props) {
         <p className="text-3xl font-semibold text-center">Join Us</p>
 
         <p className="w-[70%] text-center font-light md:w-[60%] lg:w-[800px]">
-          Geoblocs Registry allows land stewards to leverage theirecosystem
+          Geoblocs Registry allows land stewards to leverage their ecosystem
           services to buyers around the world to get funding for land
           regeneration
         </p>
@@ -222,9 +222,9 @@ function Home(props) {
         <div className="flex flex-col items-center justify-center space-y-8">
           <p className="text-3xl font-semibold text-center">Blockchain</p>
           <p className="w-[70%] text-center font-medium md:w-[60%] lg:w-[600px]">
-            Geoblocs, powered by Unique Network, is helping to revolutionize the
-            ecological landscape. Leveraging Unique Network's Polkadot-based
-            main parachain. Explore the endless possibilities of decentralized
+            Geoblocs, powered by Unique Network, is helping to revolutionise the
+            ecological landscape by leveraging their Polkadot-based
+            main parachain. Explore the endless possibilities of decentralised
             technology with Geoblocs and benefit from the robust features of a
             mature Layer 1 blockchain within the Polkadot ecosystem.
           </p>

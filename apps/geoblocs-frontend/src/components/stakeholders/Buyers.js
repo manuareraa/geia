@@ -23,10 +23,7 @@ function Buyers(props) {
       </p>
 
       {/* description */}
-      <p className="w-[100%] py-12 text-center  text-xl md:w-[85%] lg:w-[800px]">
-        Buy Geoblocs biosphere restoration tokens and support land stewards
-        around the world tosequester carbon, improve biodiversity, and more
-      </p>
+      
 
       {/* container */}
       <div className="flex flex-col items-center space-y-8 text-xl lg:flex-row lg:space-x-4 lg:space-y-8">
@@ -91,7 +88,7 @@ function Buyers(props) {
               <p className="px-4 text-2xl text-center lg:px-28">
                 By lowering the overall costs of running ecological projects,
                 more money rewards land stewards and is invested directly into
-                environmental impact
+                environmental impact.
               </p>
             </div>
             <img src={imageThree} className="w-[90%] lg:w-[45%]"></img>
@@ -108,9 +105,9 @@ function Buyers(props) {
                 Transparency
               </p>
               <p className="px-4 text-2xl text-center lg:px-28">
-                Ecological data is collected based on open source,
+                Ecological data is collected based on open source
                 scientifically rigorous methodologies, and independently
-                verified and stored on Geoblocs database
+                verified and stored on Geoblocs database.
                 {/* Geoblocs Ledger - our decentralized,immutable database. */}
               </p>
             </div>
@@ -127,7 +124,7 @@ function Buyers(props) {
               <p className="px-4 text-2xl text-center lg:px-28">
                 In addition to carbon sequestration, Geoblocs biosphere reset
                 tokens focus on a broad set of ecological co-benefits such as
-                soilhealth, water quality, and biodiversity, as well as the
+                soil health, water quality, and biodiversity, as well as the
                 social and economic health of the project.
               </p>
             </div>

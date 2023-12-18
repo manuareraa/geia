@@ -32,11 +32,11 @@ function LandStewards(props) {
       <div className="divider"></div>
 
       {/* trio container */}
-      <div className="flex flex-col items-center justify-center w-full p-16 space-y-8 lg:items-start lg:flex-row lg:space-y-0 lg:space-x-20 bg-[#B5BFA4] rounded-xl">
+      <div className="flex flex-col items-center justify-center w-full px-8 py-16 gap-8 lg:items-start lg:flex-row bg-[#B5BFA4] rounded-xl">
         {/* get paid to restore your land */}
-        <div className="flex flex-col items-center justify-center space-y-6">
+        <div className="flex flex-col gap-4 items-center justify-center">
           <img src={paidRestore} className="w-36"></img>
-          <p className="text-lg font-bold text-center underline">
+          <p className="text-lg font-bold text-center">
             Get Paid to Restore Your Land
           </p>
           <p className="font-medium lg:w-[375px] text-center">
@@ -46,9 +46,9 @@ function LandStewards(props) {
         </div>
 
         {/* streamlined process */}
-        <div className="flex flex-col items-center justify-center space-y-6">
+        <div className="flex flex-col gap-4 items-center justify-center">
           <img src={streamlinedProcess} className="w-36"></img>
-          <p className="text-lg font-bold text-center underline">
+          <p className="text-lg font-bold text-center">
             Streamlined Process
           </p>
           <p className="font-medium lg:w-[375px] text-center">
@@ -58,9 +58,9 @@ function LandStewards(props) {
         </div>
 
         {/* efficiency through technology */}
-        <div className="flex flex-col items-center justify-center space-y-6">
+        <div className="flex flex-col gap-4 items-center justify-center">
           <img src={efficiencyTechnology} className="w-36"></img>
-          <p className="text-lg font-bold text-center underline">
+          <p className="text-lg font-bold text-center">
             Efficiency through Technology
           </p>
           <p className="font-medium lg:w-[375px] text-center">
