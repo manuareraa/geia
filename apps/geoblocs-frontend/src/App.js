@@ -10,6 +10,9 @@ import CaseStudies from "./pages/landing-site/CaseStudies";
 import ProjectStories from "./pages/landing-site/ProjectStories";
 import Team from "./pages/landing-site/Team";
 import Contact from "./pages/landing-site/Contact";
+import HowItWorks from "./pages/landing-site/HowItWorks";
+import FAQ from "./pages/landing-site/FAQ";
+
 import AdminLogin from "./pages/admin-panel/Login";
 import AdminDashboard from "./pages/admin-panel/Dashboard";
 import AllProjects from "./pages/admin-panel/Projects";
@@ -17,6 +20,7 @@ import Applications from "./pages/admin-panel/Applications";
 import Stats from "./pages/admin-panel/Stats";
 import ApplicationView from "./pages/admin-panel/ApplicationView";
 import ProjectView from "./pages/admin-panel/ProjectView";
+
 import ExploreProjects from "./pages/platform/ExploreProjects";
 import UserProjectView from "./pages/platform/ProjectView";
 import NewApplication from "./pages/platform/NewApplication";
@@ -107,6 +111,30 @@ function App() {
             </Transition>
           }
         />
+        <Route
+          path="/howitworks"
+          element={
+            <Transition
+              trigger={location.pathname === "/howitworks"}
+              isExiting={isExiting}
+            >
+              <HowItWorks />
+            </Transition>
+          }
+        />
+        <Route
+          path="/faq"
+          element={
+            <Transition
+              trigger={location.pathname === "/faq"}
+              isExiting={isExiting}
+            >
+              <FAQ />
+            </Transition>
+          }
+        />
+
+        {/* admin */}
         <Route
           path="/admin/login"
           element={
