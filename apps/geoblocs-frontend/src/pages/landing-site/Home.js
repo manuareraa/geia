@@ -19,6 +19,7 @@ import linkedin from "../../assets/svg/linkedin.svg";
 import rightArrowG from "../../assets/svg/right-arrow-g.svg";
 import Footer from "../../components/Footer";
 import toast from "react-hot-toast";
+import Navbar from "../../components/Navbar";
 
 function Home(props) {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ function Home(props) {
   
   return (
     <div className="flex flex-col items-center justify-center w-full">
+        <Navbar />
       {/* hero outer container */}
       <div className="flex flex-col items-center justify-center w-full h-screen p-8 bg-home-image">
         {/* hero inner container */}
