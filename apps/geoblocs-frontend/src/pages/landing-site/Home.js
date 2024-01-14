@@ -43,9 +43,9 @@ function Home(props) {
     <div className="flex flex-col items-center justify-center w-full">
         <Navbar />
       {/* hero outer container */}
-      <div className="flex flex-col items-center justify-center w-full h-screen p-8 bg-home-image">
+      <div className="flex flex-col items-center justify-center w-full p-8 bg-home-image">
         {/* hero inner container */}
-        <div className="flex flex-col items-center justify-center pt-20 pb-20 space-y-12">
+        <div className="flex flex-col items-center justify-center pt-10 pb-10 mb-10 width-50 space-y-12 glass rounded-lg">
           {/* title container */}
           <div className="flex flex-col items-center justify-center pt-4 space-y-4 leading-none">
             {/* powered by container */}
@@ -54,7 +54,7 @@ function Home(props) {
               <img src={geiaLogo} alt="geia-logo" className="w-12 lg:w-20" />
             </div> */}
             {/* title */}
-            <p className="text-[33px] font-bold capitalize text-black lg:mt-20 lg:text-5xl">
+            <p className="text-[33px] font-bold capitalize text-black lg:text-5xl">
               Bringing radical
             </p>
             <p className="text-[33px] font-bold capitalize text-gBlue lg:text-5xl">
@@ -72,16 +72,16 @@ function Home(props) {
           </div>
           {/* hero description container */}
           <div className="flex flex-col items-center">
-            <p className="rounded-2xl bg-[#303D0C]/30 p-6 text-center text-2xl font-bold text-white md:w-[80%] lg:w-[60%]">
+            <p className="p-6 text-center text-2xl font-bold md:text-black text-white md:w-[80%] lg:w-[60%]">
               The Geoblocs platform utilises geospatial technology along with on
               the ground monitoring to create verifiable regeneration projects
               around the world that focus on biodiversity, social impact, and
               local economics.
             </p>
           </div>
-
-          {/* hero button container */}
-          <div className="flex flex-col space-y-4">
+        </div>
+        {/* hero button container */}
+        <div className="flex flex-col space-y-4">
             {/* powered by container */}
             <div className="flex flex-row items-center justify-center w-full mr-20 space-x-4 pt-">
               <p className="text-sm text-white lg:text-2xl">Powered by</p>
@@ -96,7 +96,6 @@ function Home(props) {
               <img src={rightArrow} className="w-4" />
             </button>
           </div>
-        </div>
       </div>
 
       {/* community - radical - decentralization container */}
