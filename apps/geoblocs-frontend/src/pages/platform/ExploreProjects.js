@@ -6,6 +6,7 @@ import { AppContext } from "../../AppContext";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import sampleOne from "../../assets/test/sample-one.png";
 import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 import location from "../../assets/svg/location.svg";
 
 function ExploreProjects(props) {
@@ -137,6 +138,7 @@ function ExploreProjects(props) {
 
   return (
     <div className="flex flex-col justify-center w-full">
+        <Navbar />
       {/* title container */}
       <div className="flex flex-col items-center justify-between px-8 pt-36 lg:flex-row lg:items-start lg:space-x-8 lg:px-32">
         {/* left - title sub-container */}

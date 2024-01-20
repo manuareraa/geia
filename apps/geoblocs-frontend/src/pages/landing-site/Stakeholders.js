@@ -7,6 +7,7 @@ import stewards from "../../assets/svg/stewards.svg";
 import scientists from "../../assets/svg/scientists.svg";
 
 import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 import Buyers from "../../components/stakeholders/Buyers";
 import LandStewards from "../../components/stakeholders/LandStewards";
 import Scientists from "../../components/stakeholders/Scientists";
@@ -22,6 +23,7 @@ function Stakeholders(props) {
   return (
     // outer container
     <div className="flex flex-col justify-center w-full">
+        <Navbar />
       {/* title container */}
       <div className="flex flex-col items-center justify-center h-screen pt-64 space-y-8 bg-stakeholders-image">
         {/* title */}

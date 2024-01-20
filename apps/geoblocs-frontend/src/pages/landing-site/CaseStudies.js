@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import sampleOne from "../../assets/test/sample-one.png";
 import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 import imageOne from "../../assets/img/casestudies/11.png";
 
 function CaseStudies(props) {
@@ -12,6 +13,7 @@ function CaseStudies(props) {
   return (
     // outer container
     <div className="flex flex-col justify-center w-full">
+      <Navbar />
       {/* title container */}
       <div className="flex flex-col items-center justify-center space-y-8 pt-36">
         {/* title */}

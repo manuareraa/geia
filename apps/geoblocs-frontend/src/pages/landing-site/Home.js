@@ -41,7 +41,7 @@ function Home(props) {
   
   return (
     <div className="flex flex-col items-center justify-center w-full">
-        <Navbar />
+      <Navbar />
       {/* hero outer container */}
       <div className="flex flex-col items-center justify-center w-full p-8 bg-home-image">
         {/* hero inner container */}

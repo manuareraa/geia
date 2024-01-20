@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import AdminLogo from "../../assets/svg/admin-logo.svg";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 
+import Navbar from "../../components/Navbar";
+
 function UserLogin(props) {
   const navigate = useNavigate();
   const { userLogin } = useContext(AppContext);
@@ -16,6 +18,7 @@ function UserLogin(props) {
 
   return (
     <div className="flex flex-col justify-center w-full">
+        <Navbar />
       {/* title container */}
       <div className="flex flex-row items-center justify-between space-x-8 lg:px-32 pt-44">
         {/* left - title sub-container */}

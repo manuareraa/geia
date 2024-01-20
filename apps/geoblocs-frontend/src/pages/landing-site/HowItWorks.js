@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../AppContext";
 
 import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 
 import geiaLogo from "../../assets/img/geia-high-res.old.png";
 
@@ -12,6 +13,7 @@ var HowItWorks = () => {
 
     return (
         <div className="flex flex-col items-center justify-center w-full">
+            <Navbar />
             <div className="flex flex-col items-center justify-center w-full h-screen p-8">
                 <h2>How it Works</h2>
                 <div>

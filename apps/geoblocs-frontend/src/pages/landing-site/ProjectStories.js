@@ -6,6 +6,7 @@ import { AppContext } from "../../AppContext";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import sampleOne from "../../assets/test/sample-one.png";
 import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 import { toast } from "react-hot-toast";
 
 function ProjectStories(props) {
@@ -124,6 +125,7 @@ function ProjectStories(props) {
 
   return (
     <div className="flex flex-col justify-center w-full">
+        <Navbar />
       {/* title container */}
       <div className="flex flex-col items-start justify-between px-8 pt-36 lg:flex-row lg:space-x-8 lg:px-32">
         {/* left - title sub-container */}
