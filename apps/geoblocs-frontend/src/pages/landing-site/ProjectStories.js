@@ -127,7 +127,7 @@ function ProjectStories(props) {
     <div className="flex flex-col justify-center w-full">
         <Navbar />
       {/* title container */}
-      <div className="flex flex-col items-start justify-between px-8 pt-36 lg:flex-row lg:space-x-8 lg:px-32">
+      <div className="flex flex-col items-start justify-between px-8 pt-16 lg:flex-row lg:space-x-8 lg:px-32">
         {/* left - title sub-container */}
         <div className="flex flex-col items-start space-y-4">
           {/* sub title */}
@@ -164,7 +164,7 @@ function ProjectStories(props) {
       </div>
 
       {/* project stories container */}
-      <div className="flex flex-col items-center justify-center w-full px-8 my-24 mt-32 lg:px-52">
+      <div className="flex flex-col items-center justify-center w-full px-8 my-24 mt-8 lg:mt-32 lg:px-52">
         {/* title */}
         <div className="flex flex-col items-start w-full my-8">
           <p className="self-center text-3xl font-bold text-center lg:self-start">
@@ -185,7 +185,7 @@ function ProjectStories(props) {
         )}
 
         {/* call for registration container */}
-        <div className="flex flex-col mb-16 space-y-8 mt-44">
+        <div className="flex flex-col mt-12 mb-8 lg:mb-16 space-y-8 lg:mt-44">
           <p className="text-2xl font-bold text-center lg:text-4xl">
             Profit from Restoration: Earn while Healing the Land!
           </p>
