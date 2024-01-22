@@ -11,9 +11,9 @@ function Contact(props) {
   return (
     <div className="flex flex-col justify-center w-full">
     <Navbar />
-    <div className="h-screen pt-[20vh] contact-page-bg">
+    <div className="flex flex-col items-center h-screen pt-[20vh] contact-page-bg">
       {/* title container */}
-      <div className="lg:mx-60 flex flex-col items-center justify-center space-y-8 bg-[#656565]/80 p-24 rounded-2xl">
+      <div className="glass lg:mx-60 flex flex-col items-center justify-center space-y-8 p-16 lg:p-24 rounded-2xl w-11/12 lg:w-1/2">
         {/* title */}
         <p className="font- text-[30px] text-white md:text-[36px] lg:text-[48px]">
           Contact
