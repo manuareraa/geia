@@ -14,7 +14,7 @@ function Navbar(props) {
   return (
     <>
       {location.pathname.startsWith("/platform/projects/view/") ? null : ( // outer container
-        <div className="flex flex-row items-center justify-between w-full p-4 bg-white/70">
+        <div className="flex flex-row items-center justify-between w-full p-4 bg-white/70 shadow">
           {/* first half */}
 
           {/* logo container */}
