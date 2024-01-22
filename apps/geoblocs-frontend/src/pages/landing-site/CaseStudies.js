@@ -15,7 +15,7 @@ function CaseStudies(props) {
     <div className="flex flex-col justify-center w-full">
       <Navbar />
       {/* title container */}
-      <div className="flex flex-col items-center justify-center space-y-8 pt-36">
+      <div className="flex flex-col items-center justify-center space-y-8 pt-16">
         {/* title */}
         <p className="font- text-[33px] md:text-[50px] lg:text-[80px]">
           <span className="text-gGreen">Case</span> Studies
