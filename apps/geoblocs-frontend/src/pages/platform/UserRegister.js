@@ -49,7 +49,7 @@ function UserRegister(props) {
             }
           ></input>
           <input
-            type="text"
+            type="password"
             placeholder="Enter your password"
             className="lg:w-[400px] w-[100%] lg:h-12 h-10 px-8 text-black  rounded-full outline-none bg-gGray py-2 text-sm lg:text-lg"
             value={formData.password}
@@ -58,7 +58,7 @@ function UserRegister(props) {
             }
           ></input>
           <input
-            type="text"
+            type="password"
             placeholder="Confirm your password"
             className="lg:w-[400px] w-[100%] lg:h-12 h-10 px-8 text-black  rounded-full outline-none bg-gGray py-2 text-sm lg:text-lg"
             value={formData.confirmPassword}
