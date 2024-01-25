@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import AdminLogo from "../../assets/svg/admin-logo.svg";
 import editIcon from "../../assets/svg/edit.svg";
 
+import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
+
 function NewApplication(props) {
   const navigate = useNavigate();
   const { getApplicationCount, createNewApplication } = useContext(AppContext);
@@ -38,8 +41,9 @@ function NewApplication(props) {
 
   return (
     <div className="flex flex-col justify-center w-full">
+        <Navbar />
       {/* title container */}
-      <div className="flex flex-row items-center justify-between px-32 space-x-8 pt-44">
+      <div className="flex flex-row items-center justify-between px-4 lg:px-32 space-x-8 pt-16">
         {/* left - title sub-container */}
         <div className="flex flex-col items-start space-y-4">
           {/* sub title */}
@@ -47,7 +51,7 @@ function NewApplication(props) {
             Empowering Communities, Restoring Ecosystems
           </p>
           {/* main title */}
-          <p className="font- text-[80px] leading-[95px]">New Application</p>
+          <p className="font- text-[40px] leading-[44px] lg:text-[80px] lg:leading-[95px]">New Application</p>
         </div>
 
         {/* right - logo container */}
@@ -55,11 +59,11 @@ function NewApplication(props) {
       </div>
 
       {applicationWindowState === "form" ? (
-        <div className="grid grid-cols-3 px-32 mb-16 space-y-12">
+        <div className="lg:grid lg:grid-cols-3 px-4 pt-6 lg:px-32 mb-16 space-y-6 lg:space-y-12">
           {/* your name */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
-            <div className="flex flex-col space-y-">
+            <div className="flex flex-col space-y- w-[90%] lg:w-[80%]">
               <p className="text-xs font-light">Your Name</p>
               <input
                 type="text"
@@ -76,7 +80,7 @@ function NewApplication(props) {
           {/* your email */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
-            <div className="flex flex-col space-y-">
+            <div className="flex flex-col space-y- w-[90%] lg:w-[80%]">
               <p className="text-xs font-light">Your Email</p>
               <input
                 type="text"
@@ -93,7 +97,7 @@ function NewApplication(props) {
           {/* project location address */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
-            <div className="flex flex-col space-y-">
+            <div className="flex flex-col space-y- w-[90%] lg:w-[80%]">
               <p className="text-xs font-light">Project Location Address</p>
               <input
                 type="text"
@@ -110,7 +114,7 @@ function NewApplication(props) {
           {/* GPS Coordinates */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
-            <div className="flex flex-col space-y-">
+            <div className="flex flex-col space-y- w-[90%] lg:w-[80%]">
               <p className="text-xs font-light">GPS Coordinates (Lat/Lon)</p>
               <input
                 type="text"
@@ -127,7 +131,7 @@ function NewApplication(props) {
           {/* ownership */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
-            <div className="flex flex-col space-y-">
+            <div className="flex flex-col space-y- w-[90%] lg:w-[80%]">
               <p className="text-xs font-light">Ownership Status</p>
               <input
                 type="text"
@@ -144,7 +148,7 @@ function NewApplication(props) {
           {/* Project Size in Ha */}
           <div className="flex flex-row items-end space-x-2">
             <img src={editIcon} alt="" className="w-6 h-6"></img>
-            <div className="flex flex-col space-y-">
+            <div className="flex flex-col space-y- w-[90%] lg:w-[80%]">
               <p className="text-xs font-light">Project Size in Ha</p>
               <input
                 type="text"
@@ -250,6 +254,7 @@ function NewApplication(props) {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 }
