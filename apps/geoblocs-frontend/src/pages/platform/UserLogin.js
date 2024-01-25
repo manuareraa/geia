@@ -20,7 +20,7 @@ function UserLogin(props) {
     <div className="flex flex-col justify-center w-full">
         <Navbar />
       {/* title container */}
-      <div className="flex flex-row items-center justify-between space-x-8 lg:px-32 pt-44">
+      <div className="flex flex-row items-center justify-between space-x-8 px-4 lg:px-32 pt-16">
         {/* left - title sub-container */}
         <div className="flex flex-col items-center space-y-4 lg:items-start">
           {/* sub title */}
