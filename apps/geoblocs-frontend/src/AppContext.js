@@ -1896,7 +1896,7 @@ export const AppProvider = ({ children }) => {
         ) : (
           <>
             <Toaster />
-            <Navbar />
+            {/* <Navbar /> */}
             {children}
           </>
         )}

@@ -39,7 +39,7 @@ function LandConditions(props) {
   }, []);
 
   return (
-    <div className="items-center justify-center w-full px-2 pb-20 lg:px-40">
+    <div className="items-center justify-center w-full px-2 pb-8 lg:px-40">
       <div className="w-full items-center justify-center rounded-xl bg-[#B5BFA4] p-8">
         <div className="flex flex-col w-full space-y-0">
           <p className="text-xl font-semibold underline underline-offset-2 lg:text-3xl">

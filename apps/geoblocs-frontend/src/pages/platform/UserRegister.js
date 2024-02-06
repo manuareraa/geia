@@ -1,11 +1,15 @@
 import React, { useState, useContext } from "react";
 import { toast } from "react-hot-toast";
 import { AppContext } from "../../AppContext";
+import { useNavigate } from "react-router-dom";
 
 import AdminLogo from "../../assets/svg/admin-logo.svg";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 
+import Navbar from "../../components/Navbar";
+
 function UserRegister(props) {
+    const navigate = useNavigate();
   const { userRegister } = useContext(AppContext);
   const [formData, setFormData] = useState({
     email: "",
@@ -15,8 +19,9 @@ function UserRegister(props) {
 
   return (
     <div className="flex flex-col justify-center w-full">
+        <Navbar />
       {/* title container */}
-      <div className="flex flex-row items-center justify-between space-x-8 lg:px-32 pt-44">
+      <div className="flex flex-row items-center justify-between space-x-8 px-4 lg:px-32 pt-16">
         {/* left - title sub-container */}
         <div className="flex flex-col items-center space-y-4 lg:items-start">
           {/* sub title */}
@@ -44,7 +49,7 @@ function UserRegister(props) {
             }
           ></input>
           <input
-            type="text"
+            type="password"
             placeholder="Enter your password"
             className="lg:w-[400px] w-[100%] lg:h-12 h-10 px-8 text-black  rounded-full outline-none bg-gGray py-2 text-sm lg:text-lg"
             value={formData.password}
@@ -53,7 +58,7 @@ function UserRegister(props) {
             }
           ></input>
           <input
-            type="text"
+            type="password"
             placeholder="Confirm your password"
             className="lg:w-[400px] w-[100%] lg:h-12 h-10 px-8 text-black  rounded-full outline-none bg-gGray py-2 text-sm lg:text-lg"
             value={formData.confirmPassword}

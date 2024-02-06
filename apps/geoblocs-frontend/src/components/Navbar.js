@@ -14,7 +14,7 @@ function Navbar(props) {
   return (
     <>
       {location.pathname.startsWith("/platform/projects/view/") ? null : ( // outer container
-        <div className="fixed z-20 flex flex-row items-center justify-between w-full p-4 bg-white/70">
+        <div className="flex flex-row items-center justify-between w-full p-4 bg-white/70 shadow">
           {/* first half */}
 
           {/* logo container */}
@@ -86,6 +86,25 @@ function Navbar(props) {
               >
                 Contact
               </p>
+              <p
+                className={
+                  location.pathname === "/howitworks"
+                    ? "underline underline-offset-4 hover:cursor-pointer hover:underline hover:underline-offset-4"
+                    : "hover:cursor-pointer hover:underline hover:underline-offset-4"
+                }
+                onClick={() => navigate("/howitworks")}
+              >
+                How it Works
+              </p><p
+                className={
+                  location.pathname === "/faq"
+                    ? "underline underline-offset-4 hover:cursor-pointer hover:underline hover:underline-offset-4"
+                    : "hover:cursor-pointer hover:underline hover:underline-offset-4"
+                }
+                onClick={() => navigate("/faq")}
+              >
+                FAQ
+              </p>
             </div>
 
             {location.pathname.startsWith("/platform") ? (
@@ -136,7 +155,7 @@ function Navbar(props) {
             {/* menu container */}
             <img
               src={mobileMenu}
-              className="w-6 hover:cursor-pointer lg:hidden"
+              className="mobile-button w-6 hover:cursor-pointer lg:hidden"
               onClick={() => document.getElementById("mobileMenu").showModal()}
             />
           </div>
@@ -276,6 +295,50 @@ function Navbar(props) {
                     }
                   >
                     Contact
+                  </p>
+                </div>
+
+                <div
+                  className={
+                    location.pathname === "/howitworks"
+                      ? "rounded-md bg-white px-6 py-2"
+                      : "px-6 py-2"
+                  }
+                  onClick={() => {
+                    document.getElementById("mobileMenu").close();
+                    navigate("/howitworks");
+                  }}
+                >
+                  <p
+                    className={
+                      location.pathname === "/howitworks"
+                        ? "text-gGreen"
+                        : "text-white"
+                    }
+                  >
+                    How it Works
+                  </p>
+                </div>
+
+                <div
+                  className={
+                    location.pathname === "/faq"
+                      ? "rounded-md bg-white px-6 py-2"
+                      : "px-6 py-2"
+                  }
+                  onClick={() => {
+                    document.getElementById("mobileMenu").close();
+                    navigate("/faq");
+                  }}
+                >
+                  <p
+                    className={
+                      location.pathname === "/faq"
+                        ? "text-gGreen"
+                        : "text-white"
+                    }
+                  >
+                    FAQ
                   </p>
                 </div>
               </div>

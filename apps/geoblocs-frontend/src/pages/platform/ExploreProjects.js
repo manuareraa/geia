@@ -6,6 +6,7 @@ import { AppContext } from "../../AppContext";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import sampleOne from "../../assets/test/sample-one.png";
 import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 import location from "../../assets/svg/location.svg";
 
 function ExploreProjects(props) {
@@ -40,7 +41,7 @@ function ExploreProjects(props) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
             transition={{ duration: 0.1, delay: 0 }}
-            className="lg:space-y- flex flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:max-h-[45%] lg:min-h-[45%] lg:min-w-[45%] lg:max-w-[45%]"
+            className="flex flex-col space-y-3 rounded-2xl bg-gGray p-3 shadow-lg hover:cursor-pointer lg:max-h-[45%] lg:min-h-[45%] lg:min-w-[45%] lg:max-w-[100%]"
             onClick={() => {
               setAppData((prevState) => {
                 return {
@@ -52,14 +53,14 @@ function ExploreProjects(props) {
               window.scrollTo(0, 0);
             }}
           >
-            <div className="h-48 rounded-2xl">
+            <div className="h-auto rounded-2xl">
               <img
                 src={
                   project.metadata.coverImage
                     ? project.metadata.coverImage[0]
                     : sampleOne
                 }
-                className="object-cover w-full h-48 rounded-2xl"
+                className="object-cover w-32 h-32 rounded-2xl"
               ></img>
             </div>
             <div className="flex flex-col h-full">
@@ -89,7 +90,7 @@ function ExploreProjects(props) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.0 }}
             transition={{ duration: 0.1, delay: 0 }}
-            className="flex max-h-[20%] min-h-[20%] flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer md:max-h-[20%] md:min-h-[20%] lg:max-h-[50%] lg:min-h-[50%] lg:min-w-[20%] lg:max-w-[20%] lg:justify-betwee"
+            className="flex flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer min-w-[50%] max-w-[100%] lg:min-w-[25%] lg:max-w-[32%]"
             onClick={() => {
               setAppData((prevState) => {
                 return {
@@ -137,8 +138,9 @@ function ExploreProjects(props) {
 
   return (
     <div className="flex flex-col justify-center w-full">
+        <Navbar />
       {/* title container */}
-      <div className="flex flex-col items-center justify-between px-8 pt-36 lg:flex-row lg:items-start lg:space-x-8 lg:px-32">
+      <div className="flex flex-col items-center justify-between px-8 pt-16 lg:pt-36 lg:flex-row lg:items-start lg:space-x-8 lg:px-32">
         {/* left - title sub-container */}
         <div className="flex flex-col items-center space-y-4 lg:items-start">
           {/* sub title */}
@@ -175,7 +177,7 @@ function ExploreProjects(props) {
       </div>
 
       {/* project stories container */}
-      <div className="flex flex-col items-center justify-center w-full px-8 my-24 mt-32 lg:px-52">
+      <div className="flex flex-col items-center justify-center w-full px-8 my-24 mt-16 lg:mt-32 lg:px-52">
         {/* title */}
         <div className="flex flex-col items-center w-full pb-6 my-8 lg:items-start lg:pb-0">
           <p className="text-3xl font-bold text-center">All Projects</p>
@@ -194,7 +196,7 @@ function ExploreProjects(props) {
         )}
 
         {/* call for registration container */}
-        <div className="flex flex-col mb-16 space-y-8 mt-44">
+        <div className="flex flex-col mb-16 space-y-8 mt-16 lg:mt-44">
           <p className="text-4xl font-bold text-center mt-28">
             Profit from Restoration: Earn while Healing the Land!
           </p>
