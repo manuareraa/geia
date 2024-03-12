@@ -179,13 +179,21 @@ function ProjectView(props) {
         // if an address already exists
         if (
           appData.userProfile.blockchainAcc &&
-          appData.userProfile.blockchainAcc.seed
+          appData.userProfile.blockchainAcc.address
         ) {
+
+          // projectId,
+          // toAddress,
+          // tokenId,
+          // amount,
+          // email,
+          // mode,
+          // miscData,
+
           const transferResult = await transferToken(
             projectId,
-            appData.userProfile.blockchainAcc.keyfile.address,
-            appData.projectInView.geoblocsData.collectionId,
-            appData.projectInView.geoblocsData.tokenId[0],
+            appData.userProfile.blockchainAcc.address,
+            appData.projectInView.geoblocsData.tokenId,
             1,
             appData.userProfile.email,
             "redeem",
@@ -207,9 +215,7 @@ function ProjectView(props) {
         } else {
           // if an address does not exist before
           // create the account
-          const accCreationResult = await createNewUniqueNetworkAcc(
-            appData.userProfile.email,
-          );
+          const accCreationResult = await createNewUniqueNetworkAcc();
 
           if (accCreationResult !== false) {
             // update the profile in the database and appData
@@ -219,12 +225,11 @@ function ProjectView(props) {
             );
 
             if (profileUpdateResult === true) {
-              // transfer the tokens
+              
               const transferResult = await transferToken(
                 projectId,
-                accCreationResult.keyfile.address,
-                appData.projectInView.geoblocsData.collectionId,
-                appData.projectInView.geoblocsData.tokenId[0],
+                accCreationResult.address,
+                appData.projectInView.geoblocsData.tokenId,
                 1,
                 appData.userProfile.email,
                 "redeem",
@@ -265,14 +270,15 @@ function ProjectView(props) {
         if (checkUser !== false) {
           if (
             checkUser.blockchainAcc &&
-            checkUser.blockchainAcc.keyfile.address
+            checkUser.blockchainAcc.address
           ) {
+         
+              // transfer the tokens
             // get the address and transfer
             const transferResult = await transferToken(
               projectId,
-              checkUser.blockchainAcc.keyfile.address,
-              appData.projectInView.geoblocsData.collectionId,
-              appData.projectInView.geoblocsData.tokenId[0],
+              checkUser.blockchainAcc.address,
+              appData.projectInView.geoblocsData.tokenId,
               1,
               checkUser.email,
               "redeem",
@@ -299,9 +305,7 @@ function ProjectView(props) {
             }
           } else {
             // if user exists but does not have a blockchain account
-            const accCreationResult = await createNewUniqueNetworkAcc(
-              formData.redeemEmail,
-            );
+            const accCreationResult = await createNewUniqueNetworkAcc();
 
             console.log("accCreationResult", accCreationResult, checkUser);
             if (accCreationResult !== false) {
@@ -315,9 +319,8 @@ function ProjectView(props) {
                 // transfer the tokens
                 const transferResult = await transferToken(
                   projectId,
-                  accCreationResult.keyfile.address,
-                  appData.projectInView.geoblocsData.collectionId,
-                  appData.projectInView.geoblocsData.tokenId[0],
+                  accCreationResult.address,
+                  appData.projectInView.geoblocsData.tokenId,
                   1,
                   checkUser.email,
                   "redeem",
@@ -363,9 +366,8 @@ function ProjectView(props) {
             // transfer the tokens
             const transferResult = await transferToken(
               projectId,
-              blockchainAcc.keyfile.address,
-              appData.projectInView.geoblocsData.collectionId,
-              appData.projectInView.geoblocsData.tokenId[0],
+              blockchainAcc.address,
+              appData.projectInView.geoblocsData.tokenId,
               1,
               email,
               "redeem",
@@ -405,14 +407,13 @@ function ProjectView(props) {
       // if an address already exists
       if (
         appData.userProfile.blockchainAcc &&
-        appData.userProfile.blockchainAcc.seed
+        appData.userProfile.blockchainAcc.address
       ) {
         console.log("User has an existing address");
         const transferResult = await transferToken(
           projectId,
-          appData.userProfile.blockchainAcc.keyfile.address,
-          appData.projectInView.geoblocsData.collectionId,
-          appData.projectInView.geoblocsData.tokenId[0],
+          appData.userProfile.blockchainAcc.address,
+          appData.projectInView.geoblocsData.tokenId,
           formData.quantity,
           details.payer.email_address,
           "paypal",
@@ -444,9 +445,7 @@ function ProjectView(props) {
         console.log("User does not have an existing address");
         // if an address does not exist before
         // create the account
-        const accCreationResult = await createNewUniqueNetworkAcc(
-          details.payer.email_address,
-        );
+        const accCreationResult = await createNewUniqueNetworkAcc();
 
         if (accCreationResult !== false) {
           console.log("Blockchain account created");
@@ -461,9 +460,8 @@ function ProjectView(props) {
             // transfer the tokens
             const transferResult = await transferToken(
               projectId,
-              accCreationResult.keyfile.address,
-              appData.projectInView.geoblocsData.collectionId,
-              appData.projectInView.geoblocsData.tokenId[0],
+              accCreationResult.address,
+              appData.projectInView.geoblocsData.tokenId,
               formData.quantity,
               details.payer.email_address,
               "paypal",
@@ -510,15 +508,14 @@ function ProjectView(props) {
         console.log("User exists");
         if (
           checkUser.blockchainAcc &&
-          checkUser.blockchainAcc.keyfile.address
+          checkUser.blockchainAcc.address
         ) {
           console.log("User has an existing address");
           // get the address and transfer
           const transferResult = await transferToken(
             projectId,
-            checkUser.blockchainAcc.keyfile.address,
-            appData.projectInView.geoblocsData.collectionId,
-            appData.projectInView.geoblocsData.tokenId[0],
+            checkUser.blockchainAcc.address,
+            appData.projectInView.geoblocsData.tokenId,
             formData.quantity,
             details.payer.email_address,
             "paypal",
@@ -548,9 +545,7 @@ function ProjectView(props) {
           }
         } else {
           console.log("User exists but does not have a blockchain account");
-          const accCreationResult = await createNewUniqueNetworkAcc(
-            details.payer.email_address,
-          );
+          const accCreationResult = await createNewUniqueNetworkAcc();
 
           console.log("accCreationResult", accCreationResult, checkUser);
           if (accCreationResult !== false) {
@@ -566,9 +561,8 @@ function ProjectView(props) {
               // transfer the tokens
               const transferResult = await transferToken(
                 projectId,
-                accCreationResult.keyfile.address,
-                appData.projectInView.geoblocsData.collectionId,
-                appData.projectInView.geoblocsData.tokenId[0],
+                accCreationResult.address,
+                appData.projectInView.geoblocsData.tokenId,
                 formData.quantity,
                 details.payer.email_address,
                 "paypal",
@@ -621,9 +615,8 @@ function ProjectView(props) {
           // transfer the tokens
           const transferResult = await transferToken(
             projectId,
-            blockchainAcc.keyfile.address,
-            appData.projectInView.geoblocsData.collectionId,
-            appData.projectInView.geoblocsData.tokenId[0],
+            blockchainAcc.address,
+            appData.projectInView.geoblocsData.tokenId,
             formData.quantity,
             details.payer.email_address,
             "paypal",
@@ -877,10 +870,16 @@ function ProjectView(props) {
                       <span className="text-gGreen">Description</span>
                     </p>
                     <p className="text-lg text-center">
-                      {textTrimmer(
-                        appData.projectInView.metadata.description,
-                        550,
-                      ) || <>No Description Available.</>}
+                      {appData.projectInView.metadata.description ? (
+                        <>
+                          {textTrimmer(
+                            appData.projectInView.metadata.description,
+                            550,
+                          )}
+                        </>
+                      ) : (
+                        <>No Description Available.</>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -889,9 +888,7 @@ function ProjectView(props) {
                 <div className="grid items-center justify-center w-full grid-cols-1 grid-rows-3 my-4 lg:gap-y- gap-y-4 lg:w-full lg:grid-cols-1 lg:py-2">
                   <div className="flex flex-row items-center w-full py-2 space-x-4 text-black border-2 border-gGray">
                     <img className="w-8" src={ownershipIcon}></img>
-                    <p className="text-xl font-bold text-gGreen">
-                      Ownership
-                    </p>
+                    <p className="text-xl font-bold text-gGreen">Ownership</p>
                     <p className="text-xl capitalize">
                       {appData.projectInView.metadata.ownership}
                     </p>

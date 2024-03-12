@@ -4,11 +4,18 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AWS from "aws-sdk";
 import { v4 as uuidv4 } from "uuid";
+import { ethers } from "ethers";
 
 import { generateAccount, SignatureType } from "@unique-nft/accounts";
 import { waitReady } from "@polkadot/wasm-crypto";
 import { KeyringProvider } from "@unique-nft/accounts/keyring";
 import Sdk from "@unique-nft/sdk";
+import {
+  CollectionHelpersFactory,
+  UniqueNFTFactory,
+} from "@unique-nft/solidity-interfaces";
+// import { JsonRpcProvider } from "ethers";
+import contractABI from "./utils/contractABI.json";
 
 import Loading from "./components/Loading";
 import Navbar from "./components/Navbar";
@@ -37,7 +44,9 @@ export const AppProvider = ({ children }) => {
     afterLoginRedirectURL: null,
   });
 
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  // const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = "http://localhost:3010";
+  const contractAddress = "0x10Bb545Dbf0b0B0936E2516113180EfFBe12a74A";
 
   const getApplicationCount = async () => {
     try {
@@ -192,15 +201,20 @@ export const AppProvider = ({ children }) => {
 
   const addNewSubscriber = async (email) => {
     try {
-      const response = await axios.post(backendUrl + "/api/user/add-subscriber", {
-        email: email,
-      });
+      const response = await axios.post(
+        backendUrl + "/api/user/add-subscriber",
+        {
+          email: email,
+        },
+      );
       const newSubscriber = response.data;
       console.log("New subscriber created: ", newSubscriber);
       toast.success("Subscribed successfully");
       return true;
     } catch (error) {
-      toast.error("Error [AC101]: Error occurred while creating new subscriber");
+      toast.error(
+        "Error [AC101]: Error occurred while creating new subscriber",
+      );
       console.log("Error occurred while creating new subscriber: ", error);
       return false;
     }
@@ -559,9 +573,9 @@ export const AppProvider = ({ children }) => {
               pricePerGeobloc: 0,
               collectionId: 0,
               tokenName: "",
+              tokenId: 0,
               description: "",
               tickerSymbol: "",
-              tokenId: [],
             },
             sponsors: [],
             seasons: [],
@@ -1302,7 +1316,7 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const updateTokenIdInProject = async (projectId, tokenId) => {
+  const updateTokenIdInProject = async (projectId, tokenId, totalSupply) => {
     try {
       const token = getTokenFromLocalStorage();
       if (token !== false) {
@@ -1311,6 +1325,7 @@ export const AppProvider = ({ children }) => {
           {
             projectId: projectId,
             tokenId: tokenId,
+            totalSupply: totalSupply,
           },
           {
             headers: {
@@ -1487,21 +1502,31 @@ export const AppProvider = ({ children }) => {
   // Geoblocs Management
   // ==============================
 
-  const createNewUniqueNetworkAcc = async (name) => {
+  const createNewUniqueNetworkAcc = async () => {
     console.log("Generating New Account....");
     try {
       await waitReady(); // Wait for the WASM interface to initialize
 
-      const account = await generateAccount({
-        pairType: SignatureType.Sr25519,
-        meta: {
-          name: name,
-        },
-      });
+      const account = ethers.Wallet.createRandom();
 
-      console.log("NEW ACC: ", account);
+      console.log(
+        "NEW ACC: ",
+        account,
+        account.address,
+        account.privatekey,
+        account._signingKey().privateKey,
+        account._mnemonic(),
+      );
 
-      return account;
+      const walletObject = {
+        address: account.address,
+        privateKey: account._signingKey().privateKey,
+        mnemonic: account._mnemonic(),
+      };
+
+      console.log("Wallet Object: ", walletObject);
+
+      return walletObject;
     } catch (error) {
       console.error("Error generating account:", error);
       return false;
@@ -1549,6 +1574,7 @@ export const AppProvider = ({ children }) => {
     const balance = await sdk.balance.get({
       address: appData.userProfile.blockchainAcc.keyfile.address,
     });
+
     setAppData((prevState) => {
       return {
         ...prevState,
@@ -1610,85 +1636,130 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const createNewNftCollection = async (
-    name,
-    description,
-    tokenPrefix,
-    projectId,
-    geoblocsData,
-    totalSupply,
-  ) => {
-    console.log(
-      "Creating new collection: ",
-      name,
-      description,
-      tokenPrefix,
-      projectId,
-      geoblocsData,
-      totalSupply,
-    );
+  const createNewNftCollection = async (id, totalSupply, projectId) => {
+    console.log("Creating new collection: ", id, totalSupply);
     try {
-      const result =
-        await appData.sdk.refungible.createCollection.submitWaitResult({
-          address: appData.userProfile.blockchainAcc.keyfile.address,
-          name: name,
-          description: description,
-          tokenPrefix: tokenPrefix,
-        });
-      const { collectionId, amount } = result.parsed;
-      console.log("Collection Created: ", result);
-      console.log("Collection ID: ", collectionId);
-      toast.success("NFT Collection created successfully");
-      const addResult = await addNewCollectionInDb(projectId, result);
+      let provider;
+      if (window.ethereum) {
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        console.log("Provider: ", provider);
+      } else {
+        alert("Install Metamask");
+        return;
+      }
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        provider.getSigner(),
+      );
+      const tx = await contract.mint(
+        "0x46BeeE27f124A2a71A6757E7fb9EF778D28800a8",
+        id,
+        totalSupply,
+        "0x",
+      );
+      await tx.wait();
+      console.log("NFT minted successfully!");
+
+      let tokenData = {
+        id: id,
+        totalSupply: totalSupply,
+      };
+
+      // add to DB
+      const addResult = await addNewCollectionInDb(projectId, tokenData);
       if (addResult === true) {
         console.log("New Collection data updated in DB successfully");
       } else {
         console.log("Failed to update new collection data in the backend");
         return false;
       }
-      geoblocsData.collectionId = collectionId;
-      geoblocsData.tokenName = name;
-      geoblocsData.description = description;
-      geoblocsData.tickerSymbol = tokenPrefix;
-      geoblocsData.totalSupply = totalSupply;
-      const updateResult = await updateProjectGeoblocsData(
-        projectId,
-        geoblocsData,
-      );
-      if (updateResult === true) {
-        const newNftResult = await createNewNFT(
+
+      const updateResult = await updateCollectionInDb(projectId, tokenData);
+      if (updateResult.status === "success") {
+        const tokenProjectUpdateResult = await updateTokenIdInProject(
           projectId,
-          collectionId,
+          id,
           totalSupply,
         );
-        if (newNftResult === true) {
-          const projectData = await getProjectById(projectId);
-          if (projectData.status === "success") {
-            setAppData((prevState) => {
-              return {
-                ...prevState,
-                projectInView: projectData.project,
-              };
-            });
-            updateProjectsArrayInState(projectId, projectData.project);
-          } else {
-            console.log("Failed to fetch project data from backend");
-            return false;
-          }
+        if (tokenProjectUpdateResult.status === "success") {
+          return true;
         } else {
-          console.log("Failed to create new NFT");
+          console.log("Failed to update token data in project");
           return false;
         }
       } else {
-        console.log("Failed to update project data in the backend");
+        console.log("Error updating the collection with token data: ");
         return false;
       }
-      return true;
     } catch (error) {
       console.error("Error creating collection:", error);
       toast.error("Error creating collection. Try again later.");
       return false;
     }
+    // try {
+    //   const result =
+    //     await appData.sdk.refungible.createCollection.submitWaitResult({
+    //       address: appData.userProfile.blockchainAcc.keyfile.address,
+    //       name: name,
+    //       description: description,
+    //       tokenPrefix: tokenPrefix,
+    //     });
+    //   const { collectionId, amount } = result.parsed;
+    //   console.log("Collection Created: ", result);
+    //   console.log("Collection ID: ", collectionId);
+    //   toast.success("NFT Collection created successfully");
+    //   const addResult = await addNewCollectionInDb(projectId, result);
+    //   if (addResult === true) {
+    //     console.log("New Collection data updated in DB successfully");
+    //   } else {
+    //     console.log("Failed to update new collection data in the backend");
+    //     return false;
+    //   }
+    //   geoblocsData.collectionId = collectionId;
+    //   geoblocsData.tokenName = name;
+    //   geoblocsData.description = description;
+    //   geoblocsData.tickerSymbol = tokenPrefix;
+    //   geoblocsData.totalSupply = totalSupply;
+    //   const updateResult = await updateProjectGeoblocsData(
+    //     projectId,
+    //     geoblocsData,
+    //   );
+    //   if (updateResult === true) {
+    //     const newNftResult = await createNewNFT(
+    //       projectId,
+    //       collectionId,
+    //       totalSupply,
+    //     );
+    //     if (newNftResult === true) {
+    //       const projectData = await getProjectById(projectId);
+    //       if (projectData.status === "success") {
+    //         setAppData((prevState) => {
+    //           return {
+    //             ...prevState,
+    //             projectInView: projectData.project,
+    //           };
+    //         });
+    //         updateProjectsArrayInState(projectId, projectData.project);
+    //       } else {
+    //         console.log("Failed to fetch project data from backend");
+    //         return false;
+    //       }
+    //     } else {
+    //       console.log("Failed to create new NFT");
+    //       return false;
+    //     }
+    //   } else {
+    //     console.log("Failed to update project data in the backend");
+    //     return false;
+    //   }
+    //   return true;
+    // } catch (error) {
+    //   console.error("Error creating collection:", error);
+    //   toast.error("Error creating collection. Try again later.");
+    //   return false;
+    // }
   };
 
   const createNewNFT = async (projectId, collectionId, amount) => {
@@ -1721,7 +1792,7 @@ export const AppProvider = ({ children }) => {
   const getAllProjectsForUsers = async () => {
     try {
       const response = await axios.get(
-        backendUrl + "/api/user/get-all-projects",
+        "https://api.geoblocs.com" + "/api/user/get-all-projects",
       );
       if (response.data.status === "success") {
         setAppData((prevState) => {
@@ -1745,7 +1816,6 @@ export const AppProvider = ({ children }) => {
   const transferToken = async (
     projectId,
     toAddress,
-    collectionId,
     tokenId,
     amount,
     email,
@@ -1759,36 +1829,41 @@ export const AppProvider = ({ children }) => {
       });
       console.log("Transfering token: ", projectId, toAddress, amount);
 
-      const KROptions = {
-        type: "sr25519",
-      };
-      console.log("1");
-      const provider = new KeyringProvider(KROptions);
-      console.log("2");
-      await provider.init();
-      console.log("3");
-      const signer = provider.addSeed(process.env.REACT_APP_ADMIN_SEED);
-      console.log(
-        "4",
-        process.env.REACT_APP_ADMIN_SEED,
-        process.env.REACT_APP_ADMIN_ADDRESS,
+      // =======
+
+      const providerUrl =
+        "https://polygon-mumbai.infura.io/v3/28480b828e924a83b6cf1f747c1902ef";
+      const provider = new ethers.providers.JsonRpcProvider(providerUrl);
+
+      // Create a wallet instance from the private key and connect it to the provider
+      const wallet = new ethers.Wallet(
+        "c60dafd97c1c3195a53f7ad2abaff9763cb95524a64ac96967f2b389757b0ae9",
+        provider,
       );
-      const options = {
-        baseUrl: process.env.REACT_APP_BLOCKCHAIN_URL,
-        signer: signer,
-      };
-      console.log("5");
-      const sdk = new Sdk(options);
-      console.log("6");
-      const result = await sdk.refungible.transferToken.submitWaitResult({
-        address: process.env.REACT_APP_ADMIN_ADDRESS,
-        to: toAddress,
-        collectionId: collectionId,
-        tokenId: tokenId,
-        amount: amount,
-      });
-      console.log("Tranferred: ", result.parsed);
-      toast.success("Token transferred successfully");
+
+      // Create an instance of the contract
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        wallet,
+      );
+
+      // Assuming the contract has a `transfer` function (like in ERC-20 tokens)
+      // Adjust the function name and arguments as per your contract
+      const tx = await contract.safeTransferFrom(
+        "0x46BeeE27f124A2a71A6757E7fb9EF778D28800a8",
+        toAddress,
+        tokenId,
+        amount,
+        "0x",
+      );
+
+      // Wait for the transaction to be mined
+      const receipt = await tx.wait();
+
+      console.log("Transaction Receipt:", receipt);
+
+      // =======
 
       const txnData = {
         uuid: crypto.randomUUID(),
@@ -1798,11 +1873,11 @@ export const AppProvider = ({ children }) => {
         txnMode: mode,
         txnData: {
           toAddress: toAddress,
-          collectionId: collectionId,
           tokenId: tokenId,
           amount: amount,
           misc: miscData,
         },
+        receipt: receipt,
         txnDate: new Date(),
       };
 
@@ -1825,10 +1900,48 @@ export const AppProvider = ({ children }) => {
 
   const geoblocsDataAndUpdate = async (projectId) => {};
 
+  const initFunc = async () => {
+    try {
+      const KROptions = {
+        type: "sr25519",
+      };
+      const provider = new JsonRpcProvider("https://rpc.unique.network");
+
+      // const provider = new KeyringProvider(KROptions);
+      await provider.init();
+      const signer = provider.addSeed(process.env.REACT_APP_ADMIN_SEED);
+      const options = {
+        baseUrl: process.env.REACT_APP_BLOCKCHAIN_URL,
+        signer: signer,
+      };
+      const sdk = new Sdk(options);
+      const wallet = new ethers.Wallet(
+        process.env.REACT_APP_ADMIN_SEED,
+        provider,
+      );
+      console.log("Wallet Address: ", wallet);
+      await sdk.collection.addAdmin({
+        collectionId: 361,
+        newAdmin: wallet.address,
+      });
+
+      const collectionHelpers = await CollectionHelpersFactory(wallet);
+      await (
+        await collectionHelpers.makeCollectionERC721MetadataCompatible(
+          Address.collection.idToAddress(361),
+          "",
+        )
+      ).wait();
+    } catch (error) {
+      console.log("Error in initFunc: ", error);
+    }
+  };
+
   useEffect(() => {
     if (appData.userProfile && appData.userProfile.blockchainAcc) {
       if (Object.keys(appData.userProfile.blockchainAcc).length > 0) {
-        connectToBlockchainAndGetData();
+        // connectToBlockchainAndGetData();
+        console.log("Connecting to blockchain and getting data");
       } else {
         toast.error("Could not fetch blockchain data");
       }
@@ -1888,17 +2001,18 @@ export const AppProvider = ({ children }) => {
         createNewNftCollection,
         transferToken,
         userRegisterQuietMode,
+        createNewUniqueNetworkAcc,
       }}
     >
       <div className="">
         {loading.status === "true" ? (
           <Loading message={loading.message} />
         ) : (
-          <>
+          <div>
             <Toaster />
             <Navbar />
             {children}
-          </>
+          </div>
         )}
       </div>
     </AppContext.Provider>

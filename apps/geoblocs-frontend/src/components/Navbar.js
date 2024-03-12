@@ -2,6 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../AppContext";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import {
+  useUpdateMetadata,
+  useContract,
+  Web3Button,
+} from "@thirdweb-dev/react";
+
 import logo from "../assets/img/full-logo-v2.png";
 import rightArrow from "../assets/svg/right-arrow.svg";
 import mobileMenu from "../assets/svg/mobile-menu.svg";
@@ -10,7 +16,22 @@ import rightArrowG from "../assets/svg/right-arrow-g.svg";
 function Navbar(props) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { setLoading, loading, appData, logoutUser } = useContext(AppContext);
+  const {
+    setLoading,
+    loading,
+    appData,
+    logoutUser,
+    createNewUniqueNetworkAcc,
+  } = useContext(AppContext);
+
+  const contractAddress = "0xBfcb81E6f071B8aB026496495bab6Cc4447d4d23";
+  const { contract } = useContract(contractAddress);
+  const {
+    mutateAsync: updateMetadata,
+    isLoading,
+    error,
+  } = useUpdateMetadata(contract);
+
   return (
     <>
       {location.pathname.startsWith("/platform/projects/view/") ? null : ( // outer container
@@ -36,6 +57,28 @@ function Navbar(props) {
               >
                 Home
               </p>
+              {/* <div
+              // style={{ zIndex: 99999 }}
+              // onClick={() => {
+              //   console.log("Gen Acc");
+              //   createNewUniqueNetworkAcc();
+              // }}
+              >
+                <Web3Button
+                  contractAddress={contractAddress}
+                  action={() =>
+                    updateMetadata({
+                      name: "OldG",
+                      description: "This NFT collection has been abandoned",
+                      image:
+                        "https://4318bd47272bd9c4cee78ce3b5bb1fe8.ipfscdn.io/ipfs/QmYVc7voKxGb57ACGjtofA79MreP1EnMzg1pE3c5gS9DPz/forest.jpg",
+                      external_link: "https://#",
+                    })
+                  }
+                >
+                  Update Metadata
+                </Web3Button>
+              </div> */}
               <p
                 className={
                   location.pathname === "/stakeholders"

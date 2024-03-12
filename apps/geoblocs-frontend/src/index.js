@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -14,7 +15,12 @@ if (process.env.REACT_APP_ENVIRONMENT === "production") {
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <ThirdwebProvider
+        activeChain="polygon"
+        clientId="4318bd47272bd9c4cee78ce3b5bb1fe8"
+      >
+        <App />
+      </ThirdwebProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

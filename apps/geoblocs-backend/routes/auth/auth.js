@@ -56,6 +56,16 @@ router.post("/signin", async (req, res) => {
 
     // Compare the provided password with the hashed password in the database
     const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    // decrypt the password
+    const decryptedPassword = crypto.createDecipheriv(
+      "aes-256-ctr",
+      process.env.ENCRYPTION_KEY,
+      Buffer.from(user.password, "hex")
+    );
+
+    // console.log("decryptedPassword: ", decryptedPassword);
+
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid email or password" });
     }

@@ -49,10 +49,14 @@ import monitoringimg from "../../assets/img/dashboard/monitoringimg.png";
 import projectdataimg from "../../assets/img/dashboard/projectdataimg.png";
 import sponsorsimg from "../../assets/img/dashboard/sponsorsimg.png";
 import "../../utils/TooltipStyles.css";
+import ownershipIcon from "../../assets/img/dashboard/projectOwnership.png";
+import sizeIcon from "../../assets/img/dashboard/projectSize.png";
+import interventionIcon from "../../assets/img/dashboard/interventionType.png";
 
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import MapComponent from "../../components/platform/projectView/MapComponent";
 import { qrCodes } from "../../utils/qrcodes";
+import { textTrimmer } from "../../utils/utils";
 
 function ProjectView(props) {
   let position = [51.903614, -8.468399];
@@ -813,7 +817,7 @@ function ProjectView(props) {
           {/* title container */}
           <div className="flex flex-col">
             {/* top gray container */}
-            <div className="mb-16 flex w-full flex-col items-center justify-center space-y-10 bg-[#A1AEB4] px-2 py-8 lg:flex-row lg:justify-between lg:space-x-8 lg:space-y-0 lg:px-16">
+            <div className="mb-16 flex w-full flex-col items-center justify-center space-y-10 bg-[#B5BFA4] px-2 py-8 lg:flex-row lg:justify-between lg:space-x-8 lg:space-y-0 lg:px-16">
               {/* back button container */}
               <div className="flex flex-row items-center space-x-4">
                 <img
@@ -859,82 +863,101 @@ function ProjectView(props) {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-between px-8 space-y-4 lg:flex-row lg:space-x-28 lg:space-y-0 lg:px-32 2xl:flex-row">
-              {/* left - title sub-container */}
-              <div className="flex w-[60%] flex-col space-y-4 lg:items-start">
-                <div className="flex flex-col items-center justify-center space-y-2">
-                  <p className="text-xl font-bold">Project Description</p>
-                  <p className="text-lg text-center">
-                    {appData.projectInView.metadata.description || (
-                      <>
-                        The region's habitat is comprised of Cameroon Highlands
-                        forests. This region has no Intact Forest. The area has
-                        a predominantly equatorial climate with dry winters. It
-                        is part of the Tropical and Subtropical Moist Broadleaf
-                        Forests biome. The location is predominantly land area.
-                        Area of 3.24 ha located in a mountainous area.
-                      </>
-                    )}
-                  </p>
+            <div className="flex flex-col items-center justify-between px-8 border-2 roun gap-y-4 border-gGray lg:mx-32 lg:flex-row lg:gap-x-10 lg:gap-y-0 2xl:flex-row">
+              {/* left container for carousel */}
+              <Carousel imageUrls={appData.projectInView.gallery} />
+
+              {/* right - title sub-container */}
+              <div className="flex flex-col w-full">
+                {/*  for description */}
+                <div className="flex flex-col w-full p-4 space-y-4 border-2 border-gGray lg:items-start">
+                  <div className="flex flex-col items-center justify-center space-y-2">
+                    <p className="text-2xl font-bold">
+                      Project&nbsp;
+                      <span className="text-gGreen">Description</span>
+                    </p>
+                    <p className="text-lg text-center">
+                      {appData.projectInView.metadata.description ? (
+                        <>
+                          {textTrimmer(
+                            appData.projectInView.metadata.description,
+                            550,
+                          )}
+                        </>
+                      ) : (
+                        <>No Description Available.</>
+                      )}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              {/* right container */}
-              {/* map container */}
-              <div className="flex flex-col items-center justify-center w-full">
-                <MapComponent
-                  lat={mapCenter[0]}
-                  lon={mapCenter[1]}
-                  label={appData.projectInView.metadata.projectName}
-                />
-
-                {/* map container */}
-                {/* <MapContainer
-                  center={mapCenter}
-                  zoom={13}
-                  style={{
-                    height: "50vh",
-                    width: "100%",
-                    borderRadius: "10px",
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                  }}
-                >
-                  <ChangeView center={mapCenter} />
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  />
-                  <Marker position={mapCenter} icon={customIcon}>
-                    <Tooltip
-                      permanent
-                      interactive
-                      direction="top"
-                      offset={[0, -40]}
-                    >
-                      {appData.projectInView.metadata.projectName}
-                    </Tooltip>
-                    <Popup>
-                      A pretty CSS3 popup. <br /> Easily customizable.
-                    </Popup>
-                  </Marker>
-                </MapContainer> */}
-
-                {/* <button
-                  className="px-6 py-0 my-0 text-xs font-bold text-white capitalize border-0 rounded-full w-fit bg-gGreen lg:px-6 lg:py-1"
-                  onClick={() => {
-                    console.log("button clicked position", position);
-                    setMapCenter(latLong);
-                  }}
-                >
-                  Recenter
-                </button> */}
+                {/* green* container - ownership / size / intervention */}
+                <div className="grid items-center justify-center w-full grid-cols-1 grid-rows-3 my-4 lg:gap-y- gap-y-4 lg:w-full lg:grid-cols-1 lg:py-2">
+                  <div className="flex flex-row items-center w-full py-2 space-x-4 text-black border-2 border-gGray">
+                    <img className="w-8" src={ownershipIcon}></img>
+                    <p className="text-xl font-bold text-gGreen">Ownership</p>
+                    <p className="text-xl capitalize">
+                      {appData.projectInView.metadata.ownership}
+                    </p>
+                  </div>
+                  <div className="flex flex-row items-center w-full py-2 space-x-4 text-black border-2 border-gGray">
+                    <img className="w-8" src={sizeIcon}></img>
+                    <p className="text-xl font-bold text-gGreen">
+                      Project Size
+                    </p>
+                    <p className="text-xl capitalize">
+                      {appData.projectInView.metadata.size} Ha
+                    </p>
+                  </div>
+                  <div className="flex flex-row items-center w-full py-2 space-x-4 text-black border-2 border-gGray">
+                    <img className="w-8" src={interventionIcon}></img>
+                    <p className="text-xl font-bold text-gGreen">
+                      Intervention
+                    </p>
+                    <p className="text-xl capitalize">
+                      {appData.projectInView.metadata.interventionType || null}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
+          {/* charts container */}
+          <div className="flex flex-col items-center justify-center my-10 space-x-0 space-y-16 lg:flex-row lg:gap-x-8 lg:space-y-0">
+            {/* project status chart */}
+            <div className="flex flex-col items-center justify-center space-y-6 w-fit focus:outline-none">
+              <StatusChart
+                completed={appData.projectInView.metadata.projectStatus}
+                inProgress={100 - appData.projectInView.metadata.projectStatus}
+              />
+              <p className="text-2xl font-bold text-center">
+                Project <span className="text-gBlue">Status</span>
+              </p>
+            </div>
+
+            {/* geoblocs distribution chart */}
+            <div className="flex flex-col items-center justify-center space-y-6 w-fit focus:outline-none">
+              <GeoblocsChart
+                totalSupply={appData.projectInView.geoblocsData.totalSupply}
+                purchased={appData.projectInView.geoblocsData.purchased}
+              />
+              <p className="text-2xl font-bold text-center">
+                <span className="text-gGreen">Geoblocs</span> Distribution
+              </p>
+            </div>
+
+            {/* nft image */}
+            <div>
+              <img
+                src={appData.projectInView.metadata.nftImage || null}
+                className="border-8 border-black h-96 w-96"
+              ></img>
+            </div>
+          </div>
+
           {/* geoblocs stats */}
-          <div className="mt-16 grid w-full grid-cols-1 items-center justify-center gap-y-8 bg-[#A1AEB4] py-6 lg:grid-cols-4 lg:gap-x-16 lg:gap-y-0 lg:px-60">
+          <div className="mt-16 grid w-full grid-cols-1 items-center justify-center gap-y-8 bg-[#B5BFA4] py-6 lg:grid-cols-4 lg:gap-x-16 lg:gap-y-0 lg:px-60">
             {/* buy geoblocs button */}
             <div className="flex flex-col items-center justify-center space-y-2">
               <button
@@ -1008,8 +1031,9 @@ function ProjectView(props) {
                   {appData.loginMode !== "user" ? (
                     <div className="flex flex-col items-center justify-center space-y-4">
                       <p>
-                        €{appData.projectInView.geoblocsData.pricePerGeobloc}{" "}
-                        per Geobloc
+                        €&nbsp;
+                        {appData.projectInView.geoblocsData.pricePerGeobloc} per
+                        Geobloc
                       </p>
                       <input
                         type="text"
@@ -1032,11 +1056,20 @@ function ProjectView(props) {
                         }}
                       ></input>
                       <p className="font-bold text-md lg:text-xl">
-                        {(
+                        {(appData.projectInView.geoblocsData.pricePerGeobloc &&
+                          formData.quantity &&
                           appData.projectInView.geoblocsData.pricePerGeobloc *
-                          formData.quantity
-                        ).toFixed(3) || 0}{" "}
-                        EUR
+                            formData.quantity ===
+                            0) ||
+                        appData.projectInView.geoblocsData.pricePerGeobloc *
+                          formData.quantity >
+                          0
+                          ? (
+                              appData.projectInView.geoblocsData
+                                .pricePerGeobloc * formData.quantity
+                            ).toFixed(3)
+                          : 0}
+                        &nbsp;EUR
                       </p>
                       {/* <button className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen">
                         Proceed to Checkout
@@ -1176,68 +1209,64 @@ function ProjectView(props) {
             ) : null}
           </div>
 
-          {/* charts container */}
-          <div className="flex flex-col items-center justify-center my-10 space-x-0 space-y-16 lg:flex-row lg:space-y-0">
-            {/* project status chart */}
-            <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
-              <StatusChart
-                completed={appData.projectInView.metadata.projectStatus}
-                inProgress={100 - appData.projectInView.metadata.projectStatus}
+          {/* map and green container */}
+          <div className="flex flex-col items-center justify-center w-full px-4 bg-white lg:flex-row lg:space-x-32 lg:px-32 lg:py-16">
+            {/* map container */}
+            <div className="flex flex-col items-center justify-center w-full mt-10 md:mt-10 lg:mt-0">
+              <MapComponent
+                lat={mapCenter[0]}
+                lon={mapCenter[1]}
+                label={appData.projectInView.metadata.projectName}
               />
-              <p className="text-2xl font-bold text-center">
-                Project <span className="text-gBlue">Status</span>
-              </p>
-            </div>
 
-            {/* geoblocs distribution chart */}
-            <div className="flex flex-col items-center justify-center w-full space-y-6 focus:outline-none">
-              <GeoblocsChart
-                totalSupply={appData.projectInView.geoblocsData.totalSupply}
-                purchased={appData.projectInView.geoblocsData.purchased}
-              />
-              <p className="text-2xl font-bold text-center">
-                <span className="text-gGreen">Geoblocs</span> Distribution
-              </p>
-            </div>
-          </div>
+              {/* map container */}
+              {/* <MapContainer
+                  center={mapCenter}
+                  zoom={13}
+                  style={{
+                    height: "50vh",
+                    width: "100%",
+                    borderRadius: "10px",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <ChangeView center={mapCenter} />
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  <Marker position={mapCenter} icon={customIcon}>
+                    <Tooltip
+                      permanent
+                      interactive
+                      direction="top"
+                      offset={[0, -40]}
+                    >
+                      {appData.projectInView.metadata.projectName}
+                    </Tooltip>
+                    <Popup>
+                      A pretty CSS3 popup. <br /> Easily customizable.
+                    </Popup>
+                  </Marker>
+                </MapContainer> */}
 
-          {/* gallery and green container */}
-          <div className="flex w-full flex-col items-center justify-center bg-[#A1AEB4] px-4 lg:flex-row lg:space-x-32 lg:px-32 lg:py-16">
-            <Carousel imageUrls={appData.projectInView.gallery} />
-
-            {/* green* container */}
-            <div className="grid items-center justify-center grid-cols-1 grid-rows-3 my-16 space-y-12 lg:grid-cols-1 lg:space-y-6 lg:py-12">
-              <div className="flex flex-col items-center justify-center space-y-2 text-black">
-                <p className="text-2xl font-bold text-center underline underline-offset-2">
-                  Ownership
-                </p>
-                <p className="text-2xl font-semibold capitalize">
-                  {appData.projectInView.metadata.ownership}
-                </p>
-              </div>
-              <div className="flex flex-col items-center justify-center space-y-2 text-black">
-                <p className="text-2xl font-bold text-center underline underline-offset-2">
-                  Project Size
-                </p>
-                <p className="text-2xl font-semibold capitalize">
-                  {appData.projectInView.metadata.size} Ha
-                </p>
-              </div>
-              <div className="flex flex-col items-center justify-center space-y-2 text-black">
-                <p className="text-2xl font-bold text-center underline underline-offset-2">
-                  Intervention Type
-                </p>
-                <p className="text-2xl font-semibold capitalize">
-                  {appData.projectInView.metadata.interventionType || null}
-                </p>
-              </div>
+              {/* <button
+                  className="px-6 py-0 my-0 text-xs font-bold text-white capitalize border-0 rounded-full w-fit bg-gGreen lg:px-6 lg:py-1"
+                  onClick={() => {
+                    console.log("button clicked position", position);
+                    setMapCenter(latLong);
+                  }}
+                >
+                  Recenter
+                </button> */}
             </div>
           </div>
 
           {subWindow === "default" ? (
             <>
               {/* 4 option container */}
-              <div className="flex flex-col items-center justify-center py-12 pb-20 mt-8 space-y-6 lg:flex-row lg:space-x-16 lg:space-y-0">
+              <div className="flex flex-col items-center justify-center py-12 pb-20 mt-8 space-y-6 lg:mt-0 lg:flex-row lg:space-x-16 lg:space-y-0 lg:pt-0">
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}
@@ -1281,13 +1310,13 @@ function ProjectView(props) {
                     setSubWindow("environment");
                   }}
                 >
-                  <p className="text-xl font-bold text-black">Environment</p>
+                  <p className="text-xl font-bold text-black">Project Data</p>
                   <img src={projectdataimg} alt="Sponsors" className="w-40" />
                 </motion.div>
               </div>
 
               {/* 3 button container */}
-              <div className="flex flex-col items-center justify-center w-full space-x-0 space-y-6 pb-28 lg:flex-row lg:space-x-12 lg:space-y-0">
+              <div className="flex flex-col items-center justify-center w-full space-x-0 space-y-6 pb-28 lg:flex-row lg:space-x-12 lg:space-y-0 lg:pb-20">
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 1.0 }}

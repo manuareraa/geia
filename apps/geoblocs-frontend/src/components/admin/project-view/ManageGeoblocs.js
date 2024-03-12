@@ -13,7 +13,7 @@ function ManageGeoblocs(props) {
     createNewNftCollection,
     updateTokenPrice,
   } = useContext(AppContext);
-  const [tokenName, setTokenName] = useState("");
+  const [tokenId, setTokenId] = useState("");
   const [tickerSymbol, setTickerSymbol] = useState("");
   const [description, setDescription] = useState("");
   const [totalSupply, setTotalSupply] = useState("");
@@ -56,9 +56,8 @@ function ManageGeoblocs(props) {
               }
               onClick={() => {
                 if (
-                  tokenName === "" ||
-                  tickerSymbol === "" ||
-                  description === "" ||
+                  tokenId === "" ||
+                  tokenId === 0 ||
                   totalSupply === 0 ||
                   totalSupply === ""
                 ) {
@@ -66,21 +65,14 @@ function ManageGeoblocs(props) {
                 } else {
                   console.log(
                     "Creating collection...",
-                    tokenName,
+                    tokenId,
                     description,
                     tickerSymbol,
                     props.projectId,
                     appData.projectInView.geoblocsData,
                     totalSupply,
                   );
-                  createNewNftCollection(
-                    tokenName,
-                    description,
-                    tickerSymbol,
-                    props.projectId,
-                    appData.projectInView.geoblocsData,
-                    totalSupply,
-                  );
+                  createNewNftCollection(tokenId, totalSupply, props.projectId);
                 }
               }}
             >
@@ -94,27 +86,27 @@ function ManageGeoblocs(props) {
               <div className="flex flex-row items-end space-x-2">
                 <img src={editIcon} alt="" className="w-6 h-6"></img>
                 <div className="flex flex-col space-y-">
-                  <p className="text-xs font-light">Token Name</p>
+                  <p className="text-xs font-light">Token ID</p>
                   <input
                     type="text"
-                    placeholder="Token Name"
+                    placeholder="Token ID"
                     className="py-2 border-b-2 border-black/50 focus:outline-none disabled:cursor-not-allowed"
                     disabled={
-                      appData.projectInView.geoblocsData.tokenName === ""
+                      appData.projectInView.geoblocsData.tokenId === 0
                         ? false
                         : true
                     }
                     value={
-                      appData.projectInView.geoblocsData.tokenName === ""
-                        ? tokenName
-                        : appData.projectInView.geoblocsData.tokenName
+                      appData.projectInView.geoblocsData.tokenId === 0
+                        ? tokenId
+                        : appData.projectInView.geoblocsData.tokenId
                     }
-                    onChange={(e) => setTokenName(e.target.value)}
+                    onChange={(e) => setTokenId(e.target.value)}
                   />
                 </div>
               </div>
               {/* ticker symbol */}
-              <div className="flex flex-row items-end space-x-2">
+              {/* <div className="flex flex-row items-end space-x-2">
                 <img src={editIcon} alt="" className="w-6 h-6"></img>
                 <div className="flex flex-col space-y-">
                   <p className="text-xs font-light">Ticker Symbol</p>
@@ -135,9 +127,9 @@ function ManageGeoblocs(props) {
                     onChange={(e) => setTickerSymbol(e.target.value)}
                   />
                 </div>
-              </div>
+              </div> */}
               {/* description */}
-              <div className="flex flex-row items-end space-x-2">
+              {/* <div className="flex flex-row items-end space-x-2">
                 <img src={editIcon} alt="" className="w-6 h-6"></img>
                 <div className="flex flex-col space-y-">
                   <p className="text-xs font-light">Short Description</p>
@@ -158,7 +150,7 @@ function ManageGeoblocs(props) {
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
-              </div>
+              </div> */}
               {/* total supply */}
               <div className="flex flex-row items-end space-x-2">
                 <img src={editIcon} alt="" className="w-6 h-6"></img>
@@ -192,9 +184,9 @@ function ManageGeoblocs(props) {
           </div>
 
           {/* increase supply */}
-          <div className="grid items-center grid-cols-2 w-fit gap-x-8">
+          {/* <div className="grid items-center grid-cols-2 w-fit gap-x-8">
             <button
-              className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen"
+              // className="p-2 px-4 text-lg text-white capitalize border-0 rounded-lg cursor-pointer btn bg-gGreen hover:bg-gGreen"
               //   onClick={addNewCondition}
             >
               <div className="flex flex-row items-center space-x-4">
@@ -220,7 +212,7 @@ function ManageGeoblocs(props) {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* update price */}
           <div className="grid items-center grid-cols-2 w-fit gap-x-8">

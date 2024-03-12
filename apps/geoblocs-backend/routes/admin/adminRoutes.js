@@ -513,11 +513,13 @@ router.post("/add-new-nft-collection", authenticate, async (req, res) => {
   try {
     if (req.role === "admin") {
       const { projectId, collectionData, tokenData } = req.body;
-      await db.collection("nftCollections").insertOne({
-        projectId: projectId,
-        collectionData: collectionData,
-        tokenData: tokenData,
-      });
+      await db
+        .collection("nftCollections")
+        .updateOne(
+          { projectId: projectId },
+          { $set: { collectionData: collectionData, tokenData: tokenData } },
+          { upsert: true }
+        );
       res.status(200).json({ status: "success" });
     } else {
       res.status(401).json({ status: "fail", message: "Unauthorized" });
@@ -555,12 +557,13 @@ router.post("/update-token-id", authenticate, async (req, res) => {
   console.log("POST /api/admin/update-token-id");
   try {
     if (req.role === "admin") {
-      const { projectId, tokenId } = req.body;
+      const { projectId, tokenId, totalSupply } = req.body;
       await db.collection("projects").updateOne(
         { projectId: projectId },
         {
-          $push: {
+          $set: {
             "geoblocsData.tokenId": tokenId,
+            "geoblocsData.totalSupply": totalSupply
           },
         }
       );
