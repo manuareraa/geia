@@ -2010,7 +2010,7 @@ export const AppProvider = ({ children }) => {
         ) : (
           <div>
             <Toaster />
-            <Navbar />
+            {/* <Navbar /> */}
             {children}
           </div>
         )}

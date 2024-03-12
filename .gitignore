@@ -122,3 +122,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# michaels system
+apps/gbdata
+*.lockb
+Dockerfile
+docker-compose.yml
+apps/geoblocs-backend/.dockerignore
+apps/geoblocs-frontend/.dockerignore

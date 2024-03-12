@@ -18,6 +18,7 @@ import FlipNumbers from "react-flip-numbers";
 import rightArrow from "../../assets/svg/right-arrow-b.svg";
 import sampleOne from "../../assets/test/sample-one.png";
 import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 import location from "../../assets/svg/location.svg";
 import backCircle from "../../assets/svg/back-circle.svg";
 import sponsorsIcon from "../../assets/svg/sponsors-icon.svg";
@@ -814,6 +815,7 @@ function ProjectView(props) {
     <>
       {Object.keys(appData.projectInView).length > 0 ? (
         <div className="flex flex-col justify-center w-full">
+            <Navbar />
           {/* title container */}
           <div className="flex flex-col">
             {/* top gray container */}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 
 import imageOne from "../../assets/img/team/11.png";
 import imageTwo from "../../assets/img/team/12.png";
@@ -19,8 +20,9 @@ function Team(props) {
   return (
     // outer container
     <div className="flex flex-col justify-center w-full">
+        <Navbar />
       {/* title container */}
-      <div className="flex flex-col items-center justify-center space-y-8 pt-36">
+      <div className="flex flex-col items-center justify-center space-y-8 pt-16">
         {/* title */}
         <p className="font- text-[33px] md:text-[50px] lg:text-[80px]">
           The Team

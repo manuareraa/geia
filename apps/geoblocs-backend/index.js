@@ -11,9 +11,9 @@ const PORT = process.env.PORT || 3010;
 app.use(bodyParser.json());
 app.use(cors());
 
-const mongoURL =
-  "mongodb+srv://manuareraa:BpXYjzdzAYez4N3O@cluster0.w3ygzkx.mongodb.net";
-const dbName = "geoblocs";
+// const mongoURL =
+//   "mongodb+srv://manuareraa:BpXYjzdzAYez4N3O@cluster0.w3ygzkx.mongodb.net";
+// const dbName = "geoblocs";
 
 // Define your routes here
 const apiRoutes = require("./routes/api");
