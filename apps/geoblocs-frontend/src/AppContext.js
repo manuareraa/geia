@@ -46,7 +46,7 @@ export const AppProvider = ({ children }) => {
 
   // const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const backendUrl = "http://localhost:3010";
-  const contractAddress = "0x10Bb545Dbf0b0B0936E2516113180EfFBe12a74A";
+  const contractAddress = "0x39eA07CFEEfcA637aDd4a471e847155A26FBa143";
 
   const getApplicationCount = async () => {
     try {

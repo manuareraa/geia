@@ -139,7 +139,7 @@ router.post("/add-txn", async (req, res) => {
 
     await db.collection("transactions").insertOne(newTxn);
 
-    let userMnemonic = "";
+    let privateKey = "";
     let userPubAddress = "";
     let userPubKey = "";
     const userObj = await db
@@ -150,9 +150,8 @@ router.post("/add-txn", async (req, res) => {
     if (!userObj) {
       userAcc = null;
     } else {
-      userMnemonic = userObj.blockchainAcc.mnemonic;
-      userPubAddress = userObj.blockchainAcc.keyfile.address;
-      userPubKey = userObj.blockchainAcc.publicKey;
+      privateKey = userObj.blockchainAcc.privateKey;
+      userPubAddress = userObj.blockchainAcc.address;
     }
 
     // sending email

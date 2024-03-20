@@ -2,12 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../AppContext";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import {
-  useUpdateMetadata,
-  useContract,
-  Web3Button,
-} from "@thirdweb-dev/react";
-
 import logo from "../assets/img/full-logo-v2.png";
 import rightArrow from "../assets/svg/right-arrow.svg";
 import mobileMenu from "../assets/svg/mobile-menu.svg";
@@ -24,18 +18,10 @@ function Navbar(props) {
     createNewUniqueNetworkAcc,
   } = useContext(AppContext);
 
-  const contractAddress = "0xBfcb81E6f071B8aB026496495bab6Cc4447d4d23";
-  const { contract } = useContract(contractAddress);
-  const {
-    mutateAsync: updateMetadata,
-    isLoading,
-    error,
-  } = useUpdateMetadata(contract);
-
   return (
     <>
       {location.pathname.startsWith("/platform/projects/view/") ? null : ( // outer container
-        <div className="flex flex-row items-center justify-between w-full p-4 bg-white/70 shadow">
+        <div className="flex flex-row items-center justify-between w-full p-4 shadow bg-white/70">
           {/* first half */}
 
           {/* logo container */}
@@ -198,7 +184,7 @@ function Navbar(props) {
             {/* menu container */}
             <img
               src={mobileMenu}
-              className="mobile-button w-6 hover:cursor-pointer lg:hidden"
+              className="w-6 mobile-button hover:cursor-pointer lg:hidden"
               onClick={() => document.getElementById("mobileMenu").showModal()}
             />
           </div>

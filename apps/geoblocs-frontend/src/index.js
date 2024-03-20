@@ -16,7 +16,8 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThirdwebProvider
-        activeChain="polygon"
+        // activeChain="polygon"
+        activeChain="mumbai"
         clientId="4318bd47272bd9c4cee78ce3b5bb1fe8"
       >
         <App />

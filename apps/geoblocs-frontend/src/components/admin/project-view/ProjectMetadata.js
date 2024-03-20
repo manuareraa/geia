@@ -248,8 +248,99 @@ function ProjectMetadata(props) {
               />
             </div>
           </div>
+
+          {/* opensea link */}
+          <div className="flex flex-row items-end space-x-2">
+            <img src={editIcon} alt="" className="w-6 h-6"></img>
+            <div className="flex flex-col space-y-">
+              <p className="text-xs font-light">Opensea Link</p>
+              <input
+                type="text"
+                placeholder="Opensea Link"
+                className="p-2 py-2 border-b-2 h-fit w-fit border-black/50 focus:outline-none"
+                value={projectMetadata.opensea || ""}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      opensea: e.target.value,
+                    };
+                  });
+                }}
+              />
+            </div>
+          </div>
+
+          {/* token Id */}
+          <div className="flex flex-row items-end space-x-2">
+            <img src={editIcon} alt="" className="w-6 h-6"></img>
+            <div className="flex flex-col space-y-">
+              <p className="text-xs font-light">Token ID</p>
+              <input
+                type="number"
+                placeholder="Token ID"
+                className="p-2 py-2 border-b-2 h-fit w-fit border-black/50 focus:outline-none"
+                value={projectMetadata.tokenId || ""}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      tokenId: e.target.value,
+                    };
+                  });
+                }}
+              />
+            </div>
+          </div>
+
+          {/* redeem quota */}
+          <div className="flex flex-row items-end space-x-2">
+            <img src={editIcon} alt="" className="w-6 h-6"></img>
+            <div className="flex flex-col space-y-">
+              <p className="text-xs font-light">Redeem Quota</p>
+              <input
+                type="text"
+                placeholder="Redeem Quota"
+                className="p-2 py-2 border-b-2 h-fit w-fit border-black/50 focus:outline-none"
+                value={projectMetadata.redeemQuota || ""}
+                onChange={(e) => {
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      redeemQuota: e.target.value,
+                    };
+                  });
+                }}
+              />
+            </div>
+          </div>
+
+          {/* buy price */}
+          <div className="flex flex-row items-end space-x-2">
+            <img src={editIcon} alt="" className="w-6 h-6"></img>
+            <div className="flex flex-col space-y-">
+              <p className="text-xs font-light">Buy Price</p>
+              <input
+                type="text"
+                placeholder="Buy Price"
+                className="p-2 py-2 border-b-2 h-fit w-fit border-black/50 focus:outline-none"
+                value={projectMetadata.buyPrice || ""}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  setProjectMetadata((prevState) => {
+                    return {
+                      ...prevState,
+                      buyPrice: e.target.value,
+                    };
+                  });
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* https://testnets.opensea.io/assets/mumbai/0xa9c48c34723c1e6f769dabe2a5a66918463ac1e5/0 */}
 
       {/* baseline image */}
       <div className="flex flex-row space-x-8">
