@@ -92,12 +92,12 @@ function ManageGeoblocs(props) {
                     placeholder="Token ID"
                     className="py-2 border-b-2 border-black/50 focus:outline-none disabled:cursor-not-allowed"
                     disabled={
-                      appData.projectInView.geoblocsData.tokenId === 0
+                      appData.projectInView.geoblocsData.tokenId === 99999
                         ? false
                         : true
                     }
                     value={
-                      appData.projectInView.geoblocsData.tokenId === 0
+                      appData.projectInView.geoblocsData.tokenId === 99999
                         ? tokenId
                         : appData.projectInView.geoblocsData.tokenId
                     }
@@ -247,11 +247,11 @@ function ManageGeoblocs(props) {
                   type="text"
                   placeholder="Price per Geobloc"
                   className="py-2 border-b-2 border-black/50 focus:outline-none disabled:cursor-not-allowed"
-                  disabled={
-                    appData.projectInView.geoblocsData.collectionId === 0
-                      ? true
-                      : false
-                  }
+                  // disabled={
+                  //   appData.projectInView.geoblocsData.collectionId === 0
+                  //     ? true
+                  //     : false
+                  // }
                   value={pricePerGeobloc}
                   onChange={(e) => {
                     console.log("updating PPG", e.target.value);

@@ -46,7 +46,8 @@ export const AppProvider = ({ children }) => {
 
   // const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const backendUrl = "http://localhost:3010";
-  const contractAddress = "0x39eA07CFEEfcA637aDd4a471e847155A26FBa143";
+  // const contractAddress = "0x39eA07CFEEfcA637aDd4a471e847155A26FBa143";
+  const contractAddress = "0x70706EC2a6B49cEf250D3F7eE00955AE21532384"
 
   const getApplicationCount = async () => {
     try {
@@ -573,7 +574,7 @@ export const AppProvider = ({ children }) => {
               pricePerGeobloc: 0,
               collectionId: 0,
               tokenName: "",
-              tokenId: 0,
+              tokenId: 99999,
               description: "",
               tickerSymbol: "",
             },
@@ -714,6 +715,8 @@ export const AppProvider = ({ children }) => {
 
       if (ifPdf && ifPdf === true) {
         params.ContentType = "application/pdf";
+      } else {
+        params.ContentType = "image/png"
       }
 
       console.log("params s3", params);
@@ -1827,12 +1830,12 @@ export const AppProvider = ({ children }) => {
         status: "true",
         message: "Transferring token. Please wait for a minute.",
       });
-      console.log("Transfering token: ", projectId, toAddress, amount);
+      console.log("Transfering token: ", projectId, toAddress, amount, tokenId);
 
       // =======
 
       const providerUrl =
-        "https://polygon-mumbai.infura.io/v3/28480b828e924a83b6cf1f747c1902ef";
+        "https://polygon-amoy.infura.io/v3/28480b828e924a83b6cf1f747c1902ef";
       const provider = new ethers.providers.JsonRpcProvider(providerUrl);
 
       // Create a wallet instance from the private key and connect it to the provider

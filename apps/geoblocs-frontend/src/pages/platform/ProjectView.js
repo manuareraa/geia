@@ -69,7 +69,7 @@ function ProjectView(props) {
   let position = [51.903614, -8.468399];
   const navigate = useNavigate();
 
-  const contractAddress = "0x39eA07CFEEfcA637aDd4a471e847155A26FBa143";
+  const contractAddress = "0x70706EC2a6B49cEf250D3F7eE00955AE21532384";
   const { contract } = useContract(contractAddress);
 
   const [totalActualSupply, setTotalActualSupply] = useState(0);
@@ -261,7 +261,7 @@ function ProjectView(props) {
             setRedeemStatus(true);
             setRedeemInProcess(false);
             setRedeemEnabled(false);
-            localStorage.setItem("geoblocsr", "qrmoderedeemed");
+            localStorage.setItem(projectId + "rdm", "qrmoderedeemed");
             updateTokenBalance(projectId, tokenBalDetails, 1, "redeem", qrcode);
             navigate("/platform/projects/view/" + projectId);
             return true;
@@ -296,7 +296,7 @@ function ProjectView(props) {
                 setRedeemStatus(true);
                 setRedeemInProcess(false);
                 setRedeemEnabled(false);
-                localStorage.setItem("geoblocsr", "qrmoderedeemed");
+                localStorage.setItem(projectId + "rdm", "qrmoderedeemed");
                 updateTokenBalance(
                   projectId,
                   tokenBalDetails,
@@ -341,7 +341,7 @@ function ProjectView(props) {
               setRedeemStatus(true);
               setRedeemInProcess(false);
               setRedeemEnabled(false);
-              localStorage.setItem("geoblocsr", "qrmoderedeemed");
+              localStorage.setItem(projectId + "rdm", "qrmoderedeemed");
               updateTokenBalance(
                 projectId,
                 tokenBalDetails,
@@ -383,7 +383,7 @@ function ProjectView(props) {
                   setRedeemInProcess(false);
                   setRedeemStatus(true);
                   setRedeemEnabled(false);
-                  localStorage.setItem("geoblocsr", "qrmoderedeemed");
+                  localStorage.setItem(projectId + "rdm", "qrmoderedeemed");
                   updateTokenBalance(
                     projectId,
                     tokenBalDetails,
@@ -430,7 +430,7 @@ function ProjectView(props) {
               setRedeemInProcess(false);
               setRedeemStatus(true);
               setRedeemEnabled(false);
-              localStorage.setItem("geoblocsr", "qrmoderedeemed");
+              localStorage.setItem(projectId + "rdm", "qrmoderedeemed");
               updateTokenBalance(
                 projectId,
                 tokenBalDetails,
@@ -723,8 +723,10 @@ function ProjectView(props) {
         setBuyEnabled(false);
       }
     } else {
+      console.log("type is Redeem")
       if (data !== undefined) {
         const sponsorData = data.sponsors.filter((sponsor) => {
+          console.log("Sponsor ID:", sponsor.sponsorId);
           return sponsor.sponsorId === qrcode;
         });
         if (sponsorData.length > 0) {
@@ -788,9 +790,11 @@ function ProjectView(props) {
     if (qrcode !== undefined) {
       if (checkSponsorId(projectId, qrcode) === true) {
         console.log("Valid QRCODE Found**");
-        const localRedeemStatus = localStorage.getItem("geoblocsr");
+        const localRedeemStatus = localStorage.getItem(projectId + "rdm");
         if (localRedeemStatus !== "qrmoderedeemed") {
           checkAndVerifyBalance(projectId, "redeem");
+        } else {
+          console.log("LocalStorage says the user has already redeemed");
         }
       } else {
         console.log("Invalid QRCODE Found**");

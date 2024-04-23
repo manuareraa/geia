@@ -252,7 +252,7 @@ router.post("/add-txn", async (req, res) => {
             </div>
             <div class="content">
               
-              <p><img src="https://gcdnb.pbrd.co/images/kXyRnM6YOL2d.png" alt="Geoblocs Image"></p>
+
 
               <p>Hi there,</p>
               <p>Heartfelt thanks for purchasing Geoblocs and joining our cause to heal our planet. Your support is pivotal in combating environmental degradation alongside its broader societal and economic impacts.</p>
@@ -274,15 +274,16 @@ router.post("/add-txn", async (req, res) => {
       };
 
       try {
+        console.log("Trying to send email...");
         transporter.sendMail(mailOptions, async (error, info) => {
           if (error) {
-            console.log(error);
+            console.log("Error occured while sending email - 1", error);
           } else {
             console.log("Email sent");
           }
         });
       } catch (error) {
-        console.log("Error", error);
+        console.log("Error occured while sending email - 2", error);
       }
     } catch (error) {
       console.log(error);
@@ -327,7 +328,7 @@ router.post("/add-txn", async (req, res) => {
         }
       }
     } catch (error) {
-      console.error("Error in periodic API request and data update:", error);
+      console.error("Error in periodic API request and data update:");
     }
 
     res.status(200).json({ status: "success", txn: newTxn });
