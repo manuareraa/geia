@@ -1834,8 +1834,7 @@ export const AppProvider = ({ children }) => {
 
       // =======
 
-      const providerUrl =
-        "https://polygon-amoy.infura.io/v3/28480b828e924a83b6cf1f747c1902ef";
+      const providerUrl = process.env.InfuraURL
       const provider = new ethers.providers.JsonRpcProvider(providerUrl);
 
       // Create a wallet instance from the private key and connect it to the provider

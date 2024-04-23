@@ -14,7 +14,7 @@ import { Ethereum, Polygon, PolygonAmoyTestnet } from "@thirdweb-dev/chains";
 
 // create the client with your clientId, or secretKey if in a server environment
 // const client = createThirdwebClient({
-//   clientId: "4318bd47272bd9c4cee78ce3b5bb1fe8",
+//   clientId: "xxxxxx",
 //   // chain: defineChain(80002),
 // });
 
@@ -38,7 +38,7 @@ root.render(
       <ThirdwebProvider
         // activeChain="polygon"
         activeChain={PolygonAmoyTestnet}
-        clientId="4318bd47272bd9c4cee78ce3b5bb1fe8"
+        clientId={process.env.TWCID}
       >
         <App />
       </ThirdwebProvider>
