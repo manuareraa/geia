@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../AppContext";
 
 import geiaLogo from "../../assets/img/geia-high-res.old.png";
+import polygonLogo from "../../assets/img/polygon.png";
 import rightArrow from "../../assets/svg/right-arrow.svg";
 import communityCentric from "../../assets/svg/community-centric-v2.svg";
 import radicalTransparency from "../../assets/svg/radical-transparency-v2.svg";
@@ -38,14 +39,14 @@ function Home(props) {
       toast.error("Something went wrong");
     }
   };
-  
+
   return (
     <div className="flex flex-col items-center justify-center w-full">
       <Navbar />
       {/* hero outer container */}
       <div className="flex flex-col items-center justify-center w-full p-8 bg-home-image">
         {/* hero inner container */}
-        <div className="flex flex-col items-center justify-center pt-10 pb-10 mb-10 width-50 space-y-12 glass rounded-lg">
+        <div className="flex flex-col items-center justify-center pt-10 pb-10 mb-10 space-y-12 rounded-lg width-50 glass">
           {/* title container */}
           <div className="flex flex-col items-center justify-center pt-4 space-y-4 leading-none">
             {/* powered by container */}
@@ -72,7 +73,7 @@ function Home(props) {
           </div>
           {/* hero description container */}
           <div className="flex flex-col items-center">
-            <p className="p-6 text-center text-2xl font-bold md:text-black text-white md:w-[80%] lg:w-[60%]">
+            <p className="p-6 text-center text-2xl font-bold text-white md:w-[80%] md:text-black lg:w-[60%]">
               The Geoblocs platform utilises geospatial technology along with on
               the ground monitoring to create verifiable regeneration projects
               around the world that focus on biodiversity, social impact, and
@@ -82,20 +83,20 @@ function Home(props) {
         </div>
         {/* hero button container */}
         <div className="flex flex-col space-y-4">
-            {/* powered by container */}
-            <div className="flex flex-row items-center justify-center w-full mr-20 space-x-4 pt-">
-              <p className="text-sm text-white lg:text-2xl">Powered by</p>
-              <img src={geiaLogo} alt="geia-logo" className="w-15 lg:w-25" />
-            </div>
-
-            <button
-              className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
-              onClick={() => navigate("/platform/projects")}
-            >
-              <p>Explore Projects</p>
-              <img src={rightArrow} className="w-4" />
-            </button>
+          {/* powered by container */}
+          <div className="flex flex-row items-center justify-center w-full mr-20 space-x-4 pt-">
+            <p className="text-sm text-white lg:text-2xl">Powered by</p>
+            <img src={geiaLogo} alt="geia-logo" className="w-15 lg:w-25" />
           </div>
+
+          <button
+            className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+            onClick={() => navigate("/platform/projects")}
+          >
+            <p>Explore Projects</p>
+            <img src={rightArrow} className="w-4" />
+          </button>
+        </div>
       </div>
 
       {/* community - radical - decentralization container */}
@@ -223,14 +224,15 @@ function Home(props) {
         <div className="flex flex-col items-center justify-center space-y-8">
           <p className="text-3xl font-semibold text-center">Blockchain</p>
           <p className="w-[70%] text-center font-medium md:w-[60%] lg:w-[600px]">
-            Geoblocs, powered by Unique Network, is helping to revolutionise the
-            ecological landscape by leveraging their Polkadot-based
-            main parachain. Explore the endless possibilities of decentralised
-            technology with Geoblocs and benefit from the robust features of a
-            mature Layer 1 blockchain within the Polkadot ecosystem.
+            Geoblocs, powered by Polygon, spearheads the transformation of the
+            ecological landscape by harnessing the prowess of the Polygon
+            blockchain. Delve into the limitless potential of decentralized
+            technology with Geoblocs and capitalize on the advanced scalability,
+            low transaction fees, and fast confirmations offered by Polygon's
+            highly efficient Layer 2 solution within the Ethereum ecosystem.
           </p>
         </div>
-        <img src={uniqueLogo} className="w-[400px]" />
+        <img src={polygonLogo} className="w-[200px]" />
       </div>
 
       {/* stay updated container */}
