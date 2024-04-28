@@ -35,7 +35,7 @@ function Login(props) {
           <input
             type="text"
             placeholder="Enter your email"
-            className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+            className="h-12 w-[400px] rounded-full bg-gGray  px-8 py-2 text-black outline-none"
             value={formData.email}
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
@@ -44,7 +44,7 @@ function Login(props) {
           <input
             type="text"
             placeholder="Enter your password"
-            className="w-[400px] h-12 px-8 text-black  rounded-full outline-none bg-gGray py-2"
+            className="h-12 w-[400px] rounded-full bg-gGray  px-8 py-2 text-black outline-none"
             value={formData.password}
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
@@ -52,12 +52,14 @@ function Login(props) {
           ></input>
         </div>
 
-        <button className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
+        <button
+          className="px-8 text-white capitalize border-0 rounded-full btn bg-gGreen hover:bg-gGreen/70"
           onClick={async () => {
-            if(formData.email === "" || formData.password === "") {
-              toast.error("Please fill all the fields")
+            if (formData.email === "" || formData.password === "") {
+              toast.error("Please fill all the fields");
             } else {
-              const result = userLogin(formData.email, formData.password)
+              console.log("CREDs: ", formData.email, formData.password);
+              const result = userLogin(formData.email, formData.password);
             }
           }}
         >

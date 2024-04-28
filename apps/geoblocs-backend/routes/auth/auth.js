@@ -46,31 +46,27 @@ router.post("/signup", async (req, res) => {
 
 router.post("/signin", async (req, res) => {
   try {
+    console.log("Signing In...");
+
     const { email, password } = req.body;
 
     // Find the user by email
     const user = await db.collection(collectionName).findOne({ email });
+
     if (!user) {
+      console.log("No user found");
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     // Compare the provided password with the hashed password in the database
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    // decrypt the password
-    const decryptedPassword = crypto.createDecipheriv(
-      "aes-256-ctr",
-      process.env.ENCRYPTION_KEY,
-      Buffer.from(user.password, "hex")
-    );
-
-    // console.log("decryptedPassword: ", decryptedPassword);
-
     if (!isPasswordValid) {
+      console.log("Invalid password");
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Create a JWT token
+    // Create a JWT token (assuming signAndSendToken is implemented correctly)
     const token = signAndSendToken(user);
 
     res.status(200).json({
