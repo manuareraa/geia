@@ -17,8 +17,8 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThirdwebProvider
-        // activeChain="polygon"
-        activeChain={PolygonAmoyTestnet}
+        activeChain="polygon"
+        // activeChain={PolygonAmoyTestnet}
         clientId={process.env.TWCID}
       >
         <App />
