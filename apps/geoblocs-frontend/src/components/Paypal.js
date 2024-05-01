@@ -10,7 +10,7 @@ function Message({ content }) {
 function Paypal(props) {
   const initialOptions = {
     "client-id":
-      "AccaMmmFbUbUj8xDvK5OrEbg1HTpJLGExTZfOTXdbii1xqRi8GYJJFrFUr_jF56rj2ucVan4jXFv-uz-",
+      process.env.REACT_APP_PAYPALCID,
     "enable-funding":
       "paypal.FUNDING.PAYPAL,paypal.FUNDING.VENMO,paypal.FUNDING.PAYLATER,paypal.FUNDING.CARD",
     "data-sdk-integration-source": "integrationbuilder_sc",

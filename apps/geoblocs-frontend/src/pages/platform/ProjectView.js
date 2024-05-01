@@ -1121,7 +1121,7 @@ function ProjectView(props) {
                       {/* <button className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen">
                         Proceed to Checkout
                       </button> */}
-                      {formData.quantity > 1 &&
+                      {formData.quantity > 0 &&
                       formData.quantity <=
                         ownerBalance -
                           tokenBalDetails.reserved -
