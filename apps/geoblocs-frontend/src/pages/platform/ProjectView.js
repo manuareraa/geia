@@ -69,7 +69,7 @@ function ProjectView(props) {
   let position = [51.903614, -8.468399];
   const navigate = useNavigate();
 
-  const contractAddress = "0x70706EC2a6B49cEf250D3F7eE00955AE21532384";
+  const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
   const { contract } = useContract(contractAddress);
 
   const [totalActualSupply, setTotalActualSupply] = useState(0);
@@ -84,7 +84,7 @@ function ProjectView(props) {
     console.log("nft", parseInt(nft));
     setTotalActualSupply(parseInt(nft));
     const ownerBalance = await contract.erc1155.balanceOf(
-      "0x46BeeE27f124A2a71A6757E7fb9EF778D28800a8",
+      process.env.REACT_APP_ADMIN_WALLET_ADDRESS,
       parseInt(appData.projectInView.metadata.tokenId || 0),
     );
     console.log("ownerBalance", parseInt(ownerBalance));
@@ -723,7 +723,7 @@ function ProjectView(props) {
         setBuyEnabled(false);
       }
     } else {
-      console.log("type is Redeem")
+      console.log("type is Redeem");
       if (data !== undefined) {
         const sponsorData = data.sponsors.filter((sponsor) => {
           console.log("Sponsor ID:", sponsor.sponsorId);

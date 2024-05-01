@@ -340,8 +340,6 @@ function ProjectMetadata(props) {
         </div>
       </div>
 
-      {/* https://testnets.opensea.io/assets/mumbai/0xa9c48c34723c1e6f769dabe2a5a66918463ac1e5/0 */}
-
       {/* baseline image */}
       <div className="flex flex-row space-x-8">
         {/* cover image container */}

@@ -44,10 +44,9 @@ export const AppProvider = ({ children }) => {
     afterLoginRedirectURL: null,
   });
 
-  // const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const backendUrl = "http://localhost:3010";
-  // const contractAddress = "0x39eA07CFEEfcA637aDd4a471e847155A26FBa143";
-  const contractAddress = "0x70706EC2a6B49cEf250D3F7eE00955AE21532384"
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  // const backendUrl = "http://localhost:3010";
+  const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
   const getApplicationCount = async () => {
     try {
@@ -716,7 +715,7 @@ export const AppProvider = ({ children }) => {
       if (ifPdf && ifPdf === true) {
         params.ContentType = "application/pdf";
       } else {
-        params.ContentType = "image/png"
+        params.ContentType = "image/png";
       }
 
       console.log("params s3", params);
@@ -1657,7 +1656,7 @@ export const AppProvider = ({ children }) => {
         provider.getSigner(),
       );
       const tx = await contract.mint(
-        "0x46BeeE27f124A2a71A6757E7fb9EF778D28800a8",
+        process.env.REACT_APP_ADMIN_WALLET_ADDRESS,
         id,
         totalSupply,
         "0x",
@@ -1834,7 +1833,7 @@ export const AppProvider = ({ children }) => {
 
       // =======
 
-      const providerUrl = process.env.InfuraURL
+      const providerUrl = process.env.InfuraURL;
       const provider = new ethers.providers.JsonRpcProvider(providerUrl);
 
       // Create a wallet instance from the private key and connect it to the provider
@@ -1853,7 +1852,7 @@ export const AppProvider = ({ children }) => {
       // Assuming the contract has a `transfer` function (like in ERC-20 tokens)
       // Adjust the function name and arguments as per your contract
       const tx = await contract.safeTransferFrom(
-        "0x46BeeE27f124A2a71A6757E7fb9EF778D28800a8",
+        process.env.REACT_APP_ADMIN_WALLET_ADDRESS,
         toAddress,
         tokenId,
         amount,
