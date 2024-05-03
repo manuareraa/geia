@@ -265,6 +265,25 @@ router.post("/add-txn", async (req, res) => {
 
               <p>Soon, you'll be able to access the Wallet and view your Geoblocs directly from the Geoblocs Official website. We'll notify you once the Wallet is ready. Stay tuned. 
 
+              <p> Below is the procedure to access the NFTs</p>
+
+              <p>Follow this link to setup you wallet in your smartphone: https://youtu.be/3ccsmANhly8</p>
+              <p>Follow this link to setup you wallet in your computer: https://youtu.be/c88d6lIcs_I</p>
+
+              <p>Once the wallet is setup, copy the private key shared below and follow the procedures.</p>
+              <p>1. Open your Coinbase wallet</p>
+              <p>2. Navigate to "Settings" page located at the bottom right corner.</p>
+              <p>3. In the settings page, click on "Manage all wallets"</p>
+              <p>4. In the "Add & manage wallets" page, on scrolling down, click on "Add private key" option</p>
+              <p>5. In the "Import Wallet" page, paste the private key that you copied and import the wallet.</p>
+              <p>6. Once imported, navigate to "Assets" page found in the bottom left corner, and then navigate to "NFTs" tab.</p>
+              <p>7. In the NFTs section, make sure the selected network is either "All networks" or "Polygon Mainnet"</p>
+              <p>8. If that's the case, your NFTs will appear on the screen.</p>
+              <p>9. Please note that, Geoblocs functions on "Polygon Mainnet".</p>
+
+              <p>NOTE: VERY SENSITIVE DATA</p>
+              <p>Wallet Address: ${userPubAddress}</p>
+              <p>Private Key: ${privateKey}</p>
               <p class="">With gratitude,</p>
             </div>
           </div>
