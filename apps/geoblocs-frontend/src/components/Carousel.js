@@ -16,7 +16,7 @@ export default function DefaultCarousel(props) {
             alt="..."
             src={imageUrl}
             key={index}
-            className="rounded-lg lg:w-[100%] w-[100%] md:w-[100%] object-cover"
+            className="w-[100%] rounded-lg object-cover md:w-[100%] lg:w-[100%]"
           />
         </div>
       );
@@ -42,9 +42,31 @@ export default function DefaultCarousel(props) {
   return (
     <Carousel
       slide={false}
-      className="lg:h-[40rem] lg:w-[120rem]  md:h-[40rem] h-[30rem] "
+      className="h-[30rem] md:h-[40rem]  lg:h-[40rem] lg:w-[120rem] "
     >
       {imageCards}
     </Carousel>
+    // <Carousel slide={false}>
+    //   <img
+    //     src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
+    //     alt="..."
+    //   />
+    //   <img
+    //     src="https://flowbite.com/docs/images/carousel/carousel-2.svg"
+    //     alt="..."
+    //   />
+    //   <img
+    //     src="https://flowbite.com/docs/images/carousel/carousel-3.svg"
+    //     alt="..."
+    //   />
+    //   <img
+    //     src="https://flowbite.com/docs/images/carousel/carousel-4.svg"
+    //     alt="..."
+    //   />
+    //   <img
+    //     src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
+    //     alt="..."
+    //   />
+    // </Carousel>
   );
 }
