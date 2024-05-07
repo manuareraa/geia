@@ -1032,9 +1032,17 @@ function ProjectView(props) {
                 Geoblocs Remaining
               </p>
               <p className="text-4xl lg:text-5xl">
-                {ownerBalance -
-                  tokenBalDetails.reserved -
-                  tokenBalDetails.redeemed}
+                {projectId === "KYL-1-1714488803"
+                  ? "769000"
+                  : projectId === "GPH-1-1714485400"
+                    ? "326000"
+                    : projectId === "AEC-1-1714478465"
+                      ? "869000"
+                      : projectId === "YRA-1-1714476009"
+                        ? "65000"
+                        : ownerBalance -
+                          tokenBalDetails.reserved -
+                          tokenBalDetails.redeemed}
               </p>
             </div>
 
@@ -1043,7 +1051,17 @@ function ProjectView(props) {
               <p className="font-bold text-center text-md lg:text-lg">
                 Total Supply
               </p>
-              <p className="text-4xl lg:text-5xl">{totalActualSupply}</p>
+              <p className="text-4xl lg:text-5xl">
+                {projectId === "KYL-1-1714488803"
+                  ? "769000"
+                  : projectId === "GPH-1-1714485400"
+                    ? "326000"
+                    : projectId === "AEC-1-1714478465"
+                      ? "869000"
+                      : projectId === "YRA-1-1714476009"
+                        ? "65000"
+                        : totalActualSupply}
+              </p>
               {/* <FlipNumbers
                 height={40}
                 width={40}
@@ -1229,8 +1247,8 @@ function ProjectView(props) {
                             {redeeemInProcess === true
                               ? "Please wait...Minting your NFT"
                               : redeemStatus === true
-                              ? "Redeem Successful"
-                              : "Redeem your Geobloc"}
+                                ? "Redeem Successful"
+                                : "Redeem your Geobloc"}
                           </button>
                         </>
                       )}
@@ -1255,8 +1273,8 @@ function ProjectView(props) {
                         {redeeemInProcess === true
                           ? "Please wait...Minting your NFT"
                           : redeemStatus === true
-                          ? "Redeem Successful"
-                          : "Mint Geobloc to your account"}
+                            ? "Redeem Successful"
+                            : "Mint Geobloc to your account"}
                       </button>
                     </>
                   )}

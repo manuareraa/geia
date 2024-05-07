@@ -37,10 +37,8 @@
     "react-scripts": "^5.0.1",
     "recharts": "^2.12.6",
     "stream": "^0.0.2",
-    "thirdweb": "^5.16.0",
     "url": "latest",
     "uuid": "^9.0.1",
-    "web3": "^4.8.0",
     "zlib": "npm:browserify-zlib"
   },
   "devDependencies": {

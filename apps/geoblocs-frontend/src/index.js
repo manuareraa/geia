@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
+// import { ThirdwebProvider } from "thirdweb/react";
 import { Ethereum, Polygon, PolygonAmoyTestnet } from "@thirdweb-dev/chains";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -17,9 +18,10 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThirdwebProvider
-        activeChain="polygon"
+        // activeChain="polygon"
+        activeChain={Polygon}
         // activeChain={PolygonAmoyTestnet}
-        clientId={process.env.TWCID}
+        clientId={process.env.REACT_APP_TWCID}
       >
         <App />
       </ThirdwebProvider>

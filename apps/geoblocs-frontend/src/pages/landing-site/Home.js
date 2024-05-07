@@ -46,7 +46,7 @@ function Home(props) {
       {/* hero outer container */}
       <div className="flex flex-col items-center justify-center w-full p-8 bg-home-image">
         {/* hero inner container */}
-        <div className="flex flex-col items-center justify-center pt-10 pb-10 mb-10 space-y-12 rounded-lg width-50 glass">
+        <div className="flex flex-col items-center justify-center pt-10 pb-10 mb-10 space-y-12 rounded-lg width-50 ">
           {/* title container */}
           <div className="flex flex-col items-center justify-center pt-4 space-y-4 leading-none">
             {/* powered by container */}

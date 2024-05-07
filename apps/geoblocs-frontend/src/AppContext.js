@@ -5,15 +5,16 @@ import { useNavigate } from "react-router-dom";
 import AWS from "aws-sdk";
 import { v4 as uuidv4 } from "uuid";
 import { ethers } from "ethers";
+import Web3 from "web3";
 
-import { generateAccount, SignatureType } from "@unique-nft/accounts";
-import { waitReady } from "@polkadot/wasm-crypto";
-import { KeyringProvider } from "@unique-nft/accounts/keyring";
-import Sdk from "@unique-nft/sdk";
+// import { prepareContractCall, resolveMethod } from "thirdweb"
 import {
-  CollectionHelpersFactory,
-  UniqueNFTFactory,
-} from "@unique-nft/solidity-interfaces";
+  sendTransaction,
+  sendAndConfirmTransaction,
+  prepareContractCall,
+} from "thirdweb";
+
+import { waitReady } from "@polkadot/wasm-crypto";
 // import { JsonRpcProvider } from "ethers";
 import contractABI from "./utils/contractABI.json";
 
@@ -28,6 +29,8 @@ export const AppProvider = ({ children }) => {
     status: "false",
     message: "",
   });
+
+  // const { sendTransaction, isLoading, isError } = useSendTransaction();
 
   const [appData, setAppData] = useState({
     loginMode: null,
@@ -44,8 +47,8 @@ export const AppProvider = ({ children }) => {
     afterLoginRedirectURL: null,
   });
 
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  // const backendUrl = "http://localhost:3010";
+  // const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = "http://localhost:3010";
   const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
   const getApplicationCount = async () => {
@@ -1535,43 +1538,6 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const initiateBlockchainConnection = async () => {
-    try {
-      const KROptions = {
-        type: "sr25519",
-      };
-      const provider = new KeyringProvider(KROptions);
-      await provider.init();
-
-      const signer = provider.addSeed(appData.userProfile.blockchainAcc.seed);
-
-      console.log(
-        "Initiating blockchain connection with URL >",
-        process.env.REACT_APP_BLOCKCHAIN_URL,
-      );
-
-      const options = {
-        baseUrl: process.env.REACT_APP_BLOCKCHAIN_URL,
-        signer: signer,
-      };
-
-      const sdk = new Sdk(options);
-
-      setAppData((prevState) => {
-        return { ...prevState, sdk: sdk, blockchainConnStatus: true };
-      });
-      console.log("SDK: ", sdk);
-      return sdk;
-    } catch (error) {
-      console.error("Error initiating blockchain connection:", error);
-      toast.error("Error initiating blockchain connection. Try again later.");
-      setAppData((prevState) => {
-        return { ...prevState, blockchainConnStatus: false };
-      });
-      return false;
-    }
-  };
-
   const getBalance = async (sdk) => {
     const balance = await sdk.balance.get({
       address: appData.userProfile.blockchainAcc.keyfile.address,
@@ -1629,13 +1595,6 @@ export const AppProvider = ({ children }) => {
 
     // ====================
     return balance;
-  };
-
-  const connectToBlockchainAndGetData = async () => {
-    const sdk = await initiateBlockchainConnection();
-    if (sdk !== false) {
-      getBalance(sdk);
-    }
   };
 
   const createNewNftCollection = async (id, totalSupply, projectId) => {
@@ -1764,33 +1723,6 @@ export const AppProvider = ({ children }) => {
     // }
   };
 
-  const createNewNFT = async (projectId, collectionId, amount) => {
-    const result = await appData.sdk.refungible.createToken.submitWaitResult({
-      address: appData.userProfile.blockchainAcc.keyfile.address,
-      collectionId: collectionId,
-      amount: amount,
-    });
-    const { tokenId } = result.parsed;
-    console.log("NFT Created: ", result);
-    console.log("Token ID: ", tokenId);
-    const updateResult = await updateCollectionInDb(projectId, result);
-    if (updateResult.status === "success") {
-      const tokenProjectUpdateResult = await updateTokenIdInProject(
-        projectId,
-        tokenId,
-      );
-      if (tokenProjectUpdateResult.status === "success") {
-        return true;
-      } else {
-        console.log("Failed to update token data in project");
-        return false;
-      }
-    } else {
-      console.log("Error updating the collection with token data: ");
-      return false;
-    }
-  };
-
   const getAllProjectsForUsers = async () => {
     try {
       const response = await axios.get(
@@ -1815,6 +1747,126 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // const transferToken = async (
+  //   projectId,
+  //   toAddress,
+  //   tokenId,
+  //   amount,
+  //   email,
+  //   mode,
+  //   miscData,
+  // ) => {
+  //   try {
+  //     setLoading({
+  //       status: "true",
+  //       message: "Transferring token. Please wait for a minute.",
+  //     });
+  //     console.log("Transfering token: ", projectId, toAddress, amount, tokenId);
+
+  //     // =======
+
+  //     console.log("0", process.env.REACT_APP_InfuraURL);
+
+  //     const providerUrl = process.env.REACT_APP_InfuraURL;
+
+  //     console.log("1", providerUrl);
+
+  //     const provider = new ethers.providers.JsonRpcProvider(providerUrl);
+
+  //     console.log("2", provider);
+
+  //     // Create a wallet instance from the private key and connect it to the provider
+  //     const wallet = new ethers.Wallet(
+  //       process.env.REACT_APP_PRIVATE_KEY,
+  //       provider,
+  //     );
+
+  //     console.log("3", wallet);
+
+  //     // Create an instance of the contract
+  //     const contract = new ethers.Contract(
+  //       contractAddress,
+  //       contractABI,
+  //       wallet,
+  //     );
+
+  //     console.log("4", contract);
+
+  //     const balance = await provider.getBalance(
+  //       process.env.REACT_APP_ADMIN_WALLET_ADDRESS,
+  //     );
+  //     console.log("Balance: ", ethers.utils.formatEther(balance));
+
+  //     // Assuming the contract has a `transfer` function (like in ERC-20 tokens)
+  //     // Adjust the function name and arguments as per your contract
+  //     const nonce = await provider.getTransactionCount(
+  //       process.env.REACT_APP_ADMIN_WALLET_ADDRESS,
+  //       "latest",
+  //     );
+  //     console.log("New Nonce: ", nonce);
+  //     const increasedMaxPriorityFeePerGas = ethers.utils.parseUnits(
+  //       "2",
+  //       "gwei",
+  //     ); // Adjust based on current network conditions
+  //     const increasedMaxFeePerGas = ethers.utils.parseUnits("100", "gwei"); // Adjust based on current network conditions
+  //     console.log("PFee", increasedMaxPriorityFeePerGas);
+  //     console.log("MXFee", increasedMaxFeePerGas);
+  //     const tx = await contract.safeTransferFrom(
+  //       process.env.REACT_APP_ADMIN_WALLET_ADDRESS,
+  //       toAddress,
+  //       tokenId,
+  //       amount,
+  //       "0x",
+  //       // {
+  //       //   maxPriorityFeePerGas: increasedMaxPriorityFeePerGas,
+  //       //   maxFeePerGas: increasedMaxFeePerGas,
+  //       //   gasLimit: ethers.utils.hexlify(100000), // Set as needed
+  //       //   nonce: nonce, // Ensure this is the nonce of the transaction being replaced
+  //       // },
+  //     );
+
+  //     console.log("5", tx);
+
+  //     // Wait for the transaction to be mined
+  //     const receipt = await tx.wait();
+
+  //     console.log("Transaction Receipt:", receipt);
+
+  //     // =======
+
+  //     const txnData = {
+  //       uuid: crypto.randomUUID(),
+  //       email: email,
+  //       projectUUID: projectId,
+  //       txnType: "TRSF-ADM-USR-INITMINT",
+  //       txnMode: mode,
+  //       txnData: {
+  //         toAddress: toAddress,
+  //         tokenId: tokenId,
+  //         amount: amount,
+  //         misc: miscData,
+  //       },
+  //       receipt: receipt,
+  //       txnDate: new Date(),
+  //     };
+
+  //     const addTxnResult = await addNewTransaction(txnData);
+  //     setLoading({
+  //       status: "false",
+  //       message: "Transferring token. Please wait for a minute.",
+  //     });
+  //     return true;
+  //   } catch (error) {
+  //     console.error("Error transferring token:", error);
+  //     toast.error("Error transferring token. Try again later.");
+  //     setLoading({
+  //       status: "false",
+  //       message: "Transferring token. Please wait for a minute.",
+  //     });
+  //     return false;
+  //   }
+  // };
+
   const transferToken = async (
     projectId,
     toAddress,
@@ -1827,31 +1879,49 @@ export const AppProvider = ({ children }) => {
     try {
       setLoading({
         status: "true",
-        message: "Transferring token. Please wait for a minute.",
+        message: "NFT transfer is in progress. Please wait for 1-2 minutes.",
       });
-      console.log("Transfering token: ", projectId, toAddress, amount, tokenId);
+      console.log("Initializing transferToken function");
+      const providerUrl = process.env.REACT_APP_InfuraURL;
+      const web3 = new Web3(new Web3.providers.HttpProvider(providerUrl));
 
-      // =======
-
-      const providerUrl = process.env.InfuraURL;
-      const provider = new ethers.providers.JsonRpcProvider(providerUrl);
-
-      // Create a wallet instance from the private key and connect it to the provider
-      const wallet = new ethers.Wallet(
-        "c60dafd97c1c3195a53f7ad2abaff9763cb95524a64ac96967f2b389757b0ae9",
-        provider,
+      const account = web3.eth.accounts.privateKeyToAccount(
+        process.env.REACT_APP_PRIVATE_KEY,
       );
+      web3.eth.accounts.wallet.add(account);
+      console.log("Account added:", account.address);
 
-      // Create an instance of the contract
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        wallet,
+      const contract = new web3.eth.Contract(contractABI, contractAddress, {
+        from: account.address,
+      });
+      console.log("Contract initialized at address:", contract.options.address);
+
+      // Fetch the current gas price and increase it by 10% using simple arithmetic
+      let gasPrice = await web3.eth.getGasPrice();
+      console.log("Current network gas price:", gasPrice);
+      gasPrice = parseInt(gasPrice, 10);
+      gasPrice = Math.floor(gasPrice * 1.1).toString(); // Increase by 10% and convert back to string
+      console.log("Increased gas price by 10%:", gasPrice);
+
+      const nonce = await web3.eth.getTransactionCount(
+        account.address,
+        "pending",
       );
+      console.log("Using nonce:", nonce);
 
-      // Assuming the contract has a `transfer` function (like in ERC-20 tokens)
-      // Adjust the function name and arguments as per your contract
-      const tx = await contract.safeTransferFrom(
+      const gasLimit = 100000; // Estimate this dynamically if possible
+      console.log("Using gas limit:", gasLimit);
+
+      const txOptions = {
+        from: account.address,
+        gasPrice: gasPrice,
+        gas: gasLimit,
+        nonce: nonce,
+      };
+      console.log("Transaction options set:", txOptions);
+
+      console.log("Preparing to send transaction...");
+      const tx = contract.methods.safeTransferFrom(
         process.env.REACT_APP_ADMIN_WALLET_ADDRESS,
         toAddress,
         tokenId,
@@ -1859,12 +1929,17 @@ export const AppProvider = ({ children }) => {
         "0x",
       );
 
-      // Wait for the transaction to be mined
-      const receipt = await tx.wait();
+      const receipt = await tx
+        .send(txOptions)
+        .on("transactionHash", (hash) =>
+          console.log(`Transaction hash received: ${hash}`),
+        )
+        .on("receipt", (receipt) =>
+          console.log(`Transaction receipt received:`, receipt),
+        )
+        .on("error", (error) => console.log(`Transaction error:`, error));
 
-      console.log("Transaction Receipt:", receipt);
-
-      // =======
+      console.log("Transaction successful, receipt:", receipt);
 
       const txnData = {
         uuid: crypto.randomUUID(),
@@ -1881,60 +1956,22 @@ export const AppProvider = ({ children }) => {
         receipt: receipt,
         txnDate: new Date(),
       };
+      console.log("Transaction data prepared:", txnData);
 
       const addTxnResult = await addNewTransaction(txnData);
+      console.log("Transaction recorded in the database");
+
+      toast.success("NFT Received Successfully")
+
       setLoading({
         status: "false",
-        message: "Transferring token. Please wait for a minute.",
+        message: "Token transferred successfully.",
       });
       return true;
     } catch (error) {
       console.error("Error transferring token:", error);
-      toast.error("Error transferring token. Try again later.");
-      setLoading({
-        status: "false",
-        message: "Transferring token. Please wait for a minute.",
-      });
+      setLoading({ status: "false", message: "Error in transferring token." });
       return false;
-    }
-  };
-
-  const geoblocsDataAndUpdate = async (projectId) => {};
-
-  const initFunc = async () => {
-    try {
-      const KROptions = {
-        type: "sr25519",
-      };
-      const provider = new JsonRpcProvider("https://rpc.unique.network");
-
-      // const provider = new KeyringProvider(KROptions);
-      await provider.init();
-      const signer = provider.addSeed(process.env.REACT_APP_ADMIN_SEED);
-      const options = {
-        baseUrl: process.env.REACT_APP_BLOCKCHAIN_URL,
-        signer: signer,
-      };
-      const sdk = new Sdk(options);
-      const wallet = new ethers.Wallet(
-        process.env.REACT_APP_ADMIN_SEED,
-        provider,
-      );
-      console.log("Wallet Address: ", wallet);
-      await sdk.collection.addAdmin({
-        collectionId: 361,
-        newAdmin: wallet.address,
-      });
-
-      const collectionHelpers = await CollectionHelpersFactory(wallet);
-      await (
-        await collectionHelpers.makeCollectionERC721MetadataCompatible(
-          Address.collection.idToAddress(361),
-          "",
-        )
-      ).wait();
-    } catch (error) {
-      console.log("Error in initFunc: ", error);
     }
   };
 
