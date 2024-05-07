@@ -1867,6 +1867,114 @@ export const AppProvider = ({ children }) => {
   //   }
   // };
 
+  // const transferToken = async (
+  //   projectId,
+  //   toAddress,
+  //   tokenId,
+  //   amount,
+  //   email,
+  //   mode,
+  //   miscData,
+  // ) => {
+  //   try {
+  //     setLoading({
+  //       status: "true",
+  //       message: "NFT transfer is in progress. Please wait for 1-2 minutes.",
+  //     });
+  //     console.log("Initializing transferToken function");
+  //     const providerUrl = process.env.REACT_APP_InfuraURL;
+  //     const web3 = new Web3(new Web3.providers.HttpProvider(providerUrl));
+
+  //     const account = web3.eth.accounts.privateKeyToAccount(
+  //       process.env.REACT_APP_PRIVATE_KEY,
+  //     );
+  //     web3.eth.accounts.wallet.add(account);
+  //     console.log("Account added:", account.address);
+
+  //     const contract = new web3.eth.Contract(contractABI, contractAddress, {
+  //       from: account.address,
+  //     });
+  //     console.log("Contract initialized at address:", contract.options.address);
+
+  //     // Fetch the current gas price and increase it by 10% using simple arithmetic
+  //     let gasPrice = await web3.eth.getGasPrice();
+  //     console.log("Current network gas price:", gasPrice);
+  //     gasPrice = parseInt(gasPrice, 10);
+  //     gasPrice = Math.floor(gasPrice * 1.1).toString(); // Increase by 10% and convert back to string
+  //     console.log("Increased gas price by 10%:", gasPrice);
+
+  //     const nonce = await web3.eth.getTransactionCount(
+  //       account.address,
+  //       "pending",
+  //     );
+  //     console.log("Using nonce:", nonce);
+
+  //     const gasLimit = 100000; // Estimate this dynamically if possible
+  //     console.log("Using gas limit:", gasLimit);
+
+  //     const txOptions = {
+  //       from: account.address,
+  //       gasPrice: gasPrice,
+  //       gas: gasLimit,
+  //       nonce: nonce,
+  //     };
+  //     console.log("Transaction options set:", txOptions);
+
+  //     console.log("Preparing to send transaction...");
+  //     const tx = contract.methods.safeTransferFrom(
+  //       process.env.REACT_APP_ADMIN_WALLET_ADDRESS,
+  //       toAddress,
+  //       tokenId,
+  //       amount,
+  //       "0x",
+  //     );
+
+  //     const receipt = await tx
+  //       .send(txOptions)
+  //       .on("transactionHash", (hash) =>
+  //         console.log(`Transaction hash received: ${hash}`),
+  //       )
+  //       .on("receipt", (receipt) =>
+  //         console.log(`Transaction receipt received:`, receipt),
+  //       )
+  //       .on("error", (error) => console.log(`Transaction error:`, error));
+
+  //     console.log("Transaction successful, receipt:", receipt);
+
+  //     const txnData = {
+  //       uuid: crypto.randomUUID(),
+  //       email: email,
+  //       projectUUID: projectId,
+  //       txnType: "TRSF-ADM-USR-INITMINT",
+  //       txnMode: mode,
+  //       txnData: {
+  //         toAddress: toAddress,
+  //         tokenId: tokenId,
+  //         amount: amount,
+  //         misc: miscData,
+  //       },
+  //       receipt: receipt,
+  //       txnDate: new Date(),
+  //     };
+  //     console.log("Transaction data prepared:", txnData);
+
+  //     const addTxnResult = await addNewTransaction(txnData);
+  //     console.log("Transaction recorded in the database");
+
+  //     toast.success("NFT Received Successfully")
+
+  //     setLoading({
+  //       status: "false",
+  //       message: "Token transferred successfully.",
+  //     });
+  //     return true;
+  //   } catch (error) {
+  //     console.error("Error transferring token:", error);
+  //     setLoading({ status: "false", message: "Error in transferring token." });
+  //     return false;
+  //   }
+  // };
+
   const transferToken = async (
     projectId,
     toAddress,
@@ -1876,103 +1984,109 @@ export const AppProvider = ({ children }) => {
     mode,
     miscData,
   ) => {
-    try {
-      setLoading({
-        status: "true",
-        message: "NFT transfer is in progress. Please wait for 1-2 minutes.",
-      });
-      console.log("Initializing transferToken function");
-      const providerUrl = process.env.REACT_APP_InfuraURL;
-      const web3 = new Web3(new Web3.providers.HttpProvider(providerUrl));
+    const providerUrl = process.env.REACT_APP_InfuraURL;
+    const web3 = new Web3(new Web3.providers.HttpProvider(providerUrl));
+    const account = web3.eth.accounts.privateKeyToAccount(
+      process.env.REACT_APP_PRIVATE_KEY,
+    );
+    web3.eth.accounts.wallet.add(account);
+    const contract = new web3.eth.Contract(contractABI, contractAddress, {
+      from: account.address,
+    });
 
-      const account = web3.eth.accounts.privateKeyToAccount(
-        process.env.REACT_APP_PRIVATE_KEY,
-      );
-      web3.eth.accounts.wallet.add(account);
-      console.log("Account added:", account.address);
+    let attempts = 0;
+    const maxAttempts = 5;
 
-      const contract = new web3.eth.Contract(contractABI, contractAddress, {
-        from: account.address,
-      });
-      console.log("Contract initialized at address:", contract.options.address);
+    const sendTransaction = async () => {
+      try {
+        setLoading({
+          status: "true",
+          message: "NFT transfer is in progress. Please wait for 1-2 minutes.",
+        });
 
-      // Fetch the current gas price and increase it by 10% using simple arithmetic
-      let gasPrice = await web3.eth.getGasPrice();
-      console.log("Current network gas price:", gasPrice);
-      gasPrice = parseInt(gasPrice, 10);
-      gasPrice = Math.floor(gasPrice * 1.1).toString(); // Increase by 10% and convert back to string
-      console.log("Increased gas price by 10%:", gasPrice);
+        let gasPrice = await web3.eth.getGasPrice();
+        gasPrice = parseInt(gasPrice, 10);
+        gasPrice = Math.floor(gasPrice * 1.1).toString(); // Slightly increase the gas price to expedite the retry
+        const nonce = await web3.eth.getTransactionCount(
+          account.address,
+          "pending",
+        );
+        const gasLimit = 100000; // Dynamic estimation could be more complex
 
-      const nonce = await web3.eth.getTransactionCount(
-        account.address,
-        "pending",
-      );
-      console.log("Using nonce:", nonce);
+        const txOptions = {
+          from: account.address,
+          gasPrice: gasPrice,
+          gas: gasLimit,
+          nonce: nonce,
+        };
 
-      const gasLimit = 100000; // Estimate this dynamically if possible
-      console.log("Using gas limit:", gasLimit);
+        const receipt = await contract.methods
+          .safeTransferFrom(
+            process.env.REACT_APP_ADMIN_WALLET_ADDRESS,
+            toAddress,
+            tokenId,
+            amount,
+            "0x",
+          )
+          .send(txOptions)
+          .on("transactionHash", (hash) =>
+            console.log(`Transaction hash received: ${hash}`),
+          )
+          .on("receipt", (receipt) =>
+            console.log(`Transaction receipt received:`, receipt),
+          );
 
-      const txOptions = {
-        from: account.address,
-        gasPrice: gasPrice,
-        gas: gasLimit,
-        nonce: nonce,
-      };
-      console.log("Transaction options set:", txOptions);
+        console.log("Transaction successful, receipt:", receipt);
 
-      console.log("Preparing to send transaction...");
-      const tx = contract.methods.safeTransferFrom(
-        process.env.REACT_APP_ADMIN_WALLET_ADDRESS,
-        toAddress,
-        tokenId,
-        amount,
-        "0x",
-      );
+        const txnData = {
+          uuid: crypto.randomUUID(),
+          email: email,
+          projectUUID: projectId,
+          txnType: "TRSF-ADM-USR-INITMINT",
+          txnMode: mode,
+          txnData: {
+            toAddress: toAddress,
+            tokenId: tokenId,
+            amount: amount,
+            misc: miscData,
+          },
+          receipt: receipt,
+          txnDate: new Date(),
+        };
+        console.log("Transaction data prepared:", txnData);
 
-      const receipt = await tx
-        .send(txOptions)
-        .on("transactionHash", (hash) =>
-          console.log(`Transaction hash received: ${hash}`),
-        )
-        .on("receipt", (receipt) =>
-          console.log(`Transaction receipt received:`, receipt),
-        )
-        .on("error", (error) => console.log(`Transaction error:`, error));
+        await addNewTransaction(txnData);
+        console.log("Transaction recorded in the database");
 
-      console.log("Transaction successful, receipt:", receipt);
+        toast.success("NFT Received Successfully");
+        setLoading({
+          status: "false",
+          message: "Token transferred successfully.",
+        });
+        return true;
+      } catch (error) {
+        console.error("Transaction attempt failed:", error);
+        attempts++;
+        if (attempts < maxAttempts) {
+          toast.error(
+            "Trying again due to busy network... Attempt " + (attempts + 1),
+          );
+          await new Promise((resolve) => setTimeout(resolve, 2000)); // wait 2 seconds before retrying
+          return sendTransaction(); // Retry transaction
+        } else {
+          toast.error(
+            "Transaction failed after several attempts. Try again after some time.",
+          );
+          setLoading({
+            status: "false",
+            message: "Error in transferring token.",
+          });
+          return false;
+        }
+      }
+    };
 
-      const txnData = {
-        uuid: crypto.randomUUID(),
-        email: email,
-        projectUUID: projectId,
-        txnType: "TRSF-ADM-USR-INITMINT",
-        txnMode: mode,
-        txnData: {
-          toAddress: toAddress,
-          tokenId: tokenId,
-          amount: amount,
-          misc: miscData,
-        },
-        receipt: receipt,
-        txnDate: new Date(),
-      };
-      console.log("Transaction data prepared:", txnData);
-
-      const addTxnResult = await addNewTransaction(txnData);
-      console.log("Transaction recorded in the database");
-
-      toast.success("NFT Received Successfully")
-
-      setLoading({
-        status: "false",
-        message: "Token transferred successfully.",
-      });
-      return true;
-    } catch (error) {
-      console.error("Error transferring token:", error);
-      setLoading({ status: "false", message: "Error in transferring token." });
-      return false;
-    }
+    return sendTransaction();
   };
 
   useEffect(() => {
