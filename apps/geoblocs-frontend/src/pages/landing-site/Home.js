@@ -144,7 +144,7 @@ function Home(props) {
             <p className="font-light text-center w-72">
               The Geoblocs system matches project supporters and land steward
               stakeholders to ecological health and climate action with the help
-              of the Unique Network Parachain.
+              of the Polygon Blockchain.
             </p>
           </div>
         </div>

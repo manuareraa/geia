@@ -252,9 +252,10 @@ router.post("/add-txn", async (req, res) => {
             </div>
             <div class="content">
               
-
+            <img src="https://geoblocs-storage.s3.eu-west-1.amazonaws.com/PPZ-1-1714297083/metadata/327378ed-17e5-477b-9caa-b71db2d3cd8e.png" alt="Sacred Forest NFT" />
 
               <p>Hi there,</p>
+
               <p>Heartfelt thanks for purchasing Geoblocs and joining our cause to heal our planet. Your support is pivotal in combating environmental degradation alongside its broader societal and economic impacts.</p>
 
     <p>Geoblocs, as fragments of a project-specific NFTs, hold invaluable project insights accessible via their metadata. This data serves as a compass, allowing you to track the project's impactful journey on its dedicated dashboard.</p>
@@ -265,12 +266,16 @@ router.post("/add-txn", async (req, res) => {
 
               <p>Soon, you'll be able to access the Wallet and view your Geoblocs directly from the Geoblocs Official website. We'll notify you once the Wallet is ready. Stay tuned. 
 
-              <p> Below is the procedure to access the NFTs</p>
+	      <hr style="margin: 25px;" />
+	                    
+              <p><strong>Follow the below procedure to redeem the NFT version of the above NFT.</strong></p>
 
-              <p>Follow this link to setup you wallet in your smartphone: https://youtu.be/3ccsmANhly8</p>
-              <p>Follow this link to setup you wallet in your computer: https://youtu.be/c88d6lIcs_I</p>
+              <p><strong>Follow this link to setup you wallet in your smartphone:</strong> https://youtu.be/3ccsmANhly8</p>
+              <p><strong>Follow this link to setup you wallet in your computer:</strong> https://youtu.be/c88d6lIcs_I</p>
+              
 
-              <p>Once the wallet is setup, copy the private key shared below and follow the procedures.</p>
+
+              <p style="font-size: 18px;"><strong>Once the wallet is setup, copy the private key shared below and follow the procedures.</strong></p>
               <p>1. Open your Coinbase wallet</p>
               <p>2. Navigate to "Settings" page located at the bottom right corner.</p>
               <p>3. In the settings page, click on "Manage all wallets"</p>
@@ -281,9 +286,9 @@ router.post("/add-txn", async (req, res) => {
               <p>8. If that's the case, your NFTs will appear on the screen.</p>
               <p>9. Please note that, Geoblocs functions on "Polygon Mainnet".</p>
 
-              <p>NOTE: VERY SENSITIVE DATA</p>
-              <p>Wallet Address: ${userPubAddress}</p>
-              <p>Private Key: ${privateKey}</p>
+              <p style="color: #FF0000;"><strong>NOTE: VERY SENSITIVE DATA</strong></p>
+              <p><strong>Wallet Address:</strong> ${userPubAddress}</p>
+              <p><strong>Private Key:</strong> ${privateKey}</p>
               <p class="">With gratitude,</p>
             </div>
           </div>
