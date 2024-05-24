@@ -1020,7 +1020,8 @@ function ProjectView(props) {
                   // open link in new tab
                   // window.open(appData.projectInView.metadata.opensea, "_blank");
                 }}
-                disabled={buyEnabled === true ? false : true}
+                // disabled={buyEnabled === true ? false : true}
+                disabled={true}
               >
                 Buy Geoblocs
               </button>
@@ -1086,7 +1087,8 @@ function ProjectView(props) {
                   setRedeemContainerView(!redeemContainerView);
                   setBuyContainerView(false);
                 }}
-                disabled={redeemEnabled === true ? false : true}
+                // disabled={redeemEnabled === true ? false : true}
+                disabled={true}
               >
                 Redeem Geoblocs
               </button>
