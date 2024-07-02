@@ -9,6 +9,14 @@ export default {
   ],
   theme: {
     extend: {},
+    colors: {
+      gGreen: "#65A500",
+      gBlue: "#0172AD",
+      gGray: "#F0F0F0",
+      glGreen: "#E0EDCC",
+      white: "#FFFFFF",
+      black: "#000000",
+    },
   },
   // darkMode: "class",
   plugins: [require("daisyui"), nextui()],

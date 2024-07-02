@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <NextUIProvider>
-        <main className="light">
+        <main className="geoTheme">
           <App />
         </main>
       </NextUIProvider>
