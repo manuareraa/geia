@@ -1,20 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
-import { AppProvider } from "./AppContext";
+import { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-import { Button } from "@nextui-org/react";
+import { useStore } from "zustand";
+import { useLoadingStore } from "./state-management/AppState";
 
 import Home from "./pages/Home";
+import TopNavBar from "./components/TopNavBar";
+import Footer from "./components/Footer";
+import Loading from "./components/Loading";
 
 function App() {
+  const navigate = useNavigate();
   const location = useLocation();
+  const { isLoading } = useStore(useLoadingStore);
+
   return (
-    <AppProvider>
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </AppProvider>
+    <div className="flex flex-col w-full min-h-screen">
+      {isLoading && <Loading />}
+      <TopNavBar />
+      <div className="flex-grow">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </div>
+      <Toaster />
+      <Footer />
+    </div>
   );
 }
 

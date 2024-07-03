@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -9,15 +9,18 @@ import {
   User,
   Chip,
   Tooltip,
-  getKeyValue,
   Button,
 } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 
-// import { projects } from "./data-browse-projects/data";
-const projects = [];
 import editIcon from "../../assets/icons-svg/edit.svg";
 import deleteIcon from "../../assets/icons-svg/delete.svg";
+
+import {
+  useProjectStore,
+  formatDate,
+  calculateTimeDifference,
+} from "../../state-management/AppState";
 
 const statusColorMap = {
   active: "success",
@@ -26,51 +29,76 @@ const statusColorMap = {
 
 const columns = [
   { name: "PROJECT NAME", uid: "projectName" },
+  { name: "CREATED ON", uid: "createdAt" },
   { name: "LOCATION", uid: "location" },
-  { name: "STATUS", uid: "status" },
+  { name: "STATUS", uid: "projectStatus" },
   { name: "ACTIONS", uid: "actions" },
 ];
 
 export default function BrowseProjectsTable(props) {
   const navigate = useNavigate();
-  const renderCell = React.useCallback((project, columnKey) => {
-    const cellValue = project[columnKey];
+  const { projectSummaries, fetchAllProjects } = useProjectStore();
 
-    switch (columnKey) {
-      case "projectName":
-        return (
-          <User
-            avatarProps={{ radius: "lg", src: project.avatar }}
-            description={project.id}
-            name={cellValue}
-          >
-            {project.name}
-          </User>
-        );
-      case "location":
-        return (
-          <div className="flex flex-col">
-            <p className="text-sm capitalize text-bold">{project.country}</p>
-            <p className="text-sm capitalize text-bold text-default-400">
+  useEffect(() => {
+    if (projectSummaries.length === 0) {
+      fetchAllProjects();
+    }
+    // }, [projectSummaries, fetchAllProjects]);
+  }, []);
+
+  const renderCell = React.useCallback(
+    (project, columnKey) => {
+      const cellValue = project[columnKey];
+
+      switch (columnKey) {
+        case "projectName":
+          return (
+            <User
+              avatarProps={{ radius: "lg", src: project.metaImages?.logo }}
+              description={project.projectId}
+              name={cellValue}
+            >
+              {project.projectName}
+            </User>
+          );
+
+        case "createdAt":
+          return (
+            <div className="flex flex-col">
+              <p className="text-sm capitalize text-bold">
+                {formatDate(cellValue)}
+              </p>
+              <p className="text-sm capitalize text-bold text-default-400">
+                {calculateTimeDifference(cellValue)}
+              </p>
+            </div>
+          );
+        case "location":
+          return (
+            <div className="flex flex-col">
+              <p className="text-sm capitalize text-bold">
+                {project.metadata.country}
+              </p>
+              <p className="text-sm capitalize text-bold text-default-400">
+                {project.metadata.address}
+              </p>
+            </div>
+          );
+        case "projectStatus":
+          return (
+            <Chip
+              className="capitalize"
+              color={statusColorMap[project.projectStatus]}
+              size="sm"
+              variant="flat"
+            >
               {cellValue}
-            </p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip
-            className="capitalize"
-            color={statusColorMap[project.status]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex items-center gap-2">
-            {/* <Tooltip content="Edit Project">
+            </Chip>
+          );
+        case "actions":
+          return (
+            <div className="relative flex items-center gap-2">
+              {/* <Tooltip content="Edit Project">
               <span className="text-lg cursor-pointer text-default-400 active:opacity-50">
                 <img src={editIcon} alt="edit" />
               </span>
@@ -80,26 +108,28 @@ export default function BrowseProjectsTable(props) {
                 <img src={deleteIcon} alt="delete" />
               </span>
             </Tooltip> */}
-            <Tooltip content="Go to Project Page">
-              <span className="text-lg cursor-pointer text-default-400 active:opacity-50">
-                <Button
-                  size="small"
-                  auto
-                  onPress={() => {
-                    console.log("Go to project page");
-                    navigate(`/dashboard/projects/view/${project.id}`);
-                  }}
-                >
-                  View
-                </Button>
-              </span>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+              <Tooltip content="Go to Project Page">
+                <span className="text-lg cursor-pointer text-default-400 active:opacity-50">
+                  <Button
+                    size="small"
+                    auto
+                    onPress={() => {
+                      console.log("Go to project page");
+                      navigate(`/dashboard/projects/view/${project.projectId}`);
+                    }}
+                  >
+                    View
+                  </Button>
+                </span>
+              </Tooltip>
+            </div>
+          );
+        default:
+          return cellValue;
+      }
+    },
+    [navigate]
+  );
 
   return (
     <Table aria-label="Example table with custom cells" isStriped>
@@ -113,10 +143,10 @@ export default function BrowseProjectsTable(props) {
           </TableColumn>
         )}
       </TableHeader>
-      {projects.length > 0 ? (
-        <TableBody items={projects}>
+      {projectSummaries.length > 0 ? (
+        <TableBody items={projectSummaries}>
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.projectId}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}

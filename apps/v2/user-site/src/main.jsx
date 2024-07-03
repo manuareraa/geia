@@ -13,8 +13,8 @@ if (import.meta.env.REACT_APP_ENVIRONMENT === "production") {
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <NextUIProvider>
-        <main className="light">
+      <NextUIProvider className="h-full">
+        <main className="h-full geoTheme">
           <App />
         </main>
       </NextUIProvider>

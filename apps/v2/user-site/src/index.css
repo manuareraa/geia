@@ -2,58 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
-.os-300 {
-  font-family: "Open Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
-  font-style: normal;
-  font-variation-settings: "wdth" 100;
-}
-
-.os-400 {
-  font-family: "Open Sans", sans-serif;
+body {
+  font-family: "Manrope", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  font-variation-settings: "wdth" 100;
+  height: 100vh;
 }
 
-.os-500 {
-  font-family: "Open Sans", sans-serif;
+#root {
+  /* max-width: 1280px; */
+  /* margin: 0 auto; */
+  /* padding: 2rem; */
+  /* text-align: center; */
+  height: 100vh;
+}
+
+.manrope-100 {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.manrope-200 {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.manrope-300 {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.manrope-400 {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.manrope-500 {
+  font-family: "Manrope", sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
-  font-variation-settings: "wdth" 100;
 }
 
-.os-600 {
-  font-family: "Open Sans", sans-serif;
+.manrope-600 {
+  font-family: "Manrope", sans-serif;
   font-optical-sizing: auto;
   font-weight: 600;
   font-style: normal;
-  font-variation-settings: "wdth" 100;
 }
 
-.os-700 {
-  font-family: "Open Sans", sans-serif;
+.manrope-700 {
+  font-family: "Manrope", sans-serif;
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
-  font-variation-settings: "wdth" 100;
 }
 
-.os-800 {
-  font-family: "Open Sans", sans-serif;
+.manrope-800 {
+  font-family: "Manrope", sans-serif;
   font-optical-sizing: auto;
   font-weight: 800;
   font-style: normal;
-  font-variation-settings: "wdth" 100;
 }
 
-.os-900 {
-  font-family: "Open Sans", sans-serif;
+.manrope-900 {
+  font-family: "Manrope", sans-serif;
   font-optical-sizing: auto;
   font-weight: 900;
   font-style: normal;
-  font-variation-settings: "wdth" 100;
 }

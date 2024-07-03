@@ -68,6 +68,10 @@ export const handler = async (event) => {
     return response(401, error.message);
   }
 
+  if (event.httpMethod === "OPTIONS") {
+    return response(200, "OK"); // Preflight CORS requests
+  }
+
   if (event.httpMethod === "POST" && event.path === "/admin/files/upload") {
     return await handleUpload(event);
   }

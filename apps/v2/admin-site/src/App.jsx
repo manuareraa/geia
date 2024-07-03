@@ -26,7 +26,7 @@ function App() {
   }, []);
 
   const autoLoginUser = async () => {
-    navigate("/dashboard/projects");
+    // navigate("/dashboard/projects");
     // const result = await autoLogin();
     // console.log("Auto login result: ", result);
     // if (result.status === "success") {
@@ -38,26 +38,28 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full min-h-screen">
       {isLoading && <Loading />}
       <TopNavBar />
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/dashboard/projects"
-          element={<ProtectedRoute element={Project} />}
-        />
-        <Route
-          path="/dashboard/projects/view/:projectId"
-          element={<ProtectedRoute element={ProjectView} />}
-        />
-        <Route
-          path="/dashboard/projects/new"
-          element={<ProtectedRoute element={NewProject} />}
-        />
-      </Routes>
-      <Footer />
+      <div className="flex-grow">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/dashboard/projects"
+            element={<ProtectedRoute element={Project} />}
+          />
+          <Route
+            path="/dashboard/projects/view/:projectId"
+            element={<ProtectedRoute element={ProjectView} />}
+          />
+          <Route
+            path="/dashboard/projects/new"
+            element={<ProtectedRoute element={NewProject} />}
+          />
+        </Routes>
+      </div>
       <Toaster />
+      <Footer />
     </div>
   );
 }
