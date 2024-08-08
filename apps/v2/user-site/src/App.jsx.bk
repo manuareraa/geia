@@ -1,0 +1,136 @@
+import React, { useState, useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import "./App.css";
+import { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import { useStore } from "zustand";
+import { useLoadingStore } from "./state-management/AppState";
+
+import Home from "./pages/Home";
+import TopNavBar from "./components/TopNavBar";
+import Footer from "./components/Footer";
+import Loading from "./components/Loading";
+import CaseStudies from "./pages/CaseStudies";
+import Contact from "./pages/Contact";
+import ExploreProjects from "./pages/ExploreProjects";
+import FAQs from "./pages/FAQs";
+import HowItWorks from "./pages/HowItWorks";
+import ProjectStories from "./pages/ProjectStories";
+import Stakeholders from "./pages/Stakeholders";
+import Team from "./pages/Team";
+import ProjectView from "./pages/ProjectView";
+
+import { useSignerStatus, useAuthenticate } from "@alchemy/aa-alchemy/react";
+
+function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isLoading } = useStore(useLoadingStore);
+
+  const { isInitializing, isAuthenticating, isConnected, status } =
+    useSignerStatus();
+  const { authenticate, isPending } = useAuthenticate({
+    onSuccess: (user) => {
+      // [optional] Do something with the user info
+      console.log("Success with loggin in", user);
+    },
+    onError: (error) => {
+      // [optional] Do something with the error
+      console.log("Error occured while loggin in", error);
+    },
+  });
+  const login = () => {
+    console.log("Clicked on Login", mail);
+    // authenticate({ type: "email", email: "tekwando007@gmail.com" });
+    authenticate({
+      type: "passkey",
+      // createNew: true,
+      createNew: false,
+      username: "manuareraa",
+    });
+  };
+  const [mail, setMail] = useState("");
+  const customSignup = async (emaill) => {
+    let email = "tekwando007@gmail.com";
+    try {
+      const response = await axios.post("http://localhost:3000/custom-signup", {
+        email,
+      });
+
+      if (response.status === 200) {
+        console.log("Signup successful:", response.data);
+        // Handle successful signup (e.g., update state, show success message)
+      } else {
+        console.error("Signup failed:", response.data);
+        // Handle error response (e.g., show error message)
+      }
+    } catch (error) {
+      console.error("Error during signup request:", error);
+      // Handle network or server error (e.g., show error message)
+    }
+  };
+
+  useEffect(() => {
+    console.log(
+      "ALCHEMY STATUS: ",
+      "isInitializing",
+      isInitializing,
+      "isAuthenticating",
+      isAuthenticating,
+      "isConnected",
+      isConnected,
+      "status",
+      status,
+      "isPending",
+      isPending
+    );
+  }, [isInitializing, isAuthenticating, isConnected, status, isPending]);
+
+  return (
+    <div className="flex flex-col w-full min-h-screen">
+      <input
+        type="text"
+        onChange={(e) => {
+          console.log("Email: ", mail);
+          setMail(e.target.value);
+        }}
+      ></input>
+      <button
+        onClick={() => {
+          console.log("Clicked");
+          login();
+          // customSignup();
+        }}
+      >
+        Login with Alchemy
+      </button>
+      <p></p>
+      {isLoading && <Loading />}
+      <TopNavBar />
+      <div className="flex-grow">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Home />} />
+          <Route path="/case-studies" element={<CaseStudies />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/explore-projects" element={<ExploreProjects />} />
+          <Route path="/faqs" element={<FAQs />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/project-stories" element={<ProjectStories />} />
+          <Route path="/stakeholders" element={<Stakeholders />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/project/view/:projectId" element={<ProjectView />} />
+          <Route
+            path="/project/view/:projectId/qr/sponsor/:sponsorId"
+            element={<ProjectView />}
+          />
+        </Routes>
+      </div>
+      <Toaster />
+      <Footer />
+    </div>
+  );
+}
+
+export default App;

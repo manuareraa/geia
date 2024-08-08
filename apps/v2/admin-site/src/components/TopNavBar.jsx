@@ -18,16 +18,16 @@ import { useNavigate, useLocation } from "react-router-dom";
 import GeoblocsLogo from "../assets/logo/full-logo-v2.png";
 
 const menuItems = [
-  "Profile",
-  "Dashboard",
-  "Activity",
-  "Analytics",
-  "System",
-  "Deployments",
-  "My Settings",
-  "Team Settings",
-  "Help & Feedback",
-  "Log Out",
+  // "Profile",
+  // "Dashboard",
+  // "Activity",
+  // "Analytics",
+  // "System",
+  // "Deployments",
+  // "My Settings",
+  // "Team Settings",
+  // "Help & Feedback",
+  // "Log Out",
 ];
 
 export default function App() {

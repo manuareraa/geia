@@ -60,23 +60,6 @@ function Buyers(props) {
 
       <div className="divider"></div>
 
-      {/* crypto wallet */}
-      {/* <div className="flex flex-col items-center justify-center w-full py-16 space-y-2 lg:flex-row lg:space-x-0">
-        <img src={wallet} className="w-36"></img>
-        <div className="flex flex-col items-center justify-center space-y-8">
-          <p className="lg:text-3xl md:text-2xl text-xl font-bold text-center lg:w-[1200px] w-[100%] md:[w-85%]">
-            All your <span className="font-bold text-gGreen">Geoblocs</span> are
-            stored in a crypto wallet which can be accessed anytime, anywhere
-          </p>
-          <p className="text-center lg:w-[1000px] w-[100%] md:w-[85%]">
-            When you purchase Geoblocs and store them in your wallet you can
-            access the project any time for up to date information on the status
-            of the regeneration from geospatial data and imagery to on the
-            ground monitoring and scientific reports.
-          </p>
-        </div>
-      </div> */}
-
       <div className="flex flex-col items-center justify-center space-y-24 lg:space-y-0">
         {/* maximize impact */}
         <div className="flex flex-col items-center justify-center w-full space-y-2 py- lg:flex-row lg:space-x-8">

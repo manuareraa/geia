@@ -1,0 +1,32 @@
+{
+  "type": "module",
+  "name": "admin-user-management",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.584.0",
+    "@aws-sdk/lib-dynamodb": "^3.584.0",
+    "@aws-sdk/lib-storage": "^3.583.0",
+    "aws-sdk": "^2.1616.0",
+    "joi": "^17.13.1",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.5",
+    "@babel/preset-env": "^7.24.5",
+    "aws-sdk-mock": "^5.9.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^27.0.6"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  }
+}

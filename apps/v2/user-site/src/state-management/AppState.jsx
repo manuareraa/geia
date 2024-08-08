@@ -3,9 +3,11 @@ import { create } from "zustand";
 import axios from "axios";
 import { immer } from "zustand/middleware/immer";
 
+import { useSignerStatus, useAuthenticate } from "@alchemy/aa-alchemy/react";
+
 // Environmental Variables
 export const backendUrl =
-  import.meta.env.REACT_APP_BACKEND_URL || "https://admin.api.geoblocs.com";
+  import.meta.env.REACT_APP_BACKEND_URL || "https://user.api.geoblocs.com";
 
 // Loading State Management
 export const useLoadingStore = create(
@@ -48,42 +50,79 @@ const apiRequest = async (request, loadingMessage, successMessage) => {
 };
 
 // =======================================
-// utils
+// User Store
 // =======================================
 
-export const formatDate = (isoString) => {
-  const date = new Date(isoString);
+export const useUserStore = create(
+  immer((set) => ({
+    projects: [],
+    allProjects: {},
+    subscribeStatus: null,
+    walletAddress: null,
 
-  const day = date.getDate();
-  const month = date.toLocaleString("default", { month: "short" });
-  const year = date.getFullYear();
+    setWalletAddress: (walletAddress) => {
+      set({ walletAddress });
+    },
 
-  const hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, "0"); // Ensure two-digit minutes
+    fetchProjectsSummary: async () => {
+      const request = () => axios.get(`${backendUrl}/user/projects-summary`);
+      const result = await apiRequest(
+        request,
+        "Fetching project summaries...",
+        "Project summaries fetched successfully"
+      );
+      if (result.status === "success") {
+        set({ projects: result.data.projects });
+      }
+    },
 
-  return `${day} ${month}, ${year} ${hours}:${minutes}`;
-};
+    fetchProjectById: async (projectId) => {
+      const request = () =>
+        axios.get(`${backendUrl}/user/project`, { params: { projectId } });
+      const result = await apiRequest(
+        request,
+        "Fetching project details...",
+        "Project details fetched successfully"
+      );
+      if (result.status === "success") {
+        // add project to all projects with projectId as key
+        set((state) => {
+          state.allProjects[projectId] = result.data.project;
+        });
+        return result.data.project;
+      }
+    },
 
-export const calculateTimeDifference = (isoDate) => {
-  const now = new Date();
-  const past = new Date(isoDate);
-  const differenceInSeconds = Math.floor((now - past) / 1000);
+    fetchOnChainTokenData: async (tokenId) => {
+      const request = () =>
+        axios.get(`${backendUrl}/bc/token/fetch-onchain-token-data`, {
+          params: { tokenId },
+        });
+      const result = await apiRequest(
+        request,
+        "Fetching token details...",
+        "Token details fetched successfully"
+      );
+      console.log("result:", result);
+      if (result.status === "success") {
+        return {
+          totalSupply: result.data.totalSupply,
+          availableSupply: result.data.balance,
+        };
+      }
+    },
 
-  const intervals = [
-    { label: "year", seconds: 31536000 },
-    { label: "month", seconds: 2592000 },
-    { label: "week", seconds: 604800 },
-    { label: "day", seconds: 86400 },
-    { label: "hour", seconds: 3600 },
-    { label: "minute", seconds: 60 },
-    { label: "second", seconds: 1 },
-  ];
-
-  for (const interval of intervals) {
-    const count = Math.floor(differenceInSeconds / interval.seconds);
-    if (count > 0) {
-      return `${count} ${interval.label}${count !== 1 ? "s" : ""} old`;
-    }
-  }
-  return "just now";
-};
+    subscribeByEmail: async (email) => {
+      const request = () =>
+        axios.post(`${backendUrl}/user/subscribe`, { email });
+      const result = await apiRequest(
+        request,
+        "Subscribing...",
+        "Subscribed successfully"
+      );
+      if (result.status === "success") {
+        set({ subscribeStatus: result.data });
+      }
+    },
+  }))
+);

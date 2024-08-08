@@ -17,16 +17,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import GeoblocsLogo from "../assets/logo/full-logo-v2.png";
 
 const menuItems = [
-  "Profile",
-  "Dashboard",
-  "Activity",
-  "Analytics",
-  "System",
-  "Deployments",
-  "My Settings",
-  "Team Settings",
-  "Help & Feedback",
-  "Log Out",
+  "Home",
+  "Stakeholders",
+  "Case Studies",
+  "Project Stories",
+  "Team",
+  "How it Works",
+  "FAQs",
+  "Contact",
 ];
 
 export default function App() {
@@ -85,33 +83,134 @@ export default function App() {
           className="justify-around hidden w-full gap-8 sm:flex"
           justify="end"
         >
-          <NavbarItem isActive={location.pathname === "/dashboard/projects"}>
-            <Link onPress={() => navigate("/dashboard/projects")}>
+          <NavbarItem isActive={location.pathname === "/"}>
+            <Link onPress={() => navigate("/")}>
               <p
                 className={`text-black hover:cursor-pointer  ${
-                  location.pathname === "/dashboard/projects"
+                  location.pathname === "/"
                     ? "text-gBlue"
                     : "text-black hover:text-gBlue"
                 }`}
               >
-                Dashboard
+                Home
               </p>
             </Link>
           </NavbarItem>
           <NavbarItem
-            isActive={location.pathname === "/dashboard/projects/new"}
+            isActive={location.pathname === "/stakeholders"}
           >
-            <Link onPress={() => navigate("/dashboard/projects/new")}>
+            <Link onPress={() => navigate("/stakeholders")}>
               <p
                 className={`text-black hover:cursor-pointer  ${
-                  location.pathname === "/dashboard/projects/new"
+                  location.pathname === "/stakeholders"
                     ? "text-gBlue"
                     : "text-black hover:text-gBlue"
                 }`}
               >
-                Add New Project
+                Stakeholders
               </p>
             </Link>
+          </NavbarItem>
+          <NavbarItem
+            isActive={location.pathname === "/case-studies"}
+          >
+            <Link onPress={() => navigate("/case-studies")}>
+              <p
+                className={`text-black hover:cursor-pointer  ${
+                  location.pathname === "/case-studies"
+                    ? "text-gBlue"
+                    : "text-black hover:text-gBlue"
+                }`}
+              >
+                Case Studies
+              </p>
+            </Link>
+          </NavbarItem>
+          <NavbarItem
+            isActive={location.pathname === "/project-stories"}
+          >
+            <Link onPress={() => navigate("/project-stories")}>
+              <p
+                className={`text-black hover:cursor-pointer  ${
+                  location.pathname === "/project-stories"
+                    ? "text-gBlue"
+                    : "text-black hover:text-gBlue"
+                }`}
+              >
+                Project Stories
+              </p>
+            </Link>
+          </NavbarItem>
+          <NavbarItem
+            isActive={location.pathname === "/team"}
+          >
+            <Link onPress={() => navigate("/team")}>
+              <p
+                className={`text-black hover:cursor-pointer  ${
+                  location.pathname === "/team"
+                    ? "text-gBlue"
+                    : "text-black hover:text-gBlue"
+                }`}
+              >
+                Team
+              </p>
+            </Link>
+          </NavbarItem>
+          <NavbarItem
+            isActive={location.pathname === "/how-it-works"}
+          >
+            <Link onPress={() => navigate("/how-it-works")}>
+              <p
+                className={`text-black hover:cursor-pointer  ${
+                  location.pathname === "/how-it-works"
+                    ? "text-gBlue"
+                    : "text-black hover:text-gBlue"
+                }`}
+              >
+                How it Works
+              </p>
+            </Link>
+          </NavbarItem>
+          <NavbarItem
+            isActive={location.pathname === "/faqs"}
+          >
+            <Link onPress={() => navigate("/faqs")}>
+              <p
+                className={`text-black hover:cursor-pointer  ${
+                  location.pathname === "/faqs"
+                    ? "text-gBlue"
+                    : "text-black hover:text-gBlue"
+                }`}
+              >
+                FAQs
+              </p>
+            </Link>
+          </NavbarItem>
+          <NavbarItem
+            isActive={location.pathname === "/contact"}
+          >
+            <Link onPress={() => navigate("/contact")}>
+              <p
+                className={`text-black hover:cursor-pointer  ${
+                  location.pathname === "/contact"
+                    ? "text-gBlue"
+                    : "text-black hover:text-gBlue"
+                }`}
+              >
+                Contact
+              </p>
+            </Link>
+          </NavbarItem>
+          <NavbarItem
+            isActive={location.pathname === "/explore-projects"}
+          >
+            <Button
+              // size="small"
+              className="font-bold text-white bg-gGreen"
+              onClick={() => navigate("/explore-projects")}
+            >
+              Explore Projects
+            </Button>
           </NavbarItem>
           {/* <NavbarItem>
               <Link color="foreground" href="#">

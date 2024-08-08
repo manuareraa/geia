@@ -185,7 +185,7 @@ function ProjectStories(props) {
         )}
 
         {/* call for registration container */}
-        <div className="flex flex-col mt-12 mb-8 lg:mb-16 space-y-8 lg:mt-44">
+        <div className="flex flex-col mt-12 mb-8 space-y-8 lg:mb-16 lg:mt-44">
           <p className="text-2xl font-bold text-center lg:text-4xl">
             Profit from Restoration: Earn while Healing the Land!
           </p>

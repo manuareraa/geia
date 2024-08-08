@@ -199,11 +199,72 @@ export const handler = async (event) => {
       return await handleDeleteProject(event, logs);
     case event.path === "/admin/content/redeem" && event.httpMethod === "POST":
       return await handleIncrementClaimed(event, logs);
+    case event.path === "/admin/content/update-claimed-token" &&
+      event.httpMethod === "POST":
+      return await handleIncrementClaimedByTokenId(event, logs);
     default:
       logs.push("Invalid path or method");
       return logAndRespond(400, "Invalid path or method", logs);
   }
 };
+
+const handleIncrementClaimedByTokenId = async (event, logs) => {
+  const requestBody = JSON.parse(event.body);
+  logs.push(`Request body: ${JSON.stringify(requestBody)}`);
+
+  const { error } = tokenDataSchema.validate(requestBody);
+  if (error) {
+    const details = error.details.map((detail) => detail.message);
+    logs.push(`Validation error: ${details.join(", ")}`);
+    return logAndRespond(400, `Validation failed: ${details.join(", ")}`, logs);
+  }
+
+  const { tokenId, tokenQty } = requestBody;
+
+  const dbParams = {
+    TableName: DYNAMODB_TABLE,
+    FilterExpression: "tokenData.tokenId = :tokenId",
+    ExpressionAttributeValues: {
+      ":tokenId": tokenId,
+    },
+  };
+
+  try {
+    const dbResponse = await dynamoDB.scan(dbParams).promise();
+    if (dbResponse.Items.length === 0) {
+      logs.push(`TokenId: ${tokenId} not found`);
+      return logAndRespond(404, "TokenId not found", logs);
+    }
+
+    const projectId = dbResponse.Items[0].projectId;
+    const dbParamsUpdate = {
+      TableName: DYNAMODB_TABLE,
+      Key: { projectId },
+      UpdateExpression: "SET tokenData.claimed = if_not_exists(tokenData.claimed, :start) + :inc",
+      ExpressionAttributeValues: {
+        ":inc": parseInt(tokenQty),
+        ":start": 0,
+      },
+      ReturnValues: "UPDATED_NEW",
+    };
+
+    const dbResponseUpdate = await dynamoDB.update(dbParamsUpdate).promise();
+    logs.push(
+      `Incremented tokenData.claimed for project with projectId: ${projectId}`
+    );
+    return logAndRespond(
+      200,
+      "Incremented tokenData.claimed successfully",
+      logs,
+      {
+        tokenData: dbResponseUpdate.Attributes.tokenData,
+      }
+    );
+  } catch (error) {
+    logs.push(`Error incrementing tokenData.claimed: ${error.message}`);
+    return logAndRespond(500, "Error incrementing tokenData.claimed", logs);
+  }
+}
 
 const handleIncrementClaimed = async (event, logs) => {
   const queryStringParameters = event.queryStringParameters || {};

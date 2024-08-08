@@ -9,20 +9,31 @@
   border: 2px solid #000;
 }
 
-.embed-container {
-  position: relative;
-  padding-bottom: 75%; /* Adjust the aspect ratio as needed */
-  height: 0;
-  overflow: hidden;
-  max-width: 100%;
-  height: 80vh; /* Adjust height to your preference */
+.bg-home-image {
+  /* get image from assets folder */
+  background-image: url(./assets/img/home-bg-v2.png);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.embed-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none; /* Remove border if not needed */
+.bg-stakeholders-image {
+  /* get image from assets folder */
+  background-image: url(./assets/img/stakeholders/stakeholders.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.custom-bg-blockchain-image {
+  /* get image from assets folder */
+  background-image: url(./assets/img/blockchain-bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: fit-content;
+}
+
+.contact-page-bg {
+  /* get image from assets folder */
+  background-image: url(./assets/img/contact/12.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* height: fit-content; */
 }

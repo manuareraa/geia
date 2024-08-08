@@ -1,0 +1,36 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import { NextUIProvider } from "@nextui-org/react";
+import { BrowserRouter } from "react-router-dom";
+
+import { AlchemyAccountProvider } from "@alchemy/aa-alchemy/react";
+import { cookieToInitialState } from "@alchemy/aa-alchemy/config";
+import { config, queryClient } from "../alchemyConfig.js";
+
+// Hydrate the initial state on the client
+const initialState = cookieToInitialState(config, document.cookie);
+
+// override console.log statements if the REACT_APP_ENVIRONMENT variable is set to production
+if (import.meta.env.REACT_APP_ENVIRONMENT === "production") {
+  console.log = () => {};
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <NextUIProvider className="h-full">
+        <AlchemyAccountProvider
+          config={config}
+          queryClient={queryClient}
+          initialState={initialState}
+        >
+          <main className="h-full geoTheme">
+            <App />
+          </main>
+        </AlchemyAccountProvider>
+      </NextUIProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+);

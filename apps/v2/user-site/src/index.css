@@ -80,3 +80,24 @@ body {
   font-weight: 900;
   font-style: normal;
 }
+
+/* Width and Height */
+::-webkit-scrollbar {
+  width: 15px; /* width of the vertical scrollbar */
+  height: 10px; /* height of the horizontal scrollbar */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fff; /* color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #65a500; /* color of the scroll thumb */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #65a500; /* color of the scroll thumb on hover */
+}
