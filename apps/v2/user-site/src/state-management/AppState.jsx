@@ -126,3 +126,284 @@ export const useUserStore = create(
     },
   }))
 );
+
+export const useTransactionStore = create(
+  immer((set) => ({
+    txnId: null, // To store the transaction ID
+    txnStatus: null, // To store the status of the transaction (success, failure, pending)
+
+    setTxnId: (txnId) => {
+      set({ txnId });
+    },
+
+    setTxnStatus: (txnStatus) => {
+      set({ txnStatus });
+    },
+
+    // Function to commit the transaction
+    commitTransaction: async (txnType, txnData) => {
+      const request = () =>
+        axios.post(`${backendUrl}/verifier/txn/commit`, {
+          txnType,
+          ...txnData,
+        });
+
+      const result = await apiRequest(
+        request,
+        `Processing ${txnType} transaction...`,
+        `${
+          txnType.charAt(0).toUpperCase() + txnType.slice(1)
+        } transaction committed successfully`
+      );
+
+      console.log("result:", result, result.statusCode, result.data);
+
+      if (result && result.status === "success" && result.data?.txnId) {
+        useTransactionStore.getState().setTxnId(result.data.txnId);
+        console.log("result.data.txnId:", result.data.txnId);
+
+        // Wait for the polling to complete before returning
+        const pollResult = await useTransactionStore
+          .getState()
+          .checkTxnStatus(result.data.txnId);
+        return pollResult; // Return only after polling completes
+      } else {
+        return null;
+      }
+    },
+
+    // Function to check the status of the transaction
+    checkTxnStatus: async (txnId) => {
+      const { startLoading, stopLoading } = useLoadingStore.getState();
+      let loopStarted = false;
+      let finalResult = null;
+
+      const poll = async () => {
+        try {
+          console.log("Starting the poll...", txnId);
+          let loadingToast;
+
+          if (!loopStarted) {
+            loadingToast = toast.loading(
+              `Checking status of transaction ${txnId}...`
+            );
+            loopStarted = true;
+          }
+
+          startLoading(`Checking status of transaction ${txnId}...`);
+
+          const response = await axios.get(
+            `${backendUrl}/verifier/txn/waitforcompletion`,
+            {
+              params: { tId: txnId },
+            }
+          );
+
+          console.log("result:", response);
+
+          if (response.status === 200) {
+            useTransactionStore.getState().setTxnStatus("success");
+            finalResult = "success";
+            stopLoading();
+            toast.dismiss(loadingToast);
+          } else if (response.status === 205) {
+            useTransactionStore.getState().setTxnStatus("failure");
+            finalResult = "failure";
+            stopLoading();
+            toast.dismiss(loadingToast);
+          } else if (response.status === 206) {
+            useTransactionStore.getState().setTxnStatus("duplicate");
+            finalResult = "duplicate";
+            stopLoading();
+            toast.dismiss(loadingToast);
+          } else {
+            // Continue polling every 2 seconds if status is not success or failure
+            console.log("Continuing the poll...");
+            setTimeout(poll, 2000);
+          }
+        } catch (error) {
+          console.error("Error while checking transaction status:", error);
+          stopLoading();
+          toast.dismiss();
+          finalResult = "error";
+        }
+      };
+
+      await poll();
+
+      // Wait until the polling has finished and a final result is set
+      while (finalResult === null) {
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Delay to prevent a tight loop
+      }
+
+      return finalResult; // Only return when polling is completed
+    },
+
+    // Example functions for specific transaction types
+    buyTokens: async (txnData) => {
+      return await useTransactionStore
+        .getState()
+        .commitTransaction("buy", txnData);
+    },
+
+    redeemTokens: async (txnData) => {
+      return await useTransactionStore
+        .getState()
+        .commitTransaction("redeem", txnData);
+    },
+
+    transferTokens: async (txnData) => {
+      return await useTransactionStore
+        .getState()
+        .commitTransaction("transfer", txnData);
+    },
+  }))
+);
+
+export const useSummaryStore = create(
+  immer((set) => ({
+    summary: null,
+
+    fetchSummary: async (address) => {
+      console.log("fetching summary for address:", address);
+
+      const request = () =>
+        axios.get(`${backendUrl}/bc/token/summary`, {
+          params: { address },
+        });
+
+      const result = await apiRequest(
+        request,
+        "Fetching wallet summary...",
+        "Wallet summary fetched successfully"
+      );
+
+      console.log("result:", result);
+
+      if (result.status === "success") {
+        set({ summary: result.data });
+        return result.data;
+      } else {
+        return null;
+      }
+    },
+  }))
+);
+
+// export const useTransactionStore = create(
+//   immer((set) => ({
+//     txnId: null, // To store the transaction ID
+//     txnStatus: null, // To store the status of the transaction (success, failure, pending)
+
+//     setTxnId: (txnId) => {
+//       set({ txnId });
+//     },
+
+//     setTxnStatus: (txnStatus) => {
+//       set({ txnStatus });
+//     },
+
+//     // Function to commit the transaction
+//     commitTransaction: async (txnType, txnData) => {
+//       const request = () =>
+//         axios.post(`${backendUrl}/verifier/txn/commit`, {
+//           txnType,
+//           ...txnData,
+//         });
+
+//       const result = await apiRequest(
+//         request,
+//         `Processing ${txnType} transaction...`,
+//         `${
+//           txnType.charAt(0).toUpperCase() + txnType.slice(1)
+//         } transaction committed successfully`
+//       );
+
+//       console.log("result:", result, result.statusCode, result.data);
+
+//       if (result && result.status === "success" && result.data?.txnId) {
+//         useTransactionStore.getState().setTxnId(result.data.txnId);
+//         console.log("result.data.txnId:", result.data.txnId);
+//         await useTransactionStore.getState().checkTxnStatus(result.data.txnId);
+//         return result.data;
+//       } else {
+//         return null;
+//       }
+//     },
+
+//     // Function to check the status of the transaction
+//     checkTxnStatus: async (txnId) => {
+//       const { startLoading, stopLoading } = useLoadingStore.getState();
+//       let loopStarted = false;
+
+//       const poll = async () => {
+//         try {
+//           // Start loading with a loading toast
+//           console.log("Starting the poll...", txnId);
+
+//           let loadingToast;
+
+//           if (!loopStarted) {
+//             loadingToast = toast.loading(
+//               `Checking status of transaction ${txnId}...`
+//             );
+//           }
+
+//           console.log("loading started", txnId);
+//           startLoading(`Checking status of transaction ${txnId}...`);
+
+//           const response = await axios.get(
+//             `${backendUrl}/verifier/txn/waitforcompletion`,
+//             {
+//               params: { tId: txnId },
+//             }
+//           );
+
+//           console.log("result:", response);
+
+//           if (response.status === 200) {
+//             useTransactionStore.getState().setTxnStatus("success");
+//             stopLoading();
+//             toast.dismiss(loadingToast);
+//             return "success";
+//           } else if (response.status === 205) {
+//             useTransactionStore.getState().setTxnStatus("failure");
+//             stopLoading();
+//             toast.dismiss(loadingToast);
+//             return "failure";
+//           } else {
+//             // Continue polling every 2 seconds if status is not success or failure
+//             loopStarted = true;
+//             console.log("Continuing the poll...");
+//             setTimeout(poll, 2000);
+//           }
+//         } catch (error) {
+//           console.error("Error while checking transaction status:", error);
+//           stopLoading();
+//           toast.dismiss();
+//         }
+//       };
+
+//       await poll();
+//     },
+
+//     // Example functions for specific transaction types
+//     buyTokens: async (txnData) => {
+//       return await useTransactionStore
+//         .getState()
+//         .commitTransaction("buy", txnData);
+//     },
+
+//     redeemTokens: async (txnData) => {
+//       return await useTransactionStore
+//         .getState()
+//         .commitTransaction("redeem", txnData);
+//     },
+
+//     transferTokens: async (txnData) => {
+//       return await useTransactionStore
+//         .getState()
+//         .commitTransaction("transfer", txnData);
+//     },
+//   }))
+// );

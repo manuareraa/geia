@@ -20,7 +20,8 @@ const PARENT_ACCOUNT_PRIVATE_KEY =
   process.env.PARENT_ACCOUNT_PRIVATE_KEY ||
   "76770b4b5c69a793883a20b26c266cb573d5cf95d5d8b81b9d07e1ed2d6f9fff";
 const CONTRACT_ADDRESS =
-  process.env.CONTRACT_ADDRESS || "0x4bB2CD9D264f5B21bb53aDa2af6753dAc8dDF37c";
+  process.env.CONTRACT_ADDRESS || "0x7B19c50dCa19910baCd1dc69E34Faa965075FcfB";
+// 0x4bB2CD9D264f5B21bb53aDa2af6753dAc8dDF37c
 
 const ABI = [
   {
@@ -252,6 +253,34 @@ const ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "mint",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "to",
         type: "address",
       },
@@ -322,34 +351,6 @@ const ABI = [
     ],
     name: "ApprovalForAll",
     type: "event",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "data",
-        type: "bytes",
-      },
-    ],
-    name: "mint",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
     anonymous: false,
@@ -654,6 +655,30 @@ const ABI = [
         name: "account",
         type: "address",
       },
+    ],
+    name: "getTokenIdsAndBalances",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
       {
         internalType: "address",
         name: "operator",
@@ -825,9 +850,65 @@ export const handler = async (event) => {
     case event.path === "/bc/token/verify-balance" &&
       event.httpMethod === "GET":
       return await handleVerifyTokenBalance(event, logs);
+    case event.path === "/bc/token/summary" && event.httpMethod === "GET":
+      return await handleTokenSummary(event, logs);
     default:
       logs.push("Invalid path or method");
       return logAndRespond(400, "Invalid path or method", logs);
+  }
+};
+
+const handleTokenSummary = async (event, logs) => {
+  const queryStringParameters = event.queryStringParameters || {};
+  const { address } = queryStringParameters;
+
+  if (!address) {
+    logs.push("Missing address query parameter");
+    return logAndRespond(400, "Missing address query parameter", logs);
+  }
+
+  try {
+    // Fetch token IDs and balances from the smart contract
+    const [tokenIds, balances] = await contract.getTokenIdsAndBalances(address);
+    logs.push(
+      `Token IDs and balances for address ${address}: ${tokenIds}, ${balances}`
+    );
+
+    // Convert BigInt tokenIds and balances to strings
+    const tokenIdsAsStrings = tokenIds.map((id) => parseInt(id.toString()));
+    const balancesAsStrings = balances.map((balance) => balance.toString());
+
+    // Make API request to the wallet-summary endpoint
+    const response = await fetch(
+      "https://admin.api.geoblocs.com/admin/content/wallet-summary",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tokenIds: [...tokenIdsAsStrings], // Use the stringified tokenIds here
+          tokenBalances: [...balancesAsStrings], // Use the stringified balances here
+        }),
+      }
+    );
+
+    console.log("Response: ", response);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch wallet summary: ${response.statusText}`);
+    }
+
+    const summary = await response.json();
+    logs.push(`Fetched wallet summary: ${JSON.stringify(summary)}`);
+
+    // Return the summary to the frontend
+    return logAndRespond(200, "Fetched token summary successfully", logs, {
+      summary: summary,
+    });
+  } catch (error) {
+    logs.push(`Error fetching token summary: ${error.message}`);
+    return logAndRespond(500, "Error fetching token summary", logs);
   }
 };
 

@@ -21,6 +21,7 @@ import ProjectStories from "./pages/ProjectStories";
 import Stakeholders from "./pages/Stakeholders";
 import Team from "./pages/Team";
 import ProjectView from "./pages/ProjectView";
+import Wallet from "./pages/Wallet";
 
 function App() {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ function App() {
           <Route path="/project-stories" element={<ProjectStories />} />
           <Route path="/stakeholders" element={<Stakeholders />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/wallet" element={<Wallet />} />
           <Route path="/project/view/:projectId" element={<ProjectView />} />
           <Route
             path="/project/view/:projectId/qr/sponsor/:sponsorId"

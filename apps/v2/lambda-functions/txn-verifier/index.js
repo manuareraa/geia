@@ -14,15 +14,18 @@ const DYNAMODB_TABLE = "txns-live";
 // Schema validation for different transaction types
 const baseSchema = {
   txnType: Joi.string().valid("buy", "transfer", "redeem").required(),
-  qty: Joi.number().positive().required(),
+  qty: Joi.number().required(),
   toAddress: Joi.string().required(),
 };
 
 const buySchema = Joi.object({
   ...baseSchema,
   txnType: Joi.string().valid("buy").required(),
-  fromAddress: Joi.string().valid("0xJHB16526554S24SD26351SDGSDV").required(),
-  tokenId: Joi.number().positive().required(),
+  fromAddress: Joi.string()
+    .valid("0x3F6f50314f5e3A282ddBa77102711979f634A08b")
+    .required(),
+  // tokenId: Joi.number().positive().required(),
+  tokenId: Joi.number().required(),
   orderId: Joi.string().required(),
 }).options({ abortEarly: false });
 
@@ -35,7 +38,11 @@ const transferSchema = Joi.object({
 const redeemSchema = Joi.object({
   ...baseSchema,
   txnType: Joi.string().valid("redeem").required(),
-  fromAddress: Joi.string().valid("0xJHB16526554S24SD26351SDGSDV").required(),
+  fromAddress: Joi.string()
+    .valid("0x3F6f50314f5e3A282ddBa77102711979f634A08b")
+    .required(),
+  tokenId: Joi.number().required(),
+  sponsorId: Joi.string().required(),
 }).options({ abortEarly: false });
 
 const verifyToken = (event) => {
@@ -82,6 +89,8 @@ export const handler = async (event) => {
   switch (true) {
     case event.path === "/verifier/txn/commit" && event.httpMethod === "POST":
       return await handleTxnCommit(event, logs);
+      case event.path === "/verifier/txn/waitforcompletion" && event.httpMethod === "GET":
+        return await handleCheckTxnStatus(event, logs);      
     default:
       logs.push("Invalid path or method");
       return logAndRespond(400, "Invalid path or method", logs);
@@ -133,7 +142,7 @@ const handleTxnCommit = async (event, logs) => {
 
   switch (txnObject.txnType) {
     case "buy":
-      console.log("Verification for buy transaction");
+      console.log("Verification for buy transaction", txnObject);
       const { tokenId, tokenQty } = await handleBuyVerification(txnObject);
       delete txnObject.orderId;
       txnObject.tokenId = tokenId;
@@ -144,6 +153,8 @@ const handleTxnCommit = async (event, logs) => {
       break;
     case "redeem":
       console.log("Verification for redeem transaction");
+      await handleRedeemVerification(txnObject);
+      delete txnObject.sponsorId;
       txnObject.qty = 1;
       break;
   }
@@ -172,6 +183,7 @@ const handleTxnCommit = async (event, logs) => {
 };
 
 const handleBuyVerification = async (txnObject) => {
+  console.log("Paypal verification started");
   const CLIENT_ID =
     "AWqMFsrCNIFKrjbGbEyIq2HHBBuGI6O5IRWLfoRgQetGB6CRnkobNytsi8_voGAKG-xxc4CkKjQG-Nmn";
   const SECRET =
@@ -191,7 +203,10 @@ const handleBuyVerification = async (txnObject) => {
     }
   );
 
+  console.log("Auth response:", authResponse);
+
   if (!authResponse.ok) {
+    console.log("Failed to obtain PayPal access token");
     throw new Error(
       `Failed to obtain PayPal access token: ${authResponse.statusText}`
     );
@@ -199,6 +214,8 @@ const handleBuyVerification = async (txnObject) => {
 
   const authData = await authResponse.json();
   const accessToken = authData.access_token;
+
+  console.log("Access token:", accessToken);
 
   const orderResponse = await fetch(
     `https://api-m.sandbox.paypal.com/v2/checkout/orders/${txnObject.orderId}`,
@@ -211,13 +228,18 @@ const handleBuyVerification = async (txnObject) => {
     }
   );
 
+  console.log("Order response:", orderResponse);
+
   if (!orderResponse.ok) {
+    console.log("Failed to verify PayPal order");
     throw new Error(
       `Failed to verify PayPal order: ${orderResponse.statusText}`
     );
   }
 
   const orderData = await orderResponse.json();
+
+  console.log("Order data:", orderData);
 
   // Check first level custom_id
   let customIdField = orderData.purchase_units?.[0]?.custom_id;
@@ -229,13 +251,7 @@ const handleBuyVerification = async (txnObject) => {
   }
 
   const customIdData = JSON.parse(customIdField);
-  const { tokenId, tokenQty } = customIdData;
-
-  if (txnObject.tokenId !== tokenId || txnObject.qty !== tokenQty) {
-    throw new Error(
-      "PayPal order verification failed: Token ID or quantity mismatch"
-    );
-  }
+  console.log("Custom ID data:", customIdData);
 
   return customIdData;
 };
@@ -259,3 +275,75 @@ const handleTransferVerification = async (txnObject, logs) => {
     throw new Error("Insufficient balance for transfer");
   }
 };
+
+const handleRedeemVerification = async (txnObject) => {
+  console.log("Redeem verification started");
+  const sponsorId = txnObject.sponsorId;
+  const tokenId = txnObject.tokenId;
+  const updateSponsorClaimedTokenUrl =
+    "https://admin.api.geoblocs.com/admin/content/update/sponsor/claimed-token";
+  const response = await fetch(updateSponsorClaimedTokenUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ sponsorId, tokenId }),
+  });
+
+  console.log("Update sponsor claimed token response:", response);
+
+  // check the response code for 200
+  if (!response.ok) {
+    throw new Error(
+      `Failed to update sponsor claimed token: ${response.statusText}`
+    );
+  }
+
+  const data = await response.json();
+  console.log("Update sponsor claimed token data:", data);
+
+  // if (data.status !== "success") {
+  //   throw new Error(`Failed to update sponsor claimed token: ${data.message}`);
+  // }
+
+  return data;
+};
+
+const handleCheckTxnStatus = async (event, logs) => {
+  const { tId } = event.queryStringParameters || {};
+
+  const txnId = tId;
+
+  if (!txnId) {
+    logs.push("Missing txnId in the request parameters");
+    return logAndRespond(400, "Missing txnId", logs);
+  }
+
+  const params = {
+    TableName: "txns-archive",
+    Key: { txnId },
+  };
+
+  try {
+    const dbResponse = await dynamoDB.get(params).promise();
+    if (!dbResponse.Item) {
+      logs.push(`Transaction with txnId: ${txnId} not found`);
+      return logAndRespond(204, "Transaction not found", logs);
+    }
+
+    const { status } = dbResponse.Item;
+    if (status === "success") {
+      return logAndRespond(200, "Transaction succeeded", logs);
+    } else if (status === "duplicate") {
+      logs.push(`Transaction status: ${status}`);
+      return logAndRespond(206, "Transaction dropped because of duplicacy", logs);
+    } else {
+      logs.push(`Transaction status: ${status}`);
+      return logAndRespond(205, "Transaction not in success status", logs);
+    }
+  } catch (error) {
+    logs.push(`Error checking transaction status: ${error.message}`);
+    return logAndRespond(500, "Error checking transaction status", logs);
+  }
+};
+

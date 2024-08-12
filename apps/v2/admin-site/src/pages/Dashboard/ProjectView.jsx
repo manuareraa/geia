@@ -383,6 +383,7 @@ function ProjectView(props) {
           sponsorId: uuidv4(),
           sponsorName: "",
           tokensSponsored: 0,
+          tokensClaimed: 0,
           linkToSite: "",
           logoUrl: "",
         },
@@ -1184,6 +1185,14 @@ function ProjectView(props) {
                       disabled={!editable.sponsors}
                       className="text-lg font-bold"
                       placeholder="Tokens Sponsored"
+                    />
+                    <Input
+                      name="tokensClaimed"
+                      value={sponsor.tokensClaimed || 0}
+                      onChange={handleSponsorChange(index)}
+                      disabled={true}
+                      className="text-lg font-bold"
+                      placeholder="Tokens Claimed"
                     />
                     <Input
                       name="linkToSite"

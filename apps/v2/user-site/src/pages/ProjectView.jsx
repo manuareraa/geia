@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useUserStore } from "../state-management/AppState";
+import {
+  useUserStore,
+  useTransactionStore,
+} from "../state-management/AppState";
 import {
   Modal,
   ModalContent,
@@ -51,6 +54,8 @@ function ProjectView(props) {
     setWalletAddress,
     walletAddress,
   } = useUserStore();
+  const { buyTokens, redeemTokens, transferTokens, txnStatus } =
+    useTransactionStore();
   const [project, setProject] = useState({});
   const navigate = useNavigate();
   const [buyContainerView, setBuyContainerView] = useState(false);
@@ -71,6 +76,9 @@ function ProjectView(props) {
   const [subWindow, setSubWindow] = useState("default");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [reservedTokens, setReservedTokens] = useState(0);
+
+  // container that should open after passkey
+  const [containerToOpen, setContainerToOpen] = useState("");
 
   useEffect(() => {
     if (projectId) {
@@ -100,33 +108,16 @@ function ProjectView(props) {
     }
   };
 
-  const onPaypalSuccess = (details, data) => {
+  const onPaypalSuccess = async (details, data) => {
     console.log("Paypal Success", details, data);
     setRedeemInProcess(true);
-    // executeRedeemProcess();
+    await handleBuyTokens(data.orderID);
     setBuyContainerView(false);
     setFormData({
       quantity: 0,
       totalCost: 0,
     });
   };
-
-  //  sponsorsArray= [
-  //     {
-  //         "sponsorName": "Tom",
-  //         "logoUrl": "https://d2itlus54uyuca.cloudfront.net/sponsors/4067a032-3456-43a3-8393-4fb6b8bbc059/logo/91a8f271-2127-4fb1-b0b5-c94a5d0bec86",
-  //         "sponsorId": "e646138d-86cd-4dc9-aad4-fded7d34fc64",
-  //         "tokensSponsored": "1500",
-  //         "linkToSite": "https://google.com"
-  //     },
-  //     {
-  //         "sponsorName": "Rick",
-  //         "logoUrl": "https://d2itlus54uyuca.cloudfront.net/sponsors/4067a032-3456-43a3-8393-4fb6b8bbc059/logo/995cc050-88b5-44a7-a934-5b9e60b9f196",
-  //         "sponsorId": "34dd5d68-959c-4a67-a199-65062627db92",
-  //         "tokensSponsored": "2600",
-  //         "linkToSite": "https://google.com"
-  //     }
-  // ]
 
   const calculateReservedTokens = (project) => {
     let reservedTokens = 0;
@@ -154,7 +145,16 @@ function ProjectView(props) {
           (sponsor) => sponsor.sponsorId === sponsorId
         );
         if (sponsor) {
-          setRedeemEnabled(true);
+          console.log("Sponsor", sponsor);
+          if (
+            parseInt(sponsor.tokensSponsored) >
+            parseInt(sponsor.tokensClaimed || 0)
+          ) {
+            setRedeemEnabled(true);
+          } else {
+            console.log("All tokens claimed");
+            setRedeemEnabled(false);
+          }
         }
       }
       // fetch on chain token data
@@ -169,12 +169,106 @@ function ProjectView(props) {
     }
   }, [project]);
 
+  const handleBuyTokens = async (orderId) => {
+    console.log("Buy Tokens Executing");
+    const txnData = {
+      txnType: "buy",
+      fromAddress: "0x3F6f50314f5e3A282ddBa77102711979f634A08b",
+      toAddress: walletAddress,
+      tokenId: project.tokenData.tokenId,
+      qty: 1,
+      orderId: orderId,
+    };
+
+    // const txnData = {
+    //   txnType: "buy",
+    //   fromAddress: "0x3F6f50314f5e3A282ddBa77102711979f634A08b",
+    //   toAddress: "0x139c560EA48C5E6841BC3E7A8CebbC53c5c93EC9",
+    //   tokenId: project.tokenData.tokenId,
+    //   qty: 1,
+    //   orderId: "9TU28527111036337",
+    // };
+
+    console.log("TxnData", txnData);
+
+    const response = await buyTokens(txnData);
+
+    if (response === "success") {
+      console.log("Transaction was successful!");
+      toast.success(
+        "Transaction was successful! Thank you for buying Geoblocs.."
+      );
+      navigate("/wallet");
+      return true;
+    } else if (response === "failure") {
+      console.log("Transaction failed. Please try again.");
+    } else if (response === "duplicate") {
+      toast.error(
+        "Transaction dropped because of duplicacy. Redeem can be done only once."
+      );
+    } else {
+      console.log("Transaction is pending...");
+    }
+  };
+
+  const handleRedeemTokens = async () => {
+    const txnData = {
+      txnType: "redeem",
+      fromAddress: "0x3F6f50314f5e3A282ddBa77102711979f634A08b",
+      toAddress: walletAddress,
+      tokenId: project.tokenData.tokenId,
+      qty: 0,
+      sponsorId: sponsorId,
+    };
+
+    // const txnData = {
+    //   txnType: "redeem",
+    //   fromAddress: "0x3F6f50314f5e3A282ddBa77102711979f634A08b",
+    //   toAddress: "0x139c560EA48C5E6841BC3E7A8CebbC53c5c93EC9",
+    //   tokenId: project.tokenData.tokenId,
+    //   qty: 0,
+    //   sponsorId: "e646138d-86cd-4dc9-aad4-fded7d34fc64",
+    // };
+
+    const response = await redeemTokens(txnData);
+
+    console.log("Redeem Response", response);
+
+    if (response === "success") {
+      console.log("Transaction was successful!");
+      toast.success(
+        "Transaction was successful! Thank you for redeeming your tokens."
+      );
+      setRedeemInProcess(false);
+      setRedeemContainerView(false);
+      navigate("/wallet");
+      // setRedeemEnabled(false)
+      // set local storage cookies
+      // localStorage.setItem("redeemStatus", true);
+      return;
+    } else if (response === "failure") {
+      console.log("Transaction failed!");
+      toast.error("Transaction failed. Please try again.");
+      return;
+    } else if (response === "duplicate") {
+      toast.error(
+        "Transaction dropped because of duplicacy. Redeem can be done only once."
+      );
+      setRedeemInProcess(false);
+      setRedeemContainerView(false);
+      // setRedeemEnabled(false)
+    } else {
+      console.log("Transaction is pending...");
+    }
+  };
+
   // ==================================
   // thirdweb Code
   // ==================================
 
   const [passkeyInProcess, setPasskeyInProcess] = useState(false);
   const { connect } = useConnect();
+
   const login = async () => {
     try {
       setPasskeyInProcess(true);
@@ -189,8 +283,11 @@ function ProjectView(props) {
         console.log("Wallet", wallet);
         console.log("Account", wallet.getAccount());
         setWalletAddress(wallet.getAccount().address);
-        setBuyContainerView(!buyContainerView);
-        setRedeemContainerView(false);
+        if (containerToOpen === "redeem") {
+          setRedeemContainerView(true);
+        } else {
+          setBuyContainerView(true);
+        }
         return wallet;
       });
     } catch (error) {
@@ -233,8 +330,12 @@ function ProjectView(props) {
                         onClose();
                       }}
                     >
-                      Verify it's you
+                      Verify
                     </button>
+                    <p className="pt-2 text-xs">
+                      Incase you have Free Download Manager enabled, please
+                      disable it. It may block the transaction process.
+                    </p>
                   </>
                 )}
               </ModalBody>
@@ -388,29 +489,26 @@ function ProjectView(props) {
             </div>
           </div>
           {/* geoblocs stats */}
-          <div className="mt-8 grid w-full grid-cols-2 items-center justify-center gap-y-8 bg-[#B5BFA4] py-8 lg:mt-16 lg:grid-cols-4 lg:gap-x-16 lg:gap-y-0 lg:px-60">
+          <div className="mt-8 grid w-full grid-cols-1 items-center justify-center gap-y-8 bg-[#B5BFA4] py-8 sm:grid-cols-2 md:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-x-16 lg:gap-y-0 lg:px-60">
             {/* buy geoblocs button */}
             <div className="flex flex-col items-center justify-center space-y-2">
               <button
-                className={
-                  buyEnabled === true
-                    ? "text-md w-fit rounded-full border-0 bg-gGreen px-8 py-2 font-bold capitalize text-white lg:px-10 lg:py-4 lg:text-xl"
-                    : "text-md disabled w-fit rounded-full border-0 bg-gGreen/40 px-8 py-2 font-bold capitalize text-white disabled:cursor-not-allowed lg:px-10 lg:py-4 lg:text-xl"
-                }
-                onClick={() => {
+                className={`text-sm sm:text-md md:text-lg w-fit rounded-full border-0 px-6 py-2 sm:px-8 md:px-10 lg:py-4 font-bold capitalize text-white lg:text-xl ${
+                  buyEnabled
+                    ? "bg-gGreen"
+                    : "bg-gGreen/40 disabled:cursor-not-allowed"
+                }`}
+                onClick={async () => {
                   console.log("Buy Geoblocs");
                   if (walletAddress === null) {
+                    setContainerToOpen("buy");
                     onOpen();
                     return;
                   }
                   setBuyContainerView(!buyContainerView);
                   setRedeemContainerView(false);
-
-                  // open link in new tab
-                  // window.open(project.metadata.opensea, "_blank");
                 }}
-                disabled={buyEnabled === true ? false : true}
-                // disabled={true}
+                disabled={!buyEnabled}
               >
                 Buy Geoblocs
               </button>
@@ -418,20 +516,20 @@ function ProjectView(props) {
 
             {/* remaining geoblocs */}
             <div className="flex flex-col items-center justify-center space-y-2">
-              <p className="font-bold text-center text-md lg:text-lg">
+              <p className="text-sm font-bold text-center sm:text-md md:text-lg">
                 Geoblocs Remaining
               </p>
-              <p className="text-4xl lg:text-5xl">
+              <p className="text-3xl sm:text-4xl lg:text-5xl">
                 {onChainTokenData.availableSupply - reservedTokens}
               </p>
             </div>
 
             {/* total supply */}
             <div className="flex flex-col items-center justify-center space-y-2">
-              <p className="font-bold text-center text-md lg:text-lg">
+              <p className="text-sm font-bold text-center sm:text-md md:text-lg">
                 Total Supply
               </p>
-              <p className="text-4xl lg:text-5xl">
+              <p className="text-3xl sm:text-4xl lg:text-5xl">
                 {onChainTokenData.totalSupply}
               </p>
             </div>
@@ -439,48 +537,47 @@ function ProjectView(props) {
             {/* redeem geoblocs button */}
             <div className="flex flex-col items-center justify-center space-y-2">
               <button
-                className={
-                  redeemEnabled === true
-                    ? "text-md w-fit rounded-full border-0 bg-gGreen px-8 py-2 font-bold capitalize text-white lg:px-10 lg:py-4 lg:text-xl"
-                    : "text-md disabled w-fit rounded-full border-0 bg-gGreen/40 px-8 py-2 font-bold capitalize text-white disabled:cursor-not-allowed lg:px-10 lg:py-4 lg:text-xl"
-                }
-                onClick={() => {
+                className={`text-sm sm:text-md md:text-lg w-fit rounded-full border-0 px-6 py-2 sm:px-8 md:px-10 lg:py-4 font-bold capitalize text-white lg:text-xl ${
+                  redeemEnabled
+                    ? "bg-gGreen"
+                    : "bg-gGreen/40 disabled:cursor-not-allowed"
+                }`}
+                onClick={async () => {
+                  console.log("Redeem Geoblocs");
+                  if (walletAddress === null) {
+                    setContainerToOpen("redeem");
+                    onOpen();
+                    return;
+                  }
                   setRedeemContainerView(!redeemContainerView);
                   setBuyContainerView(false);
                 }}
-                // disabled={redeemEnabled === true ? false : true}
-                disabled={true}
+                disabled={!redeemEnabled}
               >
                 Redeem Geoblocs
               </button>
             </div>
 
-            {buyContainerView === true ? (
+            {buyContainerView && (
               <div className="w-full col-span-1 lg:col-span-4">
                 <div className="flex flex-col items-center justify-center py-8 mt-12 rounded-lg bg-gGreen/30 lg:w-full">
                   <div className="flex flex-col items-center justify-center space-y-4">
-                    <p>
-                      €&nbsp;
-                      {project.tokenData.buyPrice} per Geobloc
-                    </p>
+                    <p>€ {project.tokenData.buyPrice} per Geobloc</p>
                     <input
                       type="text"
                       placeholder="Geoblocs to purchase"
-                      disabled={checkoutEnabled === true ? false : true}
-                      className="h-10 w-[95%]  rounded-full bg-gGray px-6 py-2 text-center  text-sm text-black outline-none disabled:bg-gGray/40 lg:h-12 lg:w-[400px] lg:px-8 lg:text-left lg:text-lg"
+                      disabled={!checkoutEnabled}
+                      className="h-10 w-[90%] rounded-full bg-gGray px-4 py-2 text-center text-sm text-black outline-none disabled:bg-gGray/40 sm:w-[95%] lg:h-12 lg:w-[400px] lg:px-8 lg:text-left lg:text-lg"
                       value={formData.quantity}
                       onChange={(e) => {
                         console.log("formq", formData.quantity);
-                        setFormData((prevState) => {
-                          return {
-                            ...prevState,
-                            quantity: e.target.value,
-                            totalCost:
-                              e.target.value * project.metadata.buyPrice,
-                          };
-                        });
+                        setFormData((prevState) => ({
+                          ...prevState,
+                          quantity: e.target.value,
+                          totalCost: e.target.value * project.metadata.buyPrice,
+                        }));
                       }}
-                    ></input>
+                    />
                     <p className="font-bold text-md lg:text-xl">
                       {(project.tokenData.buyPrice &&
                         formData.quantity &&
@@ -492,17 +589,14 @@ function ProjectView(props) {
                         : 0}
                       &nbsp;EUR
                     </p>
-                    {/* <button className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full lg:px-10 lg:py-4 lg:text-xl text-md w-fit bg-gGreen">
-                        Proceed to Checkout
-                      </button> */}
                     {formData.quantity > 0 &&
                     formData.quantity <=
                       onChainTokenData.availableSupply -
                         project.tokenData.reserved ? (
                       <>
-                        {checkoutEnabled === true ? (
+                        {checkoutEnabled ? (
                           <button
-                            className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
+                            className="px-6 py-2 text-sm font-bold text-white capitalize border-0 rounded-full w-fit bg-gGreen sm:px-8 md:px-10 lg:px-10 lg:py-4 lg:text-xl"
                             onClick={() => setCheckoutEnabled(false)}
                           >
                             Checkout
@@ -521,7 +615,7 @@ function ProjectView(props) {
                               address={walletAddress}
                             />
                             <button
-                              className="px-8 font-bold text-white capitalize border-0 rounded-full text-md lg:text-md btn-sm w-fit bg-gGreen lg:px-10"
+                              className="px-6 font-bold text-white capitalize border-0 rounded-full btn-sm w-fit bg-gGreen sm:px-8 md:px-10 lg:px-10 lg:text-md"
                               onClick={() => setCheckoutEnabled(true)}
                             >
                               Edit Quantity
@@ -539,37 +633,53 @@ function ProjectView(props) {
                   </div>
                 </div>
               </div>
-            ) : redeemContainerView === true ? (
+            )}
+
+            {redeemContainerView && (
               <div className="w-full col-span-1 lg:col-span-4">
                 <div className="flex flex-col items-center justify-center w-full py-8 mt-12 rounded-lg bg-gGreen/30">
                   <>
                     <button
                       disabled={redeeemInProcess}
-                      className="px-8 py-2 font-bold text-white capitalize border-0 rounded-full text-md w-fit bg-gGreen lg:px-10 lg:py-4 lg:text-xl"
+                      className="px-6 py-2 text-sm font-bold text-white capitalize border-0 rounded-full w-fit bg-gGreen sm:px-8 md:px-10 lg:px-10 lg:py-4 lg:text-xl"
                       onClick={async () => {
                         setRedeemInProcess(true);
-                        // executeRedeemProcess();
+                        await handleRedeemTokens();
                         console.log("Redeem Process");
                       }}
                     >
-                      {redeeemInProcess === true
+                      {redeeemInProcess
                         ? "Please wait...Minting your NFT"
-                        : redeemStatus === true
+                        : redeemStatus
                         ? "Redeem Successful"
                         : "Mint Geobloc to your account"}
                     </button>
                   </>
                 </div>
               </div>
-            ) : null}
+            )}
 
-            <div className="flex flex-col items-center justify-center w-full col-span-4 mt-4 text-center">
-              <p className="italic">
-                Note: Download our Geoblocs Mobile App or visit here to access
-                your wallet
+            <div className="w-full col-span-1 text-center sm:col-span-2 lg:col-span-4">
+              <p className="mt-4 italic">
+                Note: Visit our{" "}
+                <span
+                  className="font-bold underline hover:cursor-pointer"
+                  onClick={() => navigate("/wallet")}
+                >
+                  Wallet Page Here
+                </span>{" "}
+                or Download our{" "}
+                <span
+                  className="font-bold underline hover:cursor-pointer"
+                  onClick={() => alert("App will be released soon!")}
+                >
+                  Geoblocs Wallet App
+                </span>{" "}
+                from Play Store.
               </p>
             </div>
           </div>
+
           {/* map and green container */}
           <div className="flex flex-col items-center justify-center w-full px-4 bg-white lg:flex-row lg:space-x-32 lg:px-32 lg:py-16">
             {/* map container */}

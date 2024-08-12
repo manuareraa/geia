@@ -96,9 +96,7 @@ export default function App() {
               </p>
             </Link>
           </NavbarItem>
-          <NavbarItem
-            isActive={location.pathname === "/stakeholders"}
-          >
+          <NavbarItem isActive={location.pathname === "/stakeholders"}>
             <Link onPress={() => navigate("/stakeholders")}>
               <p
                 className={`text-black hover:cursor-pointer  ${
@@ -111,9 +109,7 @@ export default function App() {
               </p>
             </Link>
           </NavbarItem>
-          <NavbarItem
-            isActive={location.pathname === "/case-studies"}
-          >
+          <NavbarItem isActive={location.pathname === "/case-studies"}>
             <Link onPress={() => navigate("/case-studies")}>
               <p
                 className={`text-black hover:cursor-pointer  ${
@@ -126,9 +122,7 @@ export default function App() {
               </p>
             </Link>
           </NavbarItem>
-          <NavbarItem
-            isActive={location.pathname === "/project-stories"}
-          >
+          <NavbarItem isActive={location.pathname === "/project-stories"}>
             <Link onPress={() => navigate("/project-stories")}>
               <p
                 className={`text-black hover:cursor-pointer  ${
@@ -141,9 +135,7 @@ export default function App() {
               </p>
             </Link>
           </NavbarItem>
-          <NavbarItem
-            isActive={location.pathname === "/team"}
-          >
+          <NavbarItem isActive={location.pathname === "/team"}>
             <Link onPress={() => navigate("/team")}>
               <p
                 className={`text-black hover:cursor-pointer  ${
@@ -156,9 +148,7 @@ export default function App() {
               </p>
             </Link>
           </NavbarItem>
-          <NavbarItem
-            isActive={location.pathname === "/how-it-works"}
-          >
+          <NavbarItem isActive={location.pathname === "/how-it-works"}>
             <Link onPress={() => navigate("/how-it-works")}>
               <p
                 className={`text-black hover:cursor-pointer  ${
@@ -171,9 +161,7 @@ export default function App() {
               </p>
             </Link>
           </NavbarItem>
-          <NavbarItem
-            isActive={location.pathname === "/faqs"}
-          >
+          <NavbarItem isActive={location.pathname === "/faqs"}>
             <Link onPress={() => navigate("/faqs")}>
               <p
                 className={`text-black hover:cursor-pointer  ${
@@ -186,9 +174,7 @@ export default function App() {
               </p>
             </Link>
           </NavbarItem>
-          <NavbarItem
-            isActive={location.pathname === "/contact"}
-          >
+          <NavbarItem isActive={location.pathname === "/contact"}>
             <Link onPress={() => navigate("/contact")}>
               <p
                 className={`text-black hover:cursor-pointer  ${
@@ -201,9 +187,20 @@ export default function App() {
               </p>
             </Link>
           </NavbarItem>
-          <NavbarItem
-            isActive={location.pathname === "/explore-projects"}
-          >
+          <NavbarItem isActive={location.pathname === "/wallet"}>
+            <Link onPress={() => navigate("/wallet")}>
+              <p
+                className={`text-black hover:cursor-pointer  ${
+                  location.pathname === "/wallet"
+                    ? "text-gBlue"
+                    : "text-black hover:text-gBlue"
+                }`}
+              >
+                Wallet
+              </p>
+            </Link>
+          </NavbarItem>
+          <NavbarItem isActive={location.pathname === "/explore-projects"}>
             <Button
               // size="small"
               className="font-bold text-white bg-gGreen"

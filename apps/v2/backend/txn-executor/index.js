@@ -1,17 +1,18 @@
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+
 const {
-  DynamoDBClient,
   ScanCommand,
   UpdateCommand,
   DeleteCommand,
   PutCommand,
-} = require("@aws-sdk/client-dynamodb");
-const {
   DynamoDBDocumentClient,
-  marshall,
-  unmarshall,
+  QueryCommand,
 } = require("@aws-sdk/lib-dynamodb");
+
+const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb"); // Correct import
 const { ethers, JsonRpcProvider } = require("ethers");
-const { Alchemy, Network } = require("alchemy-sdk");
+const { Alchemy, Network, Utils } = require("alchemy-sdk");
+
 // import and configure env
 const dotenv = require("dotenv");
 dotenv.config();
@@ -24,7 +25,10 @@ const client = new DynamoDBClient({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 }); // Replace with your desired region
+
+// Convert DynamoDBClient to DynamoDBDocumentClient
 const dynamoDB = DynamoDBDocumentClient.from(client);
+
 const archiveTable = "txns-archive";
 const liveTable = "txns-live";
 
@@ -36,7 +40,7 @@ const PARENT_ACCOUNT_PRIVATE_KEY =
   process.env.PARENT_ACCOUNT_PRIVATE_KEY ||
   "76770b4b5c69a793883a20b26c266cb573d5cf95d5d8b81b9d07e1ed2d6f9fff";
 const CONTRACT_ADDRESS =
-  process.env.CONTRACT_ADDRESS || "0x4bB2CD9D264f5B21bb53aDa2af6753dAc8dDF37c";
+  process.env.CONTRACT_ADDRESS || "0x7B19c50dCa19910baCd1dc69E34Faa965075FcfB";
 const ALCHEMY_API_KEY =
   process.env.ALCHEMY_API_KEY || "xrOFTJtcS1QwE5XhDPooc_JHliX828ks";
 
@@ -822,19 +826,39 @@ async function processTransactions() {
         "#tt": "txnType",
       },
       ExpressionAttributeValues: {
-        ":waiting": { S: "waiting" },
-        ":retryLimit": { N: "4" },
+        ":waiting": "waiting", // String type
+        ":retryLimit": 4, // Number type
       },
       ProjectionExpression: "#txnId, #st, #rc, #fa, #ta, #tid, #qty, #tt",
     })
   );
 
-  const txns = result.Items ? result.Items.map((item) => unmarshall(item)) : [];
+  // Log raw items before unmarshalling
+  //   console.log("Raw items from DynamoDB:", result.Items);
+
+  //   const txns = result.Items
+  //     ? result.Items.map((item) => {
+  //         try {
+  //           return unmarshall(item);
+  //         } catch (error) {
+  //           console.error("Error unmarshalling item:", item, error);
+  //           return null; // Handle error or skip the item
+  //         }
+  //       }).filter((item) => item !== null)
+  //     : [];
+
+  //   console.log("Processed transactions:", txns);
+  //   const txns = result.Items ? result.Items.map((item) => unmarshall(item)) : [];
+  // Since the data is already in the correct format, just use it directly
+  const txns = result.Items ? result.Items : [];
+  //   console.log("txns", txns);
+  //   console.log("txns length", txns.length);
   console.log(`Found ${txns.length} transactions to process`);
 
   if (!txns.length) {
     console.log("No transactions to process");
     console.log(logs.join("\n"));
+    setTimeout(processTransactions, 5000);
     return;
   }
 
@@ -849,49 +873,89 @@ async function processTransactions() {
     const { txnType, fromAddress, toAddress, tokenId, qty, txnId } = txn;
 
     if (txnType === "redeem") {
-      // Check if already redeemed
       const redeemCheckParams = {
         TableName: archiveTable,
-        FilterExpression: "#ta = :toAddress and #tid = :tokenId",
+        FilterExpression:
+          "#ta = :toAddress and #tid = :tokenId and #tt = :txnType",
         ExpressionAttributeNames: {
           "#ta": "toAddress",
           "#tid": "tokenId",
+          "#tt": "txnType",
         },
-        ExpressionAttributeValues: marshall({
+        ExpressionAttributeValues: {
           ":toAddress": toAddress,
-          ":tokenId": tokenId,
-        }),
+          ":tokenId": parseInt(tokenId),
+          ":txnType": "redeem",
+        },
+        ProjectionExpression: "#ta, #tid, #tt", // Optionally include txnType in the projection
       };
 
-      const redeemCheckResult = await dynamoDB.send(
-        new ScanCommand(redeemCheckParams)
-      );
-      const redeemedItems = redeemCheckResult.Items
-        ? redeemCheckResult.Items.map((item) => unmarshall(item))
-        : [];
-
-      if (redeemedItems.length) {
-        logs.push(`Transaction already redeemed for ${toAddress}-${tokenId}`);
-        await dynamoDB.send(
-          new DeleteCommand({
-            TableName: liveTable,
-            Key: marshall({ txnId }),
-          })
+      try {
+        const redeemCheckResult = await dynamoDB.send(
+          new ScanCommand(redeemCheckParams)
         );
-        continue;
+
+        if (redeemCheckResult.Items && redeemCheckResult.Items.length > 0) {
+          console.log(
+            `Duplicate redemption detected for ${toAddress}-${tokenId}. Transaction will be deleted.`
+          );
+          logs.push(`Transaction already redeemed for ${toAddress}-${tokenId}`);
+
+          const deleteCommandParams = {
+            TableName: liveTable,
+            Key: {
+              txnId: txnId, // Correctly format the key as a string
+            },
+          };
+
+          await dynamoDB.send(new DeleteCommand(deleteCommandParams));
+
+          txn.status = "duplicate";
+          txn.timestamp = new Date().toISOString();
+
+          // Put command to insert the transaction into the archive table
+          await dynamoDB.send(
+            new PutCommand({
+              TableName: archiveTable,
+              Item: {
+                ...txn,
+                txnId: txn.txnId.toString(), // Ensure txnId is correctly treated as a string
+              },
+            })
+          );
+
+          console.log(`Transaction ${txnId} deleted from live table.`);
+          continue;
+        } else {
+          console.log(
+            `No prior redemption found for ${toAddress}-${tokenId}. Proceeding with the transaction.`
+          );
+        }
+      } catch (error) {
+        console.error("Error during redeem check:", error);
+        throw error;
       }
+
+      console.log("Redeem check process completed for txnId:", txnId);
     }
 
     fromAddresses.push(fromAddress);
     toAddresses.push(toAddress);
-    tokenIds.push(tokenId);
-    amounts.push(qty);
+    tokenIds.push(Number(tokenId));
+    amounts.push(Number(qty));
     txnIds.push(txnId);
   }
+
+  //   console.log("fromAddresses", fromAddresses);
+  //   console.log("toAddresses", toAddresses);
+  //   console.log("tokenIds", tokenIds);
+  //   console.log("amounts", amounts);
+  //   console.log("txnIds", txnIds);
 
   if (!fromAddresses.length) {
     console.log("No valid transactions to process after filtering");
     console.log(logs.join("\n"));
+    setTimeout(processTransactions, 5000);
     return;
   }
 
@@ -905,58 +969,101 @@ async function processTransactions() {
       ),
     });
 
-    const tx = await contract.batchTransferMultipleTokenIds(
-      fromAddresses,
-      toAddresses,
-      tokenIds,
-      amounts,
-      "0x",
-      {
-        gasLimit: gasEstimate.mul(2), // Double the gas estimate to ensure quick processing
-      }
+    console.log(`Estimated gas: ${gasEstimate.toString()}`);
+
+    // Convert gasLimit to a BigNumber and ensure it's in the correct format
+    const gasLimit = gasEstimate.mul(2);
+
+    console.log(`Gas limit: ${gasLimit.toString()}`);
+
+    console.log(
+      "The gas cost estimation for the above tx is: " +
+        Utils.formatUnits(gasEstimate, "ether") +
+        " ether"
     );
+
+    // return
+
+    const tx = await contract.batchTransferMultipleTokenIds(
+      fromAddresses.slice(0, 1),
+      toAddresses.slice(0, 1),
+      tokenIds.slice(0, 1),
+      amounts.slice(0, 1),
+      "0x"
+      //   {
+      //     gasLimit: gasLimit.toString(), // Double the gas estimate to ensure quick processing
+      //   }
+    );
+
+    console.log(`Sending txn with hash: ${tx.hash}`);
 
     await tx.wait();
 
+    console.log(`Transaction mined: ${tx.hash}`);
+
+    // Deletes the entry from the live table and adds it to the archive table
     for (const txnId of txnIds) {
       const txn = txns.find((t) => t.txnId === txnId);
       txn.status = "success";
       txn.timestamp = new Date().toISOString();
+
+      console.log(`Processing transaction ${txnId}`);
+
+      // Put command to insert the transaction into the archive table
       await dynamoDB.send(
         new PutCommand({
           TableName: archiveTable,
-          Item: marshall(txn),
+          Item: {
+            ...txn,
+            txnId: txn.txnId.toString(), // Ensure txnId is correctly treated as a string
+          },
         })
       );
 
+      console.log(`Transaction ${txnId} archived`);
+
+      // Delete command to remove the transaction from the live table
       await dynamoDB.send(
         new DeleteCommand({
           TableName: liveTable,
-          Key: marshall({ txnId }),
+          Key: {
+            txnId: txnId, // Directly use txnId, assuming it is already a string
+          },
         })
       );
     }
 
-    // Handle grouped token quantities for successful redeem transactions
+    console.log("Transactions entries updated in DynamoDB");
+
+    // If txnType is redeem, update sponsor claimed token by grouping them together
     const redeemGroups = txns
       .filter((txn) => txn.txnType === "redeem" && txn.status === "success")
       .reduce((acc, txn) => {
-        acc[txn.tokenId] = (acc[txn.tokenId] || 0) + txn.qty;
+        const key = `${txn.tokenId}-${txn.sponsorId}`;
+        acc[key] = acc[key] || {
+          tokenId: txn.tokenId,
+          sponsorId: txn.sponsorId,
+          qty: 0,
+        };
+        acc[key].qty += txn.qty;
         return acc;
       }, {});
 
-    for (const [tokenId, tokenQty] of Object.entries(redeemGroups)) {
+    for (const group of Object.values(redeemGroups)) {
+      const { tokenId, sponsorId, qty: tokenQty } = group;
       await fetch(
-        "https://admin.api.geoblocs.com/admin/content/update-claimed-token",
+        "https://admin.api.geoblocs.com/admin/content/update/sponsor/claimed-token",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ tokenId, tokenQty }),
+          body: JSON.stringify({ tokenId, sponsorId, qty: tokenQty }),
         }
       );
     }
+
+    console.log("Sponsor claimed tokens updated");
   } catch (error) {
     console.log(`Batch transaction failed: ${error.message}`);
     for (const txnId of txnIds) {
@@ -996,7 +1103,7 @@ async function processTransactions() {
   }
 
   console.log(logs.join("\n"));
+  return processTransactions(); // Call again to continue processing
 }
 
-// Run the processTransactions function every 5 seconds
-setInterval(processTransactions, 5000);
+processTransactions();

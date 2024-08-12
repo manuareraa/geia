@@ -72,6 +72,7 @@ const arraysSchema = Joi.object({
       sponsorId: Joi.string().uuid().required(),
       sponsorName: Joi.string().empty(""),
       tokensSponsored: Joi.number().required(),
+      tokensClaimed: Joi.number().required(),
       linkToSite: Joi.string().uri().empty(""),
       logoUrl: Joi.string().uri().empty(""),
     })
@@ -162,11 +163,17 @@ export const handler = async (event) => {
   const logs = [];
   logs.push(`Received event: ${JSON.stringify(event)}`);
 
-  try {
-    verifyToken(event);
-  } catch (error) {
-    logs.push("Unauthorized");
-    return logAndRespond(401, "Unauthorized", logs);
+  if (
+    event.path !== "/admin/content/update/sponsor/claimed-token" &&
+    event.httpMethod !== "POST"
+  ) {
+    try {
+      verifyToken(event);
+    } catch (error) {
+      logs.push("Unauthorized");
+      console.log(logs.join("\n"));
+      return logAndRespond(401, "Unauthorized", logs);
+    }
   }
 
   switch (true) {
@@ -202,9 +209,152 @@ export const handler = async (event) => {
     case event.path === "/admin/content/update-claimed-token" &&
       event.httpMethod === "POST":
       return await handleIncrementClaimedByTokenId(event, logs);
+    case event.path === "/admin/content/update/sponsor/claimed-token" &&
+      event.httpMethod === "POST":
+      return await handleUpdateSponsorClaimedToken(event, logs);
+    case event.path === "/admin/content/wallet-summary" &&
+      event.httpMethod === "POST":
+      return await handleWalletSummary(event, logs);
     default:
       logs.push("Invalid path or method");
       return logAndRespond(400, "Invalid path or method", logs);
+  }
+};
+
+const handleWalletSummary = async (event, logs) => {
+  // Get an array of token IDs and find the project name and project ID that have those token IDs
+  const requestBody = JSON.parse(event.body);
+  logs.push(`Request body: ${JSON.stringify(requestBody)}`);
+
+  const { tokenIds, tokenBalances } = requestBody;
+
+  // Iterate over the tokenIds and query the DynamoDB table
+  const allProjects = [];
+  let index = 0;
+
+  for (const tokenId of tokenIds) {
+    const dbParams = {
+      TableName: DYNAMODB_TABLE,
+      FilterExpression: "tokenData.tokenId = :tokenId",
+      ExpressionAttributeValues: {
+        ":tokenId": tokenId,
+      },
+      ProjectionExpression: "projectId, projectName", // Only retrieve projectId and projectName
+    };
+
+    try {
+      const dbResponse = await dynamoDB.scan(dbParams).promise();
+      logs.push(`Fetched projects for tokenId: ${tokenId}`);
+      allProjects.push(
+        ...dbResponse.Items.map((item) => ({
+          projectId: item.projectId,
+          projectName: item.projectName,
+          tokenBalance: tokenBalances[index],
+          tokenId: tokenId,
+        }))
+      );
+      index++;
+    } catch (error) {
+      logs.push(
+        `Error fetching projects for tokenId: ${tokenId} - ${error.message}`
+      );
+      return logAndRespond(500, "Error fetching projects", logs);
+    }
+  }
+
+  logs.push("Fetched all projects for the provided token IDs");
+  return logAndRespond(200, "Fetched all projects successfully", logs, {
+    summary: allProjects,
+  });
+};
+
+const handleUpdateSponsorClaimedToken = async (event, logs) => {
+  const requestBody = JSON.parse(event.body);
+  logs.push(`Request body: ${JSON.stringify(requestBody)}`);
+
+  console.log("Request Body: ", requestBody);
+  console.log("SponsorId: ", requestBody.sponsorId);
+  console.log("TokenId: ", requestBody.tokenId);
+
+  // const { sponsorId, tokenId } = requestBody;
+  const { sponsorId, tokenId, qty } = requestBody;
+
+  console.log("SponsorId: ", sponsorId);
+  console.log("TokenId: ", tokenId);
+
+  // Regular expression to validate UUID (version 4)
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  // Check if sponsorId is a valid UUID and tokenId is a non-negative integer
+  if (
+    !uuidRegex.test(sponsorId) ||
+    !(Number.isInteger(tokenId) && tokenId >= 0)
+  ) {
+    logs.push("Invalid sponsorId or tokenId in the request body");
+    return logAndRespond(400, "Invalid sponsorId or tokenId", logs);
+  }
+
+  // const dbParams = {
+  //   TableName: DYNAMODB_TABLE,
+  //   FilterExpression: "contains(tokenData.tokenId, :tokenId)",
+  //   ExpressionAttributeValues: {
+  //     ":tokenId": tokenId,
+  //   },
+  // };
+
+  const dbParams = {
+    TableName: DYNAMODB_TABLE,
+    FilterExpression: "tokenData.tokenId = :tokenId",
+    ExpressionAttributeValues: {
+      ":tokenId": tokenId,
+    },
+  };
+
+  try {
+    const dbResponse = await dynamoDB.scan(dbParams).promise();
+    if (dbResponse.Items.length === 0) {
+      logs.push(`TokenId: ${tokenId} not found in any project`);
+      return logAndRespond(404, "TokenId not found", logs);
+    }
+
+    const project = dbResponse.Items[0];
+    const projectId = project.projectId;
+
+    let sponsorIndex = -1;
+    project.sponsors.forEach((sponsor, index) => {
+      if (sponsor.sponsorId === sponsorId) {
+        sponsorIndex = index;
+      }
+    });
+
+    if (sponsorIndex === -1) {
+      logs.push(
+        `SponsorId: ${sponsorId} not found in project with tokenId: ${tokenId}`
+      );
+      return logAndRespond(404, "SponsorId not found", logs);
+    }
+
+    const updateParams = {
+      TableName: DYNAMODB_TABLE,
+      Key: { projectId },
+      UpdateExpression: `SET sponsors[${sponsorIndex}].tokensClaimed = sponsors[${sponsorIndex}].tokensClaimed + :inc`,
+      ExpressionAttributeValues: {
+        ":inc": parseInt(qty) || 1,
+      },
+      ReturnValues: "UPDATED_NEW",
+    };
+
+    const updateResponse = await dynamoDB.update(updateParams).promise();
+    logs.push(
+      `Incremented tokensClaimed for sponsorId: ${sponsorId} in project with projectId: ${projectId}`
+    );
+    return logAndRespond(200, "Incremented tokensClaimed successfully", logs, {
+      sponsor: updateResponse.Attributes.sponsors[sponsorIndex],
+    });
+  } catch (error) {
+    logs.push(`Error incrementing tokensClaimed: ${error.message}`);
+    return logAndRespond(500, "Error incrementing tokensClaimed", logs);
   }
 };
 
@@ -240,7 +390,8 @@ const handleIncrementClaimedByTokenId = async (event, logs) => {
     const dbParamsUpdate = {
       TableName: DYNAMODB_TABLE,
       Key: { projectId },
-      UpdateExpression: "SET tokenData.claimed = if_not_exists(tokenData.claimed, :start) + :inc",
+      UpdateExpression:
+        "SET tokenData.claimed = if_not_exists(tokenData.claimed, :start) + :inc",
       ExpressionAttributeValues: {
         ":inc": parseInt(tokenQty),
         ":start": 0,
@@ -264,7 +415,7 @@ const handleIncrementClaimedByTokenId = async (event, logs) => {
     logs.push(`Error incrementing tokenData.claimed: ${error.message}`);
     return logAndRespond(500, "Error incrementing tokenData.claimed", logs);
   }
-}
+};
 
 const handleIncrementClaimed = async (event, logs) => {
   const queryStringParameters = event.queryStringParameters || {};
