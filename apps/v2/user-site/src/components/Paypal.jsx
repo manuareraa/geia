@@ -9,10 +9,7 @@ function Message({ content }) {
 
 function Paypal(props) {
   const initialOptions = {
-    clientId:
-      "AWqMFsrCNIFKrjbGbEyIq2HHBBuGI6O5IRWLfoRgQetGB6CRnkobNytsi8_voGAKG-xxc4CkKjQG-Nmn",
-    // "AWUsJF8fovi9TcVCmRQEOvPpy3RceJMr92jd1MlX-S7nmoGNjjRpzGNz4DhahnKA2i7XRQ9WxfCnssTf",
-    // "AWqMFsrCNIFKrjbGbEyIq2HHBBuGI6O5IRWLfoRgQetGB6CRnkobNytsi8_voGAKG-xxc4CkKjQG-Nmn",
+    clientId: import.meta.env.VITE_PAYPAL_CLIENT_DEV,
     "enable-funding":
       "paypal.FUNDING.PAYPAL,paypal.FUNDING.VENMO,paypal.FUNDING.PAYLATER,paypal.FUNDING.CARD",
     "data-sdk-integration-source": "integrationbuilder_sc",

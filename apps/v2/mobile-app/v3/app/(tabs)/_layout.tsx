@@ -35,15 +35,18 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "home" : "home-outline"}
-              color={focused ? "green" : color}
-            />
-          ),
-          href: null,
+          tabBarStyle: { display: "none" }, // This hides the tab bar on the HomeScreen
         }}
+        // options={{
+        //   title: "Home",
+        //   tabBarIcon: ({ color, focused }) => (
+        //     <TabBarIcon
+        //       name={focused ? "home" : "home-outline"}
+        //       color={focused ? "green" : color}
+        //     />
+        //   ),
+        //   href: null,
+        // }}
       />
       <Tabs.Screen
         name="wallet/wallet"
@@ -51,20 +54,20 @@ export default function TabLayout() {
           title: "Wallet",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={focused ? "green" : "black"}
+              name={focused ? "wallet-outline" : "wallet-outline"}
+              color={focused ? "#03fc5a" : "white"}
               size={25}
             />
           ),
           tabBarLabel: ({ focused }) => (
             <ThemedText
               style={{
-                color: focused ? "green" : "black",
-                fontFamily: "JetBrainsMono",
-                fontSize: 10,
+                color: focused ? "#03fc5a" : "white",
+                fontFamily: "ManropeExtraBold",
+                fontSize: 12,
               }}
             >
-              Wallet
+              Your Wallet
             </ThemedText>
           ),
         }}
@@ -75,17 +78,17 @@ export default function TabLayout() {
           title: "Buy",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={focused ? "green" : "black"}
+              name={focused ? "leaf-outline" : "leaf-outline"}
+              color={focused ? "#03fc5a" : "white"}
               size={25}
             />
           ),
           tabBarLabel: ({ focused }) => (
             <ThemedText
               style={{
-                color: focused ? "green" : "black",
-                fontFamily: "JetBrainsMono",
-                fontSize: 10,
+                color: focused ? "#03fc5a" : "white",
+                fontFamily: "ManropeExtraBold",
+                fontSize: 12,
               }}
             >
               Buy

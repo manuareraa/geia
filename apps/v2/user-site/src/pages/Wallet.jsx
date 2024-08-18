@@ -31,10 +31,10 @@ function Wallet(props) {
 
   const fetchSummaryAndUpdate = async () => {
     try {
-      let summary = await fetchSummary(
-        "0xB06f963b18E1d95cf2249B8852abbE6B52c33e9F"
-      );
-      //   const summary = await fetchSummary(walletAddress);
+      //   let summary = await fetchSummary(
+      //     "0xB06f963b18E1d95cf2249B8852abbE6B52c33e9F"
+      //   );
+      let summary = await fetchSummary(walletAddress);
       summary = summary.summary.summary;
       console.log("Summary", summary);
       let totalTokens = 0;
@@ -110,8 +110,8 @@ function Wallet(props) {
             <button
               className="flex items-center justify-center px-8 py-2 font-bold text-white rounded-lg btn-md bg-gGreen disabled:opacity-50"
               onClick={async () => {
-                // await login();
-                setScreen("wallet");
+                await login();
+                // setScreen("wallet");
               }}
               disabled={passkeyInProcess}
             >

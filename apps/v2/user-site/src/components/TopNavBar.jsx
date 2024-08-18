@@ -25,6 +25,8 @@ const menuItems = [
   "How it Works",
   "FAQs",
   "Contact",
+  "Wallet",
+  "Explore Projects",
 ];
 
 export default function App() {
@@ -222,15 +224,34 @@ export default function App() {
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
+              color={"foreground"}
               className="w-full"
-              href="#"
+              onClick={() => {
+                setIsMenuOpen(false);
+                if (item === "Home") {
+                  navigate("/");
+                } else if (item === "Stakeholders") {
+                  navigate("/stakeholders");
+                } else if (item === "Case Studies") {
+                  navigate("/case-studies");
+                } else if (item === "Project Stories") {
+                  navigate("/project-stories");
+                } else if (item === "Team") {
+                  navigate("/team");
+                } else if (item === "How it Works") {
+                  navigate("/how-it-works");
+                } else if (item === "FAQs") {
+                  navigate("/faqs");
+                } else if (item === "Contact") {
+                  navigate("/contact");
+                } else if (item === "Wallet") {
+                  navigate("/wallet");
+                } else if (item === "Explore Projects") {
+                  navigate("/explore-projects");
+                } else {
+                  navigate("/");
+                }
+              }}
               size="lg"
             >
               {item}

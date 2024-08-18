@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from "react";
+/* eslint-disable react/prop-types */
+import React, { useCallback, useEffect, useState } from "react";
 import { PieChart, Pie, Sector } from "recharts";
 
 export default function StatusChart(props) {
@@ -43,7 +44,7 @@ export default function StatusChart(props) {
           fill={fill}
           className="text-3xl font-black"
         >
-          {payload.value}%
+          {payload.value.toString()}%
         </text>
         <Sector
           cx={cx}
@@ -109,10 +110,16 @@ export default function StatusChart(props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
     (_, index) => {
+      console.log("pie enter", index);
       setActiveIndex(index);
     },
     [setActiveIndex]
   );
+
+  useEffect(() => {
+    // onPieEnter();
+    setActiveIndex(1);
+  }, []);
 
   return (
     <PieChart width={400} height={270}>
