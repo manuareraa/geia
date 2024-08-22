@@ -10,9 +10,9 @@ function Message({ content }) {
 function Paypal(props) {
   const initialOptions = {
     clientId: import.meta.env.VITE_PAYPAL_CLIENT_DEV,
-    "enable-funding":
-      "paypal.FUNDING.PAYPAL,paypal.FUNDING.VENMO,paypal.FUNDING.PAYLATER,paypal.FUNDING.CARD",
-    "data-sdk-integration-source": "integrationbuilder_sc",
+    // "enable-funding":
+    //   "paypal.FUNDING.PAYPAL,paypal.FUNDING.VENMO,paypal.FUNDING.PAYLATER,paypal.FUNDING.CARD",
+    // "data-sdk-integration-source": "integrationbuilder_sc",
   };
 
   useEffect(() => {
@@ -69,18 +69,18 @@ function Paypal(props) {
 
   return (
     <div className="w-full">
-      <PayPalScriptProvider options={initialOptions}>
-        <PayPalButtons
-          style={{
-            shape: "rect",
-            color: "gold",
-            layout: "vertical", //default value. Can be changed to horizontal
-          }}
-          createOrder={createOrder}
-          onApprove={onApprove}
-          onError={onError}
-        />
-      </PayPalScriptProvider>
+      {/* <PayPalScriptProvider options={initialOptions}> */}
+      <PayPalButtons
+        style={{
+          shape: "rect",
+          color: "gold",
+          layout: "vertical", //default value. Can be changed to horizontal
+        }}
+        createOrder={createOrder}
+        onApprove={onApprove}
+        onError={onError}
+      />
+      {/* </PayPalScriptProvider> */}
       <Message content={message} />
     </div>
   );

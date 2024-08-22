@@ -22,38 +22,55 @@ import Stakeholders from "./pages/Stakeholders";
 import Team from "./pages/Team";
 import ProjectView from "./pages/ProjectView";
 import Wallet from "./pages/Wallet";
+import MobileVerification from "./pages/MobileVerification";
+
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const { isLoading } = useStore(useLoadingStore);
 
+  const initialOptions = {
+    clientId: import.meta.env.VITE_PAYPAL_CLIENT_DEV,
+    currency: "EUR",
+    // "enable-funding":
+    //   "paypal.FUNDING.PAYPAL,paypal.FUNDING.VENMO,paypal.FUNDING.PAYLATER,paypal.FUNDING.CARD",
+    // "data-sdk-integration-source": "integrationbuilder_sc",
+  };
+
   return (
-    <div className="flex flex-col w-full min-h-screen">
-      {isLoading && <Loading />}
-      <TopNavBar />
-      <div className="flex-grow">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Home />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/explore-projects" element={<ExploreProjects />} />
-          <Route path="/faqs" element={<FAQs />} />
-          <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/project-stories" element={<ProjectStories />} />
-          <Route path="/stakeholders" element={<Stakeholders />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/wallet" element={<Wallet />} />
-          <Route path="/project/view/:projectId" element={<ProjectView />} />
-          <Route
-            path="/project/view/:projectId/qr/sponsor/:sponsorId"
-            element={<ProjectView />}
-          />
-        </Routes>
+    <PayPalScriptProvider options={initialOptions}>
+      <div className="flex flex-col w-full min-h-screen">
+        {isLoading && <Loading />}
+        <TopNavBar />
+        <div className="flex-grow">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Home />} />
+            <Route path="/case-studies" element={<CaseStudies />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/explore-projects" element={<ExploreProjects />} />
+            <Route path="/faqs" element={<FAQs />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/project-stories" element={<ProjectStories />} />
+            <Route path="/stakeholders" element={<Stakeholders />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/wallet" element={<Wallet />} />
+            <Route
+              path="/mobile-verification"
+              element={<MobileVerification />}
+            />
+            <Route path="/project/view/:projectId" element={<ProjectView />} />
+            <Route
+              path="/project/view/:projectId/qr/sponsor/:sponsorId"
+              element={<ProjectView />}
+            />
+          </Routes>
+        </div>
+        <Toaster />
+        <Footer />
       </div>
-      <Toaster />
-      <Footer />
-    </div>
+    </PayPalScriptProvider>
   );
 }
 

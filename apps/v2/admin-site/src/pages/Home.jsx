@@ -29,9 +29,14 @@ function Home(props) {
     console.log("Two Factor event: ", event);
     event.preventDefault();
     const result = await generateQrCode(email);
-    console.log("Generate QR result: ", result);
+    console.log(
+      "Generate QR result: ",
+      result,
+      "Filtered: ",
+      result.data.qrCode
+    );
     if (result.status === "success") {
-      setQrCode(result.data);
+      setQrCode(result.data.qrCode);
     }
   };
 

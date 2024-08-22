@@ -12,8 +12,7 @@ import {
 function MapComponent({ lat, lon, label }) {
   const [infowindowOpen, setInfowindowOpen] = useState(true);
   const [markerRef, marker] = useAdvancedMarkerRef();
-  const apiKey = "AIzaSyDw_FaCPz1KFDJoAZfDN4QUkujkFcLGAPQ";
-  // process.env.REACT_APP_GMAPS_API ||
+  const apiKey = import.meta.env.VITE_GMAPS_API_KEY;
 
   return (
     <div style={{ height: "500px", width: "100%" }}>

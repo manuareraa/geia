@@ -14,11 +14,11 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: false,
+        // tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        headerShown: true,
         tabBarStyle: {
-          // backgroundColor: "rgba(0, 0, 0, 0.32)",
-          borderTopWidth: 1,
+          backgroundColor: "#000",
+          borderTopWidth: 0,
           // borderTopColor: "rgba(0, 0, 0, 0.1)",
           height: 70,
           paddingBottom: 10,
@@ -36,6 +36,8 @@ export default function TabLayout() {
         name="index"
         options={{
           tabBarStyle: { display: "none" }, // This hides the tab bar on the HomeScreen
+          href: null,
+          headerShown: false,
         }}
         // options={{
         //   title: "Home",

@@ -138,7 +138,12 @@ function Wallet(props) {
             {walletData.tokensArray.length === 0 ? (
               <div className="flex flex-col items-center justify-center w-full gap-y-2">
                 <p>No tokens available</p>
-                <button className="flex items-center justify-center px-8 py-2 font-bold text-white rounded-lg bg-gGreen btn-md">
+                <button
+                  className="flex items-center justify-center px-8 py-2 font-bold text-white rounded-lg bg-gGreen btn-md"
+                  onClick={() => {
+                    navigate("/explore-projects");
+                  }}
+                >
                   Buy Tokens
                 </button>
               </div>
@@ -168,7 +173,7 @@ function Wallet(props) {
                               onClick={() => {
                                 // open link in new tab
                                 window.open(
-                                  "http://localhost:5173/project/view/" +
+                                  "http://geoblocs.com/project/view/" +
                                     token.projectId,
                                   "_blank"
                                 );
@@ -183,7 +188,7 @@ function Wallet(props) {
                               onClick={() => {
                                 // open link in new tab
                                 window.open(
-                                  "http://localhost:5173/project/view/" +
+                                  "http://geoblocs.com/project/view/" +
                                     token.projectId,
                                   "_blank"
                                 );

@@ -39,7 +39,8 @@ const logAndRespond = (statusCode, message, logs, additionalData = {}) => {
     statusCode: statusCode,
     headers: {
       "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Allow-Origin": "http://localhost:5173",
+      // "Access-Control-Allow-Origin": "http://localhost:5173",
+      "Access-Control-Allow-Origin": "https://admin.geoblocs.com",
       "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
     },
     body: JSON.stringify({

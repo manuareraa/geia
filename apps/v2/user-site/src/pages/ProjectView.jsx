@@ -500,6 +500,7 @@ function ProjectView(props) {
                 }`}
                 onClick={async () => {
                   console.log("Buy Geoblocs");
+                  // setBuyContainerView(!buyContainerView);
                   if (walletAddress === null) {
                     setContainerToOpen("buy");
                     onOpen();
@@ -615,7 +616,7 @@ function ProjectView(props) {
                               address={walletAddress}
                             />
                             <button
-                              className="px-6 font-bold text-white capitalize border-0 rounded-full btn-sm w-fit bg-gGreen sm:px-8 md:px-10 lg:px-10 lg:text-md"
+                              className="px-6 mt-4 font-bold text-white capitalize border-0 rounded-full btn-sm w-fit bg-gGreen sm:px-8 md:px-10 lg:px-10 lg:text-md"
                               onClick={() => setCheckoutEnabled(true)}
                             >
                               Edit Quantity

@@ -59,7 +59,11 @@ export default function App() {
       shouldHideOnScroll={true}
       isHidden={navbarHidden}
       maxWidth="full"
-      className="py-4 manrope-400"
+      className={
+        location.pathname === "/mobile-verification"
+          ? "hidden"
+          : "py-4 manrope-400"
+      }
     >
       {/* <img src={GeoblocsLogo} alt="Geoblocs Logo" className="px-0 w-52" /> */}
 

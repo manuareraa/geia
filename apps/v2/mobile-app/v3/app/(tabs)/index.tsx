@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -11,17 +11,56 @@ import { ThemedView } from "@/components/ThemedView"; // If you have a themed vi
 import { ThemedText } from "@/components/ThemedText"; // If you have a themed text, else replace with Text
 import { Button } from "tamagui";
 import * as WebBrowser from "expo-web-browser";
-import * as Linking from 'expo-linking';
+import * as Linking from "expo-linking";
+import { useAuthStore } from "@/state/store";
+import { useRoute } from "@react-navigation/native";
 
 import bgImage from "../../assets/images/homebg.png";
 import icon from "../../assets/images/geoblocs-icon.png";
+import { router } from "expo-router";
 
 export default function HomeScreen() {
+  const { setWalletAddress, setAuthStatus } = useAuthStore();
+  const route = useRoute();
+
+  console.log("Route:", route);
+
   function extractTokenFromUrl(url) {
     const parsedUrl = new URL(url);
     console.log("Parsed URL:", parsedUrl);
     // return parsedUrl.searchParams.get("token"); // Replace 'token' with the actual query parameter key in your URL
   }
+
+  useEffect(() => {
+    const handleUrl = (url) => {
+      const parsedUrl = Linking.parse(url);
+      if (parsedUrl.queryParams && parsedUrl.queryParams.address) {
+        const address = parsedUrl.queryParams.address;
+        setAuthStatus(true);
+        setWalletAddress(address);
+        console.log("Address received:", address);
+        // navigate to wallet/wallet
+        router.replace("wallet/wallet");        
+      }
+    };
+
+    // Get the initial URL (if the app was opened via a deep link)
+    Linking.getInitialURL().then((url) => {
+      if (url) {
+        handleUrl(url);
+      }
+    });
+
+    // Listen to incoming URLs
+    const subscription = Linking.addEventListener("url", (event) => {
+      handleUrl(event.url);
+    });
+
+    return () => {
+      // Clean up the event listener on unmount
+      subscription.remove();
+    };
+  }, []);
 
   return (
     <ThemedView style={styles.container}>
@@ -57,6 +96,12 @@ export default function HomeScreen() {
         </ThemedText>
       </View>
 
+      <View
+        style={{
+          height: 100,
+        }}
+      ></View>
+
       {/* a view container fixed to the bottom of the screen */}
       <View
         style={{
@@ -75,24 +120,24 @@ export default function HomeScreen() {
         <Button
           onPress={async () => {
             console.log("Get Started button pressed");
+            router.replace("wallet/wallet");
+            // const authUrl = "https://geoblocs.com/mobile-verification"; // Replace with your authentication URL
+            // const redirectUrl = Linking.createURL("redirect");
 
-            const authUrl = "https://google.com"; // Replace with your authentication URL
-            const redirectUrl = Linking.createURL("redirect");
+            // try {
+            //   const result = await WebBrowser.openAuthSessionAsync(
+            //     authUrl,
+            //     redirectUrl
+            //   );
 
-            try {
-              const result = await WebBrowser.openAuthSessionAsync(
-                authUrl,
-                redirectUrl
-              );
-
-              if (result.type === "success" && result.url) {
-                const token = extractTokenFromUrl(result.url);
-              } else {
-                console.log("Authentication was cancelled or failed");
-              }
-            } catch (error) {
-              console.error("Error during authentication:", error);
-            }
+            //   if (result.type === "success" && result.url) {
+            //     const token = extractTokenFromUrl(result.url);
+            //   } else {
+            //     console.log("Authentication was cancelled or failed");
+            //   }
+            // } catch (error) {
+            //   console.error("Error during authentication:", error);
+            // }
           }}
           style={{
             backgroundColor: "#000",
