@@ -16,8 +16,10 @@ const FileUploadButton = (props) => {
     console.log("Props", props);
     if (props.fileUploadCustomFunction) {
       await props.fileUploadCustomFunction(file);
+      fileInputRef.current.value = "";
     } else {
       await props.fileUploadFunction(props.fileType, props.section, file);
+      fileInputRef.current.value = "";
     }
   };
 

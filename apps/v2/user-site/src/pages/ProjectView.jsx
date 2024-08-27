@@ -415,7 +415,9 @@ function ProjectView(props) {
                   <img src={calendarIcon} className="w-4 lg:w-6"></img>
                   <p className="font-bold">
                     Start Date:&nbsp;
-                    <span className="font-medium">{project.createdAt}</span>
+                    <span className="font-medium">
+                      {new Date(project.createdAt).toLocaleString()}
+                    </span>
                   </p>
                 </div>
                 <div className="flex flex-row items-center justify-center space-x-2 lg:justify-start">
@@ -444,11 +446,11 @@ function ProjectView(props) {
                       <span className="text-gGreen">Description</span>
                     </p>
                     <p className="text-lg text-center">
-                      {/* {project.metadata.description} */}
-                      {textTrimmer(
+                      {textTrimmer(project.metadata.description, 500)}
+                      {/* {textTrimmer(
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Seda nisl nec nisl consectetur facilisis. Nullam ac nisl necnisl consectetur facilisis. Nullam ac nisl nec nisl consectetur facilisis. Nullam ac nisl nec nisl consectetur facilisis. Nullam ac nisl nec nisl consectetur facilisis. Nullam ac nisl nec nisl consectetur facilisis. Nullam ac nisl nec nisl consectetur facilisis. Nullam ac nisl nec nisl consectetur facilisis. Nullam ac nisl nec nisl consectetur facilisis. Nullam ac nisl nec nisl consectetur facilisis.",
                         500
-                      )}
+                      )} */}
                     </p>
                   </div>
                 </div>
@@ -712,10 +714,14 @@ function ProjectView(props) {
             <div className="flex flex-col items-center justify-center w-full mt-10 md:mt-10 lg:mt-0">
               <MapComponent
                 // lat and lon of ireland
-                lat={53.41291}
-                lon={-8.24389}
-                // lat={project.metadata.gpsCoordinates.split(",")[0] || 0}
-                // lon={project.metadata.gpsCoordinates.split(",")[1] || 0}
+                // lat={53.41291}
+                // lon={-8.24389}
+                lat={
+                  parseFloat(project.metadata.gpsCoordinates.split(",")[0]) || 0
+                }
+                lon={
+                  parseFloat(project.metadata.gpsCoordinates.split(",")[1]) || 0
+                }
                 label={project.projectName}
               />
             </div>

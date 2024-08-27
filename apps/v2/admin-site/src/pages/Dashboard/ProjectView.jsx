@@ -10,6 +10,7 @@ import {
   editTokenData,
   editArrays,
   deleteProject,
+  useLoadingStore,
 } from "../../state-management/AppState";
 import { Input, Divider, Button } from "@nextui-org/react";
 import {
@@ -33,6 +34,7 @@ function ProjectView(props) {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const { fetchProjectById, projectDetails } = useProjectStore();
+  const { startLoading, stopLoading } = useLoadingStore();
   const [project, setProject] = useState(null);
   const [editable, setEditable] = useState({
     projectDetails: false,
@@ -48,6 +50,7 @@ function ProjectView(props) {
     "mainData.landCondition": false,
   });
   const [file, setFile] = useState(null);
+  const FILESIZE = 30 * 1024 * 1024;
 
   useEffect(() => {
     const loadProject = async () => {
@@ -305,10 +308,12 @@ function ProjectView(props) {
     }
 
     // size check for all files. max size 5MB
-    if (file.size > 5 * 1024 * 1024) {
+    if (file.size > FILESIZE) {
       toast.error("File size should be less than 5MB");
       return;
     }
+
+    console.log("Getting S3 upload URL");
 
     const result = await getS3UploadUrl(
       fileType,
@@ -323,6 +328,7 @@ function ProjectView(props) {
     console.log("Upload URL: ", uploadUrl);
 
     try {
+      startLoading("Uploading file...");
       const response = await axios.put(uploadUrl, file, {
         headers: {
           "Content-Type": file.type,
@@ -359,6 +365,8 @@ function ProjectView(props) {
     } catch (error) {
       console.error("File upload error:", error);
       toast.error("An error occurred during file upload");
+    } finally {
+      stopLoading();
     }
   };
 
@@ -411,7 +419,7 @@ function ProjectView(props) {
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
+    if (file.size > FILESIZE) {
       toast.error("File size should be less than 5MB");
       return;
     }
@@ -536,7 +544,7 @@ function ProjectView(props) {
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
+    if (file.size > FILESIZE) {
       toast.error("File size should be less than 5MB");
       return;
     }
@@ -712,7 +720,7 @@ function ProjectView(props) {
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
+    if (file.size > FILESIZE) {
       toast.error("File size should be less than 5MB");
       return;
     }

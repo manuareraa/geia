@@ -23,14 +23,14 @@ function EnvironmentSW(props) {
     props.projectEnvDatas.forEach((envData, index) => {
       // console.log("link", envData.widgetLink);
       const src = extractIframeSrc(envData.widgetLink);
-      console.log("src ex", src)
+      console.log("src ex", src);
       let card = (
         <iframe
           // width={envData.width || 800}
           // height={envData.height || 800}
           className="w-[350px] h-[600px] md:w-[100%] h:[600px]"
           frameborder="0"
-          src={src}
+          src={src || envData.widgetLink}
           key={index}
         ></iframe>
       );

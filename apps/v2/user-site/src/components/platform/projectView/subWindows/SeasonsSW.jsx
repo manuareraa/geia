@@ -55,7 +55,9 @@ function SeasonsSW(props) {
         <div className="flex flex-col p-8 rounded-xl bg-glGreen">
           {/* title bar */}
           <div className="flex flex-row items-center justify-between">
-            <p className="text-lg font-bold text-center lg:text-2xl">Planting Seasons</p>
+            <p className="text-lg font-bold text-center lg:text-2xl">
+              Planting Seasons
+            </p>
             <img
               src={backCircle}
               className="w-8 lg:w-12 hover:cursor-pointer"
@@ -80,7 +82,7 @@ function SeasonsSW(props) {
               </table>
             </div>
           ) : (
-            <p className="text-center">Seasons data available</p>
+            <p className="text-center">Seasons data not available</p>
           )}
         </div>
       </div>

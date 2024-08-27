@@ -14,7 +14,7 @@ const s3Client = new S3Client({});
 // Environment variables
 const BucketName = "geoblocs-projects-data"; // Change this to your bucket name
 const URL_EXPIRATION_TIME = 30; // URL expiration time in seconds
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB in bytes
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 5 MB in bytes
 const JWT_SECRET = "mysecretkey"; // Set your secret key
 const CloudFrontDomain = "https://d2itlus54uyuca.cloudfront.net";
 
