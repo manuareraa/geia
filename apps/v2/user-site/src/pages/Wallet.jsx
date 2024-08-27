@@ -9,7 +9,7 @@ function Wallet(props) {
   const navigate = useNavigate();
   const [screen, setScreen] = useState("login");
   const { setWalletAddress, walletAddress } = useUserStore();
-  const { fetchSummary } = useSummaryStore();
+  const { fetchSummary, orgSummary } = useSummaryStore();
   const [passkeyInProcess, setPasskeyInProcess] = useState(false);
   const { connect } = useConnect();
 
@@ -51,12 +51,31 @@ function Wallet(props) {
   };
 
   useEffect(() => {
-    if (screen === "wallet") {
+    if (screen === "wallet" && orgSummary === null) {
+      console.log("screen is wallet but orgsummary is null");
       fetchSummaryAndUpdate();
+    } else if (screen === "wallet" && orgSummary !== null) {
+      console.log("Summary already fetched");
+      try {
+        let tempSummary = orgSummary.summary.summary;
+        console.log("Summary", tempSummary);
+        let totalTokens = 0;
+        for (let i = 0; i < tempSummary.length; i++) {
+          totalTokens += parseInt(tempSummary[i].tokenBalance);
+        }
+        setWalletData({
+          totalTokens: totalTokens,
+          tokensArray: tempSummary,
+        });
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else {
+      console.log("Summary not fetched");
     }
   }, [screen]);
 
-  const login = async () => {
+  const login = async (userStatus) => {
     try {
       setPasskeyInProcess(true);
       await connect(async () => {
@@ -65,7 +84,8 @@ function Wallet(props) {
         await wallet.connect({
           client,
           strategy: "passkey",
-          type: hasPasskey ? "sign-in" : "sign-up",
+          // type: hasPasskey ? "sign-in" : "sign-up",
+          type: userStatus === "new" ? "sign-up" : "sign-in",
         });
         console.log("Wallet", wallet);
         console.log("Account", wallet.getAccount());
@@ -99,24 +119,40 @@ function Wallet(props) {
       <div className="divider"></div>
 
       {screen === "login" ? (
-        <div className="flex flex-col items-center justify-center gap-y-3">
-          <p>Please verify to view your wallet</p>
+        <div className="flex flex-col items-center justify-center text-center gap-y-3">
+          <p>Have you already created a wallet for Geoblocs using "passkey"?</p>
           {isFirefox() === true ? (
             <p className="text-red-500">
               Please note that the wallet feature is not supported on Firefox
               browser. Please use Chrome or other passkey supported browsers.
             </p>
           ) : (
-            <button
-              className="flex items-center justify-center px-8 py-2 font-bold text-white rounded-lg btn-md bg-gGreen disabled:opacity-50"
-              onClick={async () => {
-                await login();
-                // setScreen("wallet");
-              }}
-              disabled={passkeyInProcess}
-            >
-              {passkeyInProcess ? "Please wait..." : "Verify"}
-            </button>
+            <>
+              <div className="flex flex-col items-center justify-center mt-4 gap-y-4">
+                <button
+                  className="flex items-center justify-center px-8 py-2 font-bold text-white rounded-lg btn-md bg-gGreen disabled:opacity-50"
+                  onClick={async () => {
+                    await login("new");
+                    // setScreen("wallet");
+                  }}
+                  disabled={passkeyInProcess}
+                >
+                  {passkeyInProcess ? "Please wait..." : "No, I am a new user"}
+                </button>
+                <button
+                  className="flex items-center justify-center px-8 py-2 font-bold text-white rounded-lg btn-md bg-gGreen disabled:opacity-50"
+                  onClick={async () => {
+                    await login("existing");
+                    // setScreen("wallet");
+                  }}
+                  disabled={passkeyInProcess}
+                >
+                  {passkeyInProcess
+                    ? "Please wait..."
+                    : "Yes, I have a passkey"}
+                </button>
+              </div>
+            </>
           )}
         </div>
       ) : (
@@ -157,7 +193,8 @@ function Wallet(props) {
                       <th>Project Name</th>
                       <th>Token Balance</th>
                       <th>Buy</th>
-                      <th>View</th>
+                      <th>View Project</th>
+                      <th>NFT Image</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -169,7 +206,7 @@ function Wallet(props) {
                           <td>{token.tokenBalance}</td>
                           <td>
                             <button
-                              className="flex items-center justify-center px-4 py-2 font-bold text-white rounded-lg bg-gGreen btn-xs"
+                              className="flex items-center justify-center h-10 px-4 py-2 text-xs font-bold text-white rounded-lg w-fit bg-gGreen btn-xs"
                               onClick={() => {
                                 // open link in new tab
                                 window.open(
@@ -184,7 +221,7 @@ function Wallet(props) {
                           </td>
                           <td>
                             <button
-                              className="flex items-center justify-center px-4 py-2 font-bold text-white rounded-lg bg-gGreen btn-xs"
+                              className="flex items-center justify-center h-10 px-4 py-2 text-xs font-bold text-white rounded-lg w-fit bg-gGreen btn-xs"
                               onClick={() => {
                                 // open link in new tab
                                 window.open(
@@ -194,8 +231,17 @@ function Wallet(props) {
                                 );
                               }}
                             >
-                              View
+                              View Project
                             </button>
+                          </td>
+                          <td>
+                            <img
+                              src={token.nft}
+                              alt="project"
+                              className="object-contain rounded-xl"
+                              height={200}
+                              width={200}
+                            />
                           </td>
                         </tr>
                       );

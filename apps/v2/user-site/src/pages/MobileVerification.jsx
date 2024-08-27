@@ -9,7 +9,7 @@ function MobileVerification(props) {
   const { connect } = useConnect();
   const [walletAddress, setWalletAddress] = useState("");
 
-  const login = async () => {
+  const login = async (userStatus) => {
     try {
       setPasskeyInProcess(true);
       await connect(async () => {
@@ -19,7 +19,7 @@ function MobileVerification(props) {
           client,
           strategy: "passkey",
           // type: hasPasskey ? "sign-in" : "sign-up",
-          type: "sign-in",
+          type: userStatus === "new" ? "sign-up" : "sign-in",
         });
         console.log("Wallet", wallet);
         console.log("Account", wallet.getAccount());
@@ -54,23 +54,29 @@ function MobileVerification(props) {
           <h2>Please use Chrome or Brave browser to continue.</h2>
         </div>
       ) : (
-        <Button
-          className="px-16 py-6 text-lg font-bold text-white bg-gGreen disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gGreen/50"
-          onClick={login}
-          //   onClick={async () => {
-          //     console.log("Redirecting...");
-          //     const deepLinkUrl = `geoblocs://?address=${encodeURIComponent(
-          //       "0x1234567890"
-          //     )}`;
-
-          //     // Redirect to the mobile app using the deep link
-          //     window.location.href = deepLinkUrl;
-          //   }}
-          loading={passkeyInProcess}
-          disabled={passkeyInProcess}
-        >
-          {passkeyInProcess ? "Please wait..." : "Verify"}
-        </Button>
+        <>
+          <p className="px-8 mb-8 text-xl font-bold text-center">
+            Have you already created a wallet for Geoblocs using "passkey"?
+          </p>
+          <div className="flex flex-col items-center justify-center gap-y-4">
+            <Button
+              className="px-16 py-6 text-lg font-bold text-white bg-gGreen disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gGreen/50"
+              onClick={() => login("new")}
+              loading={passkeyInProcess}
+              disabled={passkeyInProcess}
+            >
+              {passkeyInProcess ? "Please wait..." : "No, I am a new user"}
+            </Button>
+            <Button
+              className="px-16 py-6 text-lg font-bold text-white bg-gGreen disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gGreen/50"
+              onClick={() => login("existing")}
+              loading={passkeyInProcess}
+              disabled={passkeyInProcess}
+            >
+              {passkeyInProcess ? "Please wait..." : "Yes, I have a passkey"}
+            </Button>
+          </div>
+        </>
       )}
     </div>
   );

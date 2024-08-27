@@ -239,7 +239,7 @@ const handleWalletSummary = async (event, logs) => {
       ExpressionAttributeValues: {
         ":tokenId": tokenId,
       },
-      ProjectionExpression: "projectId, projectName", // Only retrieve projectId and projectName
+      ProjectionExpression: "projectId, projectName, metaImages.nft", // Only retrieve projectId and projectName
     };
 
     try {
@@ -251,6 +251,7 @@ const handleWalletSummary = async (event, logs) => {
           projectName: item.projectName,
           tokenBalance: tokenBalances[index],
           tokenId: tokenId,
+          nft: item.metaImages.nft,
         }))
       );
       index++;

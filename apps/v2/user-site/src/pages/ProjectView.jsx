@@ -269,16 +269,22 @@ function ProjectView(props) {
   const [passkeyInProcess, setPasskeyInProcess] = useState(false);
   const { connect } = useConnect();
 
-  const login = async () => {
+  const login = async (userStatus) => {
     try {
       setPasskeyInProcess(true);
       await connect(async () => {
         const wallet = inAppWallet();
         const hasPasskey = await hasStoredPasskey(client);
+        if (userStatus === "new") {
+          console.log("New User");
+        } else {
+          console.log("Existing User");
+        }
         await wallet.connect({
           client,
           strategy: "passkey",
-          type: hasPasskey ? "sign-in" : "sign-up",
+          // type: hasPasskey ? "sign-in" : "sign-up",
+          type: userStatus === "new" ? "sign-up" : "sign-in",
         });
         console.log("Wallet", wallet);
         console.log("Account", wallet.getAccount());
@@ -310,7 +316,7 @@ function ProjectView(props) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Passwordless Authentication
+                Have you already created a wallet for Geoblocs using "passkey"?
               </ModalHeader>
               <ModalBody>
                 {isFirefox() ? (
@@ -322,19 +328,38 @@ function ProjectView(props) {
                   </>
                 ) : (
                   <>
-                    <button
-                      disabled={passkeyInProcess}
-                      className="font-bold text-white btn bg-gGreen hover:bg-gGreen/80"
-                      onClick={async () => {
-                        await login();
-                        onClose();
-                      }}
-                    >
-                      Verify
-                    </button>
-                    <p className="pt-2 text-xs">
-                      Incase you have Free Download Manager enabled, please
-                      disable it. It may block the transaction process.
+                    <div className="flex flex-col items-center justify-center gap-y-4">
+                      <button
+                        disabled={passkeyInProcess}
+                        className="font-bold text-white btn bg-gGreen hover:bg-gGreen/80"
+                        onClick={async () => {
+                          await login("new");
+                          onClose();
+                        }}
+                      >
+                        No, I am a new user
+                      </button>
+                      <button
+                        disabled={passkeyInProcess}
+                        className="font-bold text-white btn bg-gGreen hover:bg-gGreen/80"
+                        onClick={async () => {
+                          await login("existing");
+                          onClose();
+                        }}
+                      >
+                        Yes, I have a passkey
+                      </button>
+                    </div>
+                    <p className="pt-2 text-xs italic">
+                      Please note: The wallet here does not refer to a
+                      third-party wallet like Metamask or Trustwallet. It is a
+                      wallet created and managed specifically by Geoblocs.
+                    </p>
+
+                    <p className="pt-2 text-xs italic">
+                      Warning: Incase you have Free Download Manager extension
+                      enabled, please disable it. It may block the transaction
+                      process.
                     </p>
                   </>
                 )}
