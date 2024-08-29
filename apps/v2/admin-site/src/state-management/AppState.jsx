@@ -10,7 +10,7 @@ export const backendUrl =
 // Authentication State Management
 export const useAuthStore = create(
   immer((set) => ({
-    isAuthenticated: true,
+    isAuthenticated: false,
     user: null,
     setUser: (user) => set({ user, isAuthenticated: !!user }),
   }))

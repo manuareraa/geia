@@ -36,7 +36,7 @@ const metadataSchema = Joi.object({
   ownership: Joi.string().valid("individual", "proprietary", "community"),
   areaSize: Joi.string(),
   projectProgress: Joi.number(),
-  interventionType: Joi.string().valid("a", "b", "c"),
+  interventionType: Joi.string(),
   description: Joi.string(),
 }).options({ abortEarly: false });
 
