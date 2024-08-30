@@ -141,9 +141,11 @@ function ProjectView(props) {
       }
       // check if the sponsorId from params is present in the project's sponsors array of objects with sponsorId
       if (project.sponsors) {
+        console.log("Sponsor got its", project.sponsors);
         const sponsor = project.sponsors.find(
           (sponsor) => sponsor.sponsorId === sponsorId
         );
+        console.log("Sponsor!!", sponsor);
         if (sponsor) {
           console.log("Sponsor", sponsor);
           if (
@@ -777,7 +779,7 @@ function ProjectView(props) {
                   className="px-16 py-4 text-xl font-bold text-white capitalize rounded-lg shadow-lg button-3d btn h-fit w-80 bg-gGreen hover:bg-gGreen/80"
                   onClick={() => {
                     console.log("Project Story");
-                    toast.success("Coming Soon");
+                    window.open(project.substackArticles[0], "_blank");
                   }}
                 >
                   Project Story

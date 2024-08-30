@@ -331,7 +331,7 @@ export const editTokenData = async (projectId, tokenData) => {
   const token = localStorage.getItem("authToken");
 
   const buyPrice = tokenData.buyPrice;
-  const tokenId = tokenData.tokenId;
+  const tokenId = parseInt(tokenData.tokenId);
 
   return apiRequest(
     async () => {

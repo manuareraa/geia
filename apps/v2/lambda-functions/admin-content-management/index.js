@@ -16,9 +16,7 @@ const projectSchema = Joi.object({
   country: Joi.string().required(),
   address: Joi.string().required(),
   gpsCoordinates: Joi.string().required(),
-  ownership: Joi.string()
-    .valid("individual", "proprietary", "community")
-    .required(),
+  ownership: Joi.string().required(),
   areaSize: Joi.string().required(),
 }).options({ abortEarly: false });
 
@@ -33,7 +31,7 @@ const metadataSchema = Joi.object({
   country: Joi.string(),
   address: Joi.string(),
   gpsCoordinates: Joi.string(),
-  ownership: Joi.string().valid("individual", "proprietary", "community"),
+  ownership: Joi.string(),
   areaSize: Joi.string(),
   projectProgress: Joi.number(),
   interventionType: Joi.string(),

@@ -27,9 +27,39 @@ function ExploreProjects() {
     const tempArrayForProjectCards = projects.map((project, index) => {
       if (project.projectStatus === "inactive") {
         return (
+          // <div
+          //   key={index}
+          //   className="flex flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer min-w-[50%] max-w-[100%] lg:min-w-[25%] lg:max-w-[32%]"
+          //   onClick={() => {
+          //     navigate("/project/view/" + project.projectId);
+          //     window.scrollTo(0, 0);
+          //   }}
+          // >
+          // <div
+          //   key={index}
+          //   className="flex flex-col p-4 space-y-3 shadow-lg rounded-2xl bg-gGray hover:cursor-pointer "
+          //   onClick={() => {
+          //     navigate("/project/view/" + project.projectId);
+          //     window.scrollTo(0, 0);
+          //   }}
+          // >
+          //   {/* Image container */}
+          //   <img
+          //     src={project.metaImages?.logo || sampleOne}
+          //     className="object-cover w-full h-48 rounded-2xl"
+          //     alt="Project"
+          //   />
+          //   {/* Text container */}
+          //   <div className="flex flex-col justify-start">
+          //     <p className="px-2 text-lg font-bold">{project.projectName}</p>
+          //     <p className="px-2 pt-1 text-sm font-light">
+          //       {project.metadata?.address || "No address provided"}
+          //     </p>
+          //   </div>
+          // </div>
           <div
             key={index}
-            className="flex flex-col space-y-3 rounded-2xl bg-gGray p-4 shadow-lg hover:cursor-pointer min-w-[50%] max-w-[100%] lg:min-w-[25%] lg:max-w-[32%]"
+            className="flex flex-col p-4 space-y-3 transition-all duration-300 transform shadow-lg rounded-2xl bg-gGray hover:cursor-pointer hover:scale-105"
             onClick={() => {
               navigate("/project/view/" + project.projectId);
               window.scrollTo(0, 0);
@@ -84,7 +114,13 @@ function ExploreProjects() {
         </div>
         {/* Body */}
         {projectCards.length > 0 ? (
-          <div className="flex flex-col gap-x-8 gap-y-6 lg:w-full lg:flex-row lg:flex-wrap">
+          // <div className="flex flex-col gap-x-8 gap-y-6 lg:w-full lg:flex-row lg:flex-wrap">
+          //   {projectCards}
+          // </div>
+          // <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-8 md:grid-cols-3">
+          //   {projectCards}
+          // </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {projectCards}
           </div>
         ) : (

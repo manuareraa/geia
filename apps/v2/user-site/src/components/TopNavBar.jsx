@@ -53,6 +53,13 @@ export default function App() {
     };
   }, []);
 
+  const closeMobileMenu = () => {
+    const toggleButton = document.querySelector('[aria-label="Close menu"]'); // Locate the menu toggle button
+    if (toggleButton) {
+      toggleButton.click(); // Simulate a click to close the menu
+    }
+  };
+
   return (
     <Navbar
       isBlurred
@@ -73,7 +80,10 @@ export default function App() {
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => {
+            console.log("isMenuOpen", isMenuOpen);
+            setIsMenuOpen(!isMenuOpen);
+          }}
         />
         <NavbarBrand>
           <img src={GeoblocsLogo} alt="Geoblocs Logo" className="w-52" />
@@ -226,12 +236,19 @@ export default function App() {
       {/* mobile menu */}
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+          <NavbarMenuItem
+            key={`${item}-${index}`}
+            onClick={() => {
+              console.log("isMenuOpen1", isMenuOpen);
+              setIsMenuOpen(!isMenuOpen);
+            }}
+          >
             <Link
               color={"foreground"}
               className="w-full"
-              onClick={() => {
-                setIsMenuOpen(false);
+              onPress={() => {
+                // console.log("isMenuOpen", isMenuOpen);
+                closeMobileMenu();
                 if (item === "Home") {
                   navigate("/");
                 } else if (item === "Stakeholders") {
