@@ -418,7 +418,8 @@ function ProjectView(props) {
                   <p className="font-bold">
                     Start Date:&nbsp;
                     <span className="font-medium">
-                      {new Date(project.createdAt).toLocaleString()}
+                      {/* {new Date(project.createdAt).toLocaleString()} */}
+                      {project.createdAt}
                     </span>
                   </p>
                 </div>
