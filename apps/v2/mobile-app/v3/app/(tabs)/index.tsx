@@ -120,7 +120,7 @@ export default function HomeScreen() {
         <Button
           onPress={async () => {
             console.log("Get Started button pressed");
-            router.replace("wallet/wallet");
+            router.push("wallet/wallet");
             // const authUrl = "https://geoblocs.com/mobile-verification"; // Replace with your authentication URL
             // const redirectUrl = Linking.createURL("redirect");
 

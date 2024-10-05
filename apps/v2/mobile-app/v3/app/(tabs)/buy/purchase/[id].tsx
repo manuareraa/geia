@@ -1,15 +1,25 @@
-import { router, Link, Stack } from "expo-router";
-import { View } from "react-native";
+import React, { useEffect } from "react";
+import { Text } from "react-native";
+import { ScrollView, XStack, YStack } from "tamagui";
+import { FontAwesome } from "@expo/vector-icons";
+import BuyCard from "@/components/custom/BuyCard";
+import { useLocalSearchParams } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
-import { ThemedText } from "@/components/ThemedText";
-import { StyleSheet } from "react-native";
-import { Button } from "tamagui";
-
+import { View } from "react-native";
+import { Stack } from "expo-router";
 import CustomHeader from "@/components/CustomHeader";
-import PortfolioScreen from "@/components/custom/PortfolioScreen";
-import BuyCards from "@/components/custom/BuyCards";
+import { StyleSheet } from "react-native";
+import { ThemedText } from "@/components/ThemedText";
 
-const BuyScreen = () => {
+export default function Purchase() {
+  // Retrieve the `id` parameter from the URL
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  useEffect(() => {
+    // Log the `id` parameter to the console
+    console.log(id);
+  }, [id]);
+
   return (
     <ThemedView style={styles.container}>
       <Stack.Screen
@@ -22,10 +32,10 @@ const BuyScreen = () => {
         {/* projects title */}
         <View
           style={{
-            marginTop: 50, // Reduced margin
+            marginTop: 0, // Reduced margin
           }}
         >
-          <ThemedText
+          {/* <ThemedText
             style={{
               color: "white",
               fontSize: 20,
@@ -33,17 +43,13 @@ const BuyScreen = () => {
             }}
           >
             Our Projects
-          </ThemedText>
+          </ThemedText> */}
         </View>
-
-        {/* cards */}
-        <View style={{ flex: 1, marginTop: 20 }}>
-          <BuyCards />
-        </View>
+        <BuyCard />
       </View>
     </ThemedView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -59,5 +65,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 });
-
-export default BuyScreen;

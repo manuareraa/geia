@@ -2,43 +2,50 @@ import React from "react";
 import { Text } from "react-native";
 import { ScrollView, XStack, YStack } from "tamagui";
 import { FontAwesome } from "@expo/vector-icons";
+import { ThemedView } from "@/components/ThemedView";
+import { ThemedText } from "@/components/ThemedText";
+import { View } from "react-native";
+import { Stack } from "expo-router";
+import CustomHeader from "@/components/CustomHeader";
+import { StyleSheet } from "react-native";
 
-export default function PortfolioScreen() {
-  const projects = [
-    {
-      id: 1,
-      name: "Project Alpha",
-      location: "Phillipines",
-      geoblocs: 12,
-      value: 16.25,
-    },
-    {
-      id: 2,
-      name: "Project Beta",
-      location: "India",
-      geoblocs: 8,
-      value: 10.0,
-    },
-    {
-      id: 3,
-      name: "Project Gamma",
-      location: "Kenya",
-      geoblocs: 5,
-      value: 7.5,
-    },
-    // Add more projects as needed
-  ];
+export default function BuyCard() {
+  const project = {
+    id: 1,
+    name: "Project Alpha",
+    location: "Phillipines",
+    geoblocs: 12,
+    value: 16.25,
+  };
 
   return (
-    <ScrollView>
-      <XStack
-        flexWrap="wrap"
-        justifyContent="space-between"
-        paddingHorizontal="$2"
-        // gap="$2"
-        // columnGap="$4"
-      >
-        {projects.map((project) => (
+    <ThemedView style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerStyle: { backgroundColor: "#000" },
+          headerTitle: (props) => <CustomHeader />,
+        }}
+      />
+      <View style={styles.fullWidth}>
+        {/* projects title */}
+        <View
+          style={{
+            marginTop: 50, // Reduced margin
+          }}
+        >
+          <ThemedText
+            style={{
+              color: "white",
+              fontSize: 20,
+              alignSelf: "center",
+            }}
+          >
+            Our Projects
+          </ThemedText>
+        </View>
+
+        {/* cards */}
+        <View style={{ flex: 1, marginTop: 20 }}>
           <YStack
             key={project.id}
             width="48%" // Adjusted width to ensure two cards fit side by side
@@ -108,10 +115,35 @@ export default function PortfolioScreen() {
                 </Text>
                 <Text style={{ fontSize: 12, color: "gray" }}>Value</Text>
               </YStack>
+              {/* <YStack
+                width={30}
+                height={30}
+                borderRadius={15}
+                alignItems="center"
+                justifyContent="center"
+                backgroundColor="#E0E0E0"
+              >
+                <FontAwesome name="arrow-right" size={18} color="gray" />
+              </YStack> */}
             </XStack>
           </YStack>
-        ))}
-      </XStack>
-    </ScrollView>
+        </View>
+      </View>
+    </ThemedView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    backgroundColor: "black",
+    fontFamily: "ManropeRegular",
+  },
+  fullWidth: {
+    flex: 1, // Ensure this takes up all available space
+    width: "100%",
+    paddingHorizontal: 20,
+  },
+});

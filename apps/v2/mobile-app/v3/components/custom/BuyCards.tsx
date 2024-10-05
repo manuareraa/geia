@@ -2,8 +2,9 @@ import React from "react";
 import { Text } from "react-native";
 import { ScrollView, XStack, YStack } from "tamagui";
 import { FontAwesome } from "@expo/vector-icons";
+import { Link, router } from "expo-router";
 
-export default function PortfolioScreen() {
+export default function BuyCards() {
   const projects = [
     {
       id: 1,
@@ -51,6 +52,9 @@ export default function PortfolioScreen() {
             shadowOffset={{ width: 0, height: 2 }}
             shadowOpacity={0.1}
             shadowRadius={8}
+            onPress={() => {
+              router.push(`/buy/purchase/${project.id}`);
+            }}
           >
             {/* Image Placeholder */}
             <YStack
@@ -108,6 +112,16 @@ export default function PortfolioScreen() {
                 </Text>
                 <Text style={{ fontSize: 12, color: "gray" }}>Value</Text>
               </YStack>
+              {/* <YStack
+                width={30}
+                height={30}
+                borderRadius={15}
+                alignItems="center"
+                justifyContent="center"
+                backgroundColor="#E0E0E0"
+              >
+                <FontAwesome name="arrow-right" size={18} color="gray" />
+              </YStack> */}
             </XStack>
           </YStack>
         ))}

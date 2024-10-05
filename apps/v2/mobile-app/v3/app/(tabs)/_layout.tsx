@@ -51,6 +51,24 @@ export default function TabLayout() {
         // }}
       />
       <Tabs.Screen
+        name="buy/purchase/[id]"
+        options={{
+          tabBarStyle: { display: "none" }, // This hides the tab bar on the HomeScreen
+          href: null,
+          // headerShown: false,
+        }}
+        // options={{
+        //   title: "Home",
+        //   tabBarIcon: ({ color, focused }) => (
+        //     <TabBarIcon
+        //       name={focused ? "home" : "home-outline"}
+        //       color={focused ? "green" : color}
+        //     />
+        //   ),
+        //   href: null,
+        // }}
+      />
+      <Tabs.Screen
         name="wallet/wallet"
         options={{
           title: "Wallet",
