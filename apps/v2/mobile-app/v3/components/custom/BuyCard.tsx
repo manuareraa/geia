@@ -30,7 +30,8 @@ export default function BuyCard() {
         {/* projects title */}
         <View
           style={{
-            marginTop: 50, // Reduced margin
+            marginTop: 40, // Reduced margin
+            marginBottom: 20,
           }}
         >
           <ThemedText
@@ -40,35 +41,40 @@ export default function BuyCard() {
               alignSelf: "center",
             }}
           >
-            Our Projects
+            Buy Receipts for {project.name}
           </ThemedText>
         </View>
 
         {/* cards */}
         <View style={{ flex: 1, marginTop: 20 }}>
           <YStack
-            key={project.id}
-            width="48%" // Adjusted width to ensure two cards fit side by side
+            height={120}
+            // backgroundColor="#E0E0E0"
             backgroundColor="#F3F3F3"
             borderRadius="$4"
-            overflow="hidden"
-            marginBottom="$4"
-            // padding="$3"
-            shadowColor="#000"
-            shadowOffset={{ width: 0, height: 2 }}
-            shadowOpacity={0.1}
-            shadowRadius={8}
+            // marginBottom="$3"
           >
-            {/* Image Placeholder */}
             <YStack
-              height={120}
-              backgroundColor="#E0E0E0"
-              borderRadius="$4"
-              marginBottom="$3"
-            >
-              <YStack width="100%" height="100%" backgroundColor="gray" />
-            </YStack>
+              width="100%"
+              height="100%"
+              backgroundColor="gray"
+              borderTopLeftRadius={10}
+              borderTopRightRadius={10}
+            />
+          </YStack>
 
+          <View
+            style={{
+              backgroundColor: "#F3F3F3",
+              borderBottomLeftRadius: 10,
+              borderBottomRightRadius: 10,
+              padding: 10,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 8,
+            }}
+          >
             {/* Info Section */}
             <Text
               style={{
@@ -126,7 +132,7 @@ export default function BuyCard() {
                 <FontAwesome name="arrow-right" size={18} color="gray" />
               </YStack> */}
             </XStack>
-          </YStack>
+          </View>
         </View>
       </View>
     </ThemedView>

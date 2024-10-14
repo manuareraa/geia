@@ -2,8 +2,9 @@ import React from "react";
 import { Text, Image } from "react-native";
 import { ScrollView, XStack, YStack } from "tamagui";
 import { FontAwesome } from "@expo/vector-icons";
+import { Link, router } from "expo-router";
 
-export default function PortfolioScreen(props) {
+export default function BuyCards() {
   const projects = [
     {
       id: 1,
@@ -40,7 +41,7 @@ export default function PortfolioScreen(props) {
       >
         {props.projects.map((project) => (
           <YStack
-            key={project.projectId}
+            key={project.id}
             width="48%" // Adjusted width to ensure two cards fit side by side
             backgroundColor="#F3F3F3"
             borderRadius="$4"
@@ -51,6 +52,9 @@ export default function PortfolioScreen(props) {
             shadowOffset={{ width: 0, height: 2 }}
             shadowOpacity={0.1}
             shadowRadius={8}
+            onPress={() => {
+              router.push(`/buy/purchase/${project.projectId}`);
+            }}
           >
             {/* Image Placeholder */}
             <YStack
@@ -61,7 +65,7 @@ export default function PortfolioScreen(props) {
             >
               <YStack width="100%" height="100%">
                 <Image
-                  source={{ uri: project.nft }}
+                  source={{ uri: project.metaImages.logo }}
                   style={{
                     width: "100%",
                     height: "100%",
@@ -84,43 +88,49 @@ export default function PortfolioScreen(props) {
             >
               {project.projectName}
             </Text>
-            {/* <XStack
+            <XStack
               alignItems="center"
               marginBottom="$0"
               paddingHorizontal="$3"
             >
               <FontAwesome name="map-marker" size={18} color="gray" />
               <Text style={{ marginLeft: 5, fontSize: 14, color: "gray" }}>
-                {project.location}
+                {project.metadata.country}
               </Text>
-            </XStack> */}
+            </XStack>
 
             {/* Geoblocs and Value */}
             <XStack
               justifyContent="space-between"
               alignItems="center"
               padding="$2.5"
-              // paddingHorizontal="$4"
+              paddingHorizontal="$4"
             >
-              <XStack
-                alignItems="center"
-                justifyContent="space-between"
-                width="100%"
-              >
-                <Text style={{ fontSize: 12, color: "gray" }}>Quantity</Text>
+              <YStack alignItems="center">
                 <Text
                   style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
                 >
-                  {project.tokenBalance}
+                  {project.geoblocs}
                 </Text>
-              </XStack>
-              {/* <YStack alignItems="center">
+                <Text style={{ fontSize: 12, color: "gray" }}>Geoblocs</Text>
+              </YStack>
+              <YStack alignItems="center">
                 <Text
                   style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
                 >
                   ${project.value.toFixed(2)}
                 </Text>
                 <Text style={{ fontSize: 12, color: "gray" }}>Value</Text>
+              </YStack>
+              {/* <YStack
+                width={30}
+                height={30}
+                borderRadius={15}
+                alignItems="center"
+                justifyContent="center"
+                backgroundColor="#E0E0E0"
+              >
+                <FontAwesome name="arrow-right" size={18} color="gray" />
               </YStack> */}
             </XStack>
           </YStack>

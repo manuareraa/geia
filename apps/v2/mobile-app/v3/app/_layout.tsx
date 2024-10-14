@@ -12,6 +12,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 
 import { TamaguiProvider } from "tamagui";
 import { tamaguiConfig } from "../tamagui.config";
+import LoadingOverlay from "@/components/custom/LoadingOverlay";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -43,9 +44,19 @@ export default function RootLayout() {
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <LoadingOverlay />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          {/* <Stack.Screen
+            name="(tabs)/buy/buy"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(tabs)/buy/purchase/[id]"
+            options={{ headerShown: false }}
+          /> */}
+          {/* <Stack.Screen name="wallet" /> */}
           <Stack.Screen name="+not-found" />
         </Stack>
       </ThemeProvider>

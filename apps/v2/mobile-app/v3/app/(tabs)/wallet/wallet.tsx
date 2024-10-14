@@ -1,13 +1,45 @@
 import { router, Link, Stack } from "expo-router";
-import { View } from "react-native";
+import { BackHandler, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { StyleSheet } from "react-native";
 import { Button } from "tamagui";
 import CustomHeader from "@/components/CustomHeader";
 import PortfolioScreen from "@/components/custom/PortfolioScreen";
+import { useEffect } from "react";
+import { useAuthStore, useSummaryStore } from "@/state/store";
 
 const WalletScreen = () => {
+  const { walletAddress } = useAuthStore();
+  const { fetchSummary, orgSummary } = useSummaryStore();
+
+  useEffect(() => {
+    console.log("Wallet Address:", walletAddress);
+    if (!walletAddress) {
+      router.replace("index");
+    } else {
+      console.log(
+        "Org Summary:",
+        orgSummary.summary.summary,
+        Object.keys(orgSummary.summary.summary)
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      router.replace("wallet/wallet");
+      return true; // Return true to stop default back behavior
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove(); // Cleanup when component unmounts
+  }, []);
+
   return (
     <ThemedView style={styles.container}>
       <Stack.Screen
@@ -16,161 +48,191 @@ const WalletScreen = () => {
           headerTitle: (props) => <CustomHeader />,
         }}
       />
-      <View style={styles.fullWidth}>
-        {/* your wallet text */}
-        <View
-          style={{
-            marginTop: 50,
-          }}
-        >
-          <ThemedText
+      {orgSummary.length === 0 ? (
+        <View style={styles.fullWidth}>
+          {/* your wallet text */}
+          <View
             style={{
-              color: "white",
-              fontSize: 20,
-              alignSelf: "center",
+              marginTop: 50,
             }}
           >
-            Your Wallet
-          </ThemedText>
+            <ThemedText
+              style={{
+                color: "white",
+                fontSize: 20,
+                alignSelf: "center",
+              }}
+            >
+              No Balance Available.
+            </ThemedText>
+          </View>
         </View>
-
-        {/* gray container */}
-        <View style={styles.grayContainer}>
-          <View style={styles.walletInnerContainer}>
-            {/* first container */}
-            <View
+      ) : (
+        <View style={styles.fullWidth}>
+          {/* your wallet text */}
+          <View
+            style={{
+              marginTop: 50,
+            }}
+          >
+            <ThemedText
               style={{
-                flexDirection: "column",
-                justifyContent: "space-around",
+                color: "white",
+                fontSize: 20,
+                alignSelf: "center",
               }}
             >
-              <ThemedText
-                style={{
-                  fontSize: 20,
-                  color: "#ffffff",
-                }}
-              >
-                You Own
-              </ThemedText>
-              <ThemedText
-                style={{
-                  fontSize: 100,
-                  color: "#2b8f45",
-                  fontFamily: "ManropeExtraBold",
-                  lineHeight: 105,
-                  paddingVertical: 10,
-                  alignContent: "center",
-                  alignSelf: "center",
-                }}
-              >
-                54
-              </ThemedText>
-              <ThemedText
-                style={{
-                  fontSize: 20,
-                  color: "#ffffff",
-                  marginTop: -20,
-                }}
-              >
-                Geoblocs
-              </ThemedText>
-            </View>
-
-            {/* second container */}
-            <View
-              style={{
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
-              {/* geoblocs value */}
+              Your Wallet
+            </ThemedText>
+          </View>
+          {/* gray container */}
+          <View style={styles.grayContainer}>
+            <View style={styles.walletInnerContainer}>
+              {/* first container */}
               <View
                 style={{
                   flexDirection: "column",
-                  marginBottom: 0,
+                  justifyContent: "space-around",
                 }}
               >
                 <ThemedText
                   style={{
                     fontSize: 20,
                     color: "#ffffff",
-                    alignSelf: "flex-end",
                   }}
                 >
-                  Your Geoblocs Value
+                  You Own
                 </ThemedText>
                 <ThemedText
                   style={{
-                    fontSize: 30,
+                    fontSize: 100,
                     color: "#2b8f45",
                     fontFamily: "ManropeExtraBold",
-                    lineHeight: 30,
+                    lineHeight: 105,
                     paddingVertical: 10,
-                    alignSelf: "flex-end",
+                    alignContent: "center",
+                    alignSelf: "center",
                   }}
                 >
-                  €54
+                  {orgSummary.summary.summary.reduce(
+                    (acc, project) => acc + project.tokenBalance,
+                    0
+                  )}
+                </ThemedText>
+                <ThemedText
+                  style={{
+                    fontSize: 20,
+                    color: "#ffffff",
+                    marginTop: -20,
+                  }}
+                >
+                  Geoblocs
                 </ThemedText>
               </View>
 
-              {/* projects supported */}
+              {/* second container */}
               <View
                 style={{
                   flexDirection: "column",
+                  justifyContent: "center",
                   alignItems: "flex-end",
-                  justifyContent: "flex-end",
-                  marginTop: 0,
                 }}
               >
-                <ThemedText
+                {/* geoblocs value */}
+                {/* <View
                   style={{
-                    fontSize: 20,
-                    color: "#ffffff",
-                    alignSelf: "flex-end",
+                    flexDirection: "column",
+                    marginBottom: 0,
                   }}
                 >
-                  Projects Supported
-                </ThemedText>
-                <ThemedText
+                  <ThemedText
+                    style={{
+                      fontSize: 20,
+                      color: "#ffffff",
+                      alignSelf: "flex-end",
+                    }}
+                  >
+                    Your Geoblocs Value
+                  </ThemedText>
+                  <ThemedText
+                    style={{
+                      fontSize: 30,
+                      color: "#2b8f45",
+                      fontFamily: "ManropeExtraBold",
+                      lineHeight: 30,
+                      paddingVertical: 10,
+                      alignSelf: "flex-end",
+                    }}
+                  >
+                    €54
+                  </ThemedText>
+                </View> */}
+
+                {/* projects supported */}
+                <View
                   style={{
-                    fontSize: 30,
-                    color: "#2b8f45",
-                    fontFamily: "ManropeExtraBold",
-                    lineHeight: 30,
-                    paddingVertical: 10,
-                    alignSelf: "flex-end",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
                   }}
                 >
-                  12
-                </ThemedText>
+                  <ThemedText
+                    style={{
+                      fontSize: 20,
+                      color: "#ffffff",
+                      alignSelf: "flex-end",
+                    }}
+                  >
+                    You Support
+                  </ThemedText>
+                  <ThemedText
+                    style={{
+                      fontSize: 100,
+                      color: "#2b8f45",
+                      fontFamily: "ManropeExtraBold",
+                      lineHeight: 105,
+                      paddingVertical: 10,
+                      alignContent: "center",
+                      alignSelf: "flex-end",
+                    }}
+                  >
+                    {orgSummary.summary.summary.length}
+                  </ThemedText>
+                  <ThemedText
+                    style={{
+                      fontSize: 20,
+                      color: "#ffffff",
+                      marginTop: -20,
+                      alignSelf: "flex-end",
+                    }}
+                  >
+                    Project(s)
+                  </ThemedText>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-
-        {/* your portfolio */}
-        <View
-          style={{
-            marginTop: 50, // Reduced margin
-          }}
-        >
-          <ThemedText
+          {/* your portfolio */}
+          <View
             style={{
-              color: "white",
-              fontSize: 20,
-              alignSelf: "center",
+              marginTop: 50, // Reduced margin
             }}
           >
-            Your Portfolio
-          </ThemedText>
+            <ThemedText
+              style={{
+                color: "white",
+                fontSize: 20,
+                alignSelf: "center",
+              }}
+            >
+              Your Portfolio
+            </ThemedText>
+          </View>
+          {/* portfolio cards */}
+          <View style={{ flex: 1, marginTop: 20 }}>
+            <PortfolioScreen projects={orgSummary.summary.summary} />
+          </View>
         </View>
-
-        {/* portfolio cards */}
-        <View style={{ flex: 1, marginTop:20 }}>
-          <PortfolioScreen />
-        </View>
-      </View>
+      )}
     </ThemedView>
   );
 };

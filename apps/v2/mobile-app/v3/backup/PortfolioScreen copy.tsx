@@ -62,12 +62,7 @@ export default function PortfolioScreen(props) {
               <YStack width="100%" height="100%">
                 <Image
                   source={{ uri: project.nft }}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderTopLeftRadius: 8,
-                    borderTopRightRadius: 8,
-                  }}
+                  style={{ width: "100%", height: "100%", borderRadius: 8 }}
                 />
               </YStack>
             </YStack>
@@ -100,20 +95,16 @@ export default function PortfolioScreen(props) {
               justifyContent="space-between"
               alignItems="center"
               padding="$2.5"
-              // paddingHorizontal="$4"
+              paddingHorizontal="$4"
             >
-              <XStack
-                alignItems="center"
-                justifyContent="space-between"
-                width="100%"
-              >
-                <Text style={{ fontSize: 12, color: "gray" }}>Quantity</Text>
+              <YStack alignItems="center">
                 <Text
                   style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
                 >
                   {project.tokenBalance}
                 </Text>
-              </XStack>
+                <Text style={{ fontSize: 12, color: "gray" }}>Geoblocs</Text>
+              </YStack>
               {/* <YStack alignItems="center">
                 <Text
                   style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}

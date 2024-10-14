@@ -6,6 +6,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 import { ThemedView } from "@/components/ThemedView"; // If you have a themed view, else replace with View
 import { ThemedText } from "@/components/ThemedText"; // If you have a themed text, else replace with Text
@@ -19,8 +20,13 @@ import bgImage from "../../assets/images/homebg.png";
 import icon from "../../assets/images/geoblocs-icon.png";
 import { router } from "expo-router";
 
+import { useSummaryStore, useLoadingStore } from "@/state/store";
+
 export default function HomeScreen() {
-  const { setWalletAddress, setAuthStatus } = useAuthStore();
+  const { setWalletAddress, setAuthStatus, walletAddress } = useAuthStore();
+  const { fetchSummary } = useSummaryStore();
+  const { setLoading } = useLoadingStore();
+
   const route = useRoute();
 
   console.log("Route:", route);
@@ -31,6 +37,20 @@ export default function HomeScreen() {
     // return parsedUrl.searchParams.get("token"); // Replace 'token' with the actual query parameter key in your URL
   }
 
+  const fetchSummaryData = async (address) => {
+    setLoading(true);
+    try {
+      console.log("Fetching summary data for address:", address);
+      const response = await fetchSummary(address);
+      // navigate to wallet/wallet
+      router.replace("wallet/wallet");
+    } catch (error) {
+      console.error("Error fetching summary data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const handleUrl = (url) => {
       const parsedUrl = Linking.parse(url);
@@ -39,8 +59,7 @@ export default function HomeScreen() {
         setAuthStatus(true);
         setWalletAddress(address);
         console.log("Address received:", address);
-        // navigate to wallet/wallet
-        router.replace("wallet/wallet");        
+        fetchSummaryData(address);
       }
     };
 
@@ -60,6 +79,20 @@ export default function HomeScreen() {
       // Clean up the event listener on unmount
       subscription.remove();
     };
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      router.push("index");
+      return true; // Return true to stop default back behavior
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove(); // Cleanup when component unmounts
   }, []);
 
   return (
@@ -120,24 +153,24 @@ export default function HomeScreen() {
         <Button
           onPress={async () => {
             console.log("Get Started button pressed");
-            router.push("wallet/wallet");
-            // const authUrl = "https://geoblocs.com/mobile-verification"; // Replace with your authentication URL
-            // const redirectUrl = Linking.createURL("redirect");
+            if (walletAddress === null) {
+              // router.push("wallet/wallet");
+              const authUrl = "https://geoblocs.com/mobile-verification"; // Replace with your authentication URL
+              const redirectUrl = Linking.createURL("redirect");
 
-            // try {
-            //   const result = await WebBrowser.openAuthSessionAsync(
-            //     authUrl,
-            //     redirectUrl
-            //   );
+              try {
+                const result = await WebBrowser.openAuthSessionAsync(
+                  authUrl,
+                  redirectUrl
+                );
 
-            //   if (result.type === "success" && result.url) {
-            //     const token = extractTokenFromUrl(result.url);
-            //   } else {
-            //     console.log("Authentication was cancelled or failed");
-            //   }
-            // } catch (error) {
-            //   console.error("Error during authentication:", error);
-            // }
+                const token = extractTokenFromUrl(result.url);
+              } catch (error) {
+                console.error("Error during authentication:", error);
+              }
+            } else {
+              router.push("wallet/wallet");
+            }
           }}
           style={{
             backgroundColor: "#000",
